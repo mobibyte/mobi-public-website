@@ -1,14 +1,6 @@
-## Supabase Auth Boilerplate
+## Mobi Byte Website
 
 Main website for MOBI members and potential members.
-
-### Starter Pages
-
--   Home
--   Login
--   Register
--   Dashboard
--   404
 
 ### Dependencies
 
