@@ -4,6 +4,9 @@ import { EventCard } from "@/pages/Home/EventCard";
 
 // TODO:
 // sort through events from current and past
+// Maybe have a large collage of events as the header for events
+// show options for photos
+// maybe calendar view too
 
 export function Events() {
     const { data: events, isPending } = useGetAllSemesterEvents();
@@ -39,6 +42,9 @@ export function Events() {
                     {currentEvents.map((event) => (
                         <EventCard key={event.id} event={event} />
                     ))}
+                    {currentEvents.length === 0 && (
+                        <Text>No ongoing events at the moment.</Text>
+                    )}
                 </Stack>
                 <Text fontSize="2xl" mt={8} className="space-grotesk-500">
                     Upcoming Events

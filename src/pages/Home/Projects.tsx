@@ -1,5 +1,5 @@
 import { ProjectCard } from "./ProjectCard";
-import { Heading, Stack, useBreakpointValue } from "@chakra-ui/react";
+import { Button, Heading, Stack, useBreakpointValue } from "@chakra-ui/react";
 import { projects } from "@/data/projects"; // Adjust the import path as necessary
 import { Reveal } from "@/components/ui/Reveal";
 
@@ -40,6 +40,9 @@ export function Projects() {
                     </Reveal>
                 ))}
             </Stack>
+            <Button width={"auto"} alignSelf={"center"}>
+                View All Projects
+            </Button>
         </Stack>
     );
 }

@@ -3,11 +3,19 @@ import type { Project } from "@/types";
 
 // TODO:
 // enable link functionality
-// when user clicks project, navigate to website
+// when user clicks project, open modal with link to website
 
 export function ProjectCard({ project }: { project: Project }) {
     return (
-        <Box overflow="hidden" _hover={{ boxShadow: "lg" }}>
+        <Box
+            overflow="hidden"
+            transition="transform 0.2s ease-in-out"
+            _hover={{
+                boxShadow: "lg",
+                transform: "scale(1.025)",
+                cursor: "pointer",
+            }}
+        >
             <Image
                 src={project.image}
                 alt={project.title}

@@ -15,6 +15,10 @@ import { Officers } from "@/pages/Home/Officers";
 import { UpcomingEvents } from "./UpcomingEvents";
 import { JoinToday } from "./JoinToday";
 
+// TODO
+// break up sections into components
+// add picture carousel to "who are we" section
+
 type Style = {
     heading: {
         h1: number;

@@ -21,6 +21,76 @@ export const officers: Officer[] = [
             "https://instagram.com/janesmith",
         ],
     },
+    // {
+    //     name: "First Last",
+    //     role: "Vice President",
+    //     image: "https://cdn.britannica.com/47/188747-050-1D34E743/Bill-Gates-2011.jpg",
+    //     links: [
+    //         "https://github.com/janesmith",
+    //         "https://linkedin.com/in/janesmith",
+    //         "https://instagram.com/janesmith",
+    //     ],
+    // },
+    // {
+    //     name: "First Last",
+    //     role: "Vice President",
+    //     image: "https://cdn.britannica.com/47/188747-050-1D34E743/Bill-Gates-2011.jpg",
+    //     links: [
+    //         "https://github.com/janesmith",
+    //         "https://linkedin.com/in/janesmith",
+    //         "https://instagram.com/janesmith",
+    //     ],
+    // },
+    // {
+    //     name: "First Last",
+    //     role: "Vice President",
+    //     image: "https://cdn.britannica.com/47/188747-050-1D34E743/Bill-Gates-2011.jpg",
+    //     links: [
+    //         "https://github.com/janesmith",
+    //         "https://linkedin.com/in/janesmith",
+    //         "https://instagram.com/janesmith",
+    //     ],
+    // },
+    // {
+    //     name: "First Last",
+    //     role: "Vice President",
+    //     image: "https://cdn.britannica.com/47/188747-050-1D34E743/Bill-Gates-2011.jpg",
+    //     links: [
+    //         "https://github.com/janesmith",
+    //         "https://linkedin.com/in/janesmith",
+    //         "https://instagram.com/janesmith",
+    //     ],
+    // },
+    // {
+    //     name: "First Last",
+    //     role: "Vice President",
+    //     image: "https://cdn.britannica.com/47/188747-050-1D34E743/Bill-Gates-2011.jpg",
+    //     links: [
+    //         "https://github.com/janesmith",
+    //         "https://linkedin.com/in/janesmith",
+    //         "https://instagram.com/janesmith",
+    //     ],
+    // },
+    // {
+    //     name: "First Last",
+    //     role: "Vice President",
+    //     image: "https://cdn.britannica.com/47/188747-050-1D34E743/Bill-Gates-2011.jpg",
+    //     links: [
+    //         "https://github.com/janesmith",
+    //         "https://linkedin.com/in/janesmith",
+    //         "https://instagram.com/janesmith",
+    //     ],
+    // },
+    // {
+    //     name: "First Last",
+    //     role: "Vice President",
+    //     image: "https://cdn.britannica.com/47/188747-050-1D34E743/Bill-Gates-2011.jpg",
+    //     links: [
+    //         "https://github.com/janesmith",
+    //         "https://linkedin.com/in/janesmith",
+    //         "https://instagram.com/janesmith",
+    //     ],
+    // },
     {
         name: "David Cai",
         role: "Treasurer",

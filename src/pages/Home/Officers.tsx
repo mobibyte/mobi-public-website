@@ -23,7 +23,7 @@ export function Officers() {
             </Text>
             <Stack direction={isMobile ? "column" : "row"} gap={24}>
                 {officers.map((officer) => (
-                    <OfficerCard key={officer.name} officer={officer} />
+                    <OfficerCard officer={officer} />
                 ))}
             </Stack>
         </Stack>
