@@ -1,6 +1,6 @@
 ## Mobi Byte Website
 
-[https://mobi-public-website.vercel.app/](Visit Website)
+[Visit Website](https://mobi-public-website.vercel.app/)
 
 Main website for MOBI members and potential members.
 
