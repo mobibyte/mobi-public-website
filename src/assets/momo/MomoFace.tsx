@@ -1,10 +1,10 @@
-import EyesOpen from "./eyes-opened.svg?react";
-import Mouth from "./mouth-neutral.svg?react";
 import { Stack, Center } from "@chakra-ui/react";
 
 import { motion, useSpring } from "motion/react";
 import { useEffect, useRef } from "react";
 import type { RefObject } from "react";
+
+import { MomoExpression } from "./MomoExpression";
 
 const spring = { damping: 20, stiffness: 75, restDelta: 0.1 };
 
@@ -51,14 +51,6 @@ export function useFollowPointer(
     return { x, y };
 }
 
-export function MomoEyes() {
-    return <EyesOpen />;
-}
-
-export function MomoMouth() {
-    return <Mouth />;
-}
-
 export function MomoFace() {
     const boxRef = useRef<HTMLDivElement>(null); // the bounding box (Center)
     const itemRef = useRef<HTMLDivElement>(null); // the moving child
@@ -87,8 +79,7 @@ export function MomoFace() {
                 }}
             >
                 <Stack justifyContent="center" alignItems="center">
-                    <MomoEyes />
-                    <MomoMouth />
+                    <MomoExpression />
                 </Stack>
             </motion.div>
         </Center>
