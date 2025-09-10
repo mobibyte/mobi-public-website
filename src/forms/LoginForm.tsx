@@ -12,7 +12,6 @@ import {
 import { PasswordInput } from "@/components/ui/password-input";
 import { NavLink } from "react-router";
 import { IconExclamationCircle } from "@tabler/icons-react";
-import { MobiOutlineLogo } from "@/assets/OutlineLogo";
 
 function ErrorMessage({ message }: { message: string }) {
     return (
@@ -61,7 +60,6 @@ export function LoginForm() {
             bgGradient="radial-gradient(ellipse at center, rgba(28, 0, 94, 1), transparent 60%)"
             width={"100%"}
         >
-            <MobiOutlineLogo />
             <Text fontWeight={700} fontSize={32} className="space-grotesk-500">
                 Login
             </Text>
