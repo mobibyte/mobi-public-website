@@ -12,7 +12,7 @@ import { ProtectedRoutes } from "@/providers/ProtectedRoutes";
 import { AuthRoutes } from "@/providers/AuthRoutes";
 import { LoginForm, RegisterForm } from "@/forms";
 import { Box } from "@chakra-ui/react";
-import { StarsBackground } from "./assets/Stars";
+
 import { Layout } from "@components/Layout";
 
 // TODO:
@@ -22,7 +22,6 @@ import { Layout } from "@components/Layout";
 function App() {
     return (
         <Box bg="#0C001A">
-            <StarsBackground />
             <Layout>
                 <Routes>
                     {/* Public */}
