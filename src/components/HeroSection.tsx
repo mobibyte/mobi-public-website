@@ -10,6 +10,7 @@ import {
 import { DynamicMomo } from "@/assets/DynamicMomo";
 import { IconBrandDiscordFilled } from "@tabler/icons-react";
 import { Reveal } from "./ui/Reveal";
+import { StarsBackground } from "@/assets/Stars";
 
 export function HeroSection() {
     const isMobile = useBreakpointValue({ base: true, md: false });
@@ -28,6 +29,7 @@ export function HeroSection() {
             maxWidth={1000}
             mx="auto"
         >
+            <StarsBackground />
             <VStack
                 align={isMobile ? "center" : "left"}
                 flex={{ base: "0 0 auto", md: 1 }}
