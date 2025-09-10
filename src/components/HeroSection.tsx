@@ -7,8 +7,9 @@ import {
     Text,
     useBreakpointValue,
 } from "@chakra-ui/react";
-import { MobiMascot } from "@/assets/MobiMascot";
+import { DynamicMomo } from "@/assets/DynamicMomo";
 import { IconBrandDiscordFilled } from "@tabler/icons-react";
+import { Reveal } from "./ui/Reveal";
 
 export function HeroSection() {
     const isMobile = useBreakpointValue({ base: true, md: false });
@@ -70,7 +71,9 @@ export function HeroSection() {
             </VStack>
             {!isMobile && (
                 <Center flex={1}>
-                    <MobiMascot />
+                    <Reveal delay={300}>
+                        <DynamicMomo />
+                    </Reveal>
                 </Center>
             )}
         </Stack>

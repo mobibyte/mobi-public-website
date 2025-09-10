@@ -34,7 +34,7 @@ export function EventCard({ event }: { event: Event }) {
                     {event.title}
                 </Text>
                 <Group>
-                    <Text fontWeight={500} fontSize={20} color={"gray"}>
+                    <Text fontWeight={500} fontSize={20}>
                         <span>{shortWeekDay}, </span>
                         <span>{shortMonth}</span> <span>{day}</span>
                         <span> · </span>

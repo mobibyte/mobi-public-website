@@ -11,7 +11,6 @@ import membership_photo from "@/assets/membership_photo.png";
 import vibes from "@/assets/hussain_diego.png";
 import offer from "@/assets/learning.png";
 import { Projects } from "@/pages/Home/Projects";
-import { Officers } from "@/pages/Home/Officers";
 import { UpcomingEvents } from "./UpcomingEvents";
 import { JoinToday } from "./JoinToday";
 
@@ -51,7 +50,6 @@ export function Home() {
             <Projects />
             <VibesAndValues isMobile={isMobile} styles={styles} />
             <WhatWeOffer isMobile={isMobile} styles={styles} />
-            <Officers />
             <UpcomingEvents />
             <JoinToday isMobile={isMobile} />
         </Stack>
