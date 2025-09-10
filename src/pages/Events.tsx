@@ -9,11 +9,19 @@ export function Events() {
     const { data: events, isPending } = useGetAllSemesterEvents();
 
     if (isPending) {
-        return <div>Loading...</div>;
+        return (
+            <div className="min-h-dvh flex justify-center items-center">
+                Loading...
+            </div>
+        );
     }
 
     if (!events || events.length === 0) {
-        return <div>No events available. Check back soon!</div>;
+        return (
+            <div className="min-h-dvh flex justify-center items-center">
+                No events available. Check back soon!
+            </div>
+        );
     }
 
     const currentEvents = events.filter(

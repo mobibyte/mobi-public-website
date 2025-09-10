@@ -68,6 +68,8 @@ function DesktopNavLinks() {
         <HStack fontWeight={600} gap={12}>
             <NavLink to="/">About</NavLink>
             <NavLink to="/events">Events</NavLink>
+            <NavLink to="/officers">Officers</NavLink>
+            <NavLink to="/projects">Projects</NavLink>
 
             <AuthButtons />
         </HStack>

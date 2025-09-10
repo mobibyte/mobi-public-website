@@ -1,5 +1,12 @@
 import { Routes, Route } from "react-router";
-import { Profile, NotFound, Events, Contact } from "@/pages";
+import {
+    Profile,
+    NotFound,
+    Events,
+    Contact,
+    Officers,
+    Projects,
+} from "@/pages";
 import { Home as HomePage } from "@/pages/Home/Home";
 import { ProtectedRoutes } from "@/providers/ProtectedRoutes";
 import { AuthRoutes } from "@/providers/AuthRoutes";
@@ -21,6 +28,8 @@ function App() {
                     <Route index element={<HomePage />} />
                     <Route path="/events" element={<Events />} />
                     <Route path="/contact" element={<Contact />} />
+                    <Route path="/officers" element={<Officers />} />
+                    <Route path="/projects" element={<Projects />} />
                     <Route path="/*" element={<NotFound />} />
 
                     {/* Auth */}
