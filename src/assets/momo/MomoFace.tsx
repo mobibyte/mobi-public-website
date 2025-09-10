@@ -2,56 +2,95 @@ import EyesOpen from "./eyes-opened.svg?react";
 import Mouth from "./mouth-neutral.svg?react";
 import { Stack, Center } from "@chakra-ui/react";
 
-import { frame, motion, useSpring } from "motion/react";
+import { motion, useSpring } from "motion/react";
 import { useEffect, useRef } from "react";
 import type { RefObject } from "react";
 
-const spring = { damping: 20, stiffness: 10, restDelta: 0.1 };
+const spring = { damping: 20, stiffness: 75, restDelta: 0.1 };
 
-export function useFollowPointer(ref: RefObject<HTMLDivElement | null>) {
-  const x = useSpring(0, spring);
-  const y = useSpring(0, spring);
+const clamp = (v: number, min: number, max: number) =>
+    Math.min(Math.max(v, min), max);
 
-  useEffect(() => {
-    if (!ref.current) return;
+export function useFollowPointer(
+    boxRef: RefObject<HTMLDivElement | null>,
+    itemRef: RefObject<HTMLDivElement | null>
+) {
+    const x = useSpring(0, spring);
+    const y = useSpring(0, spring);
 
-    const handlePointerMove = ({ clientX, clientY }: MouseEvent) => {
-      const element = ref.current!;
-      frame.read(() => {
-        x.set(clientX - element.offsetLeft - element.offsetWidth / 2);
-        y.set(clientY - element.offsetTop - element.offsetHeight / 2);
-      });
-    };
+    useEffect(() => {
+        const boxEl = boxRef.current;
+        const itemEl = itemRef.current;
+        if (!boxEl || !itemEl) return;
 
-    window.addEventListener("pointermove", handlePointerMove);
+        const handlePointerMove = ({ clientX, clientY }: MouseEvent) => {
+            const box = boxEl.getBoundingClientRect();
+            const item = itemEl.getBoundingClientRect();
 
-    return () => window.removeEventListener("pointermove", handlePointerMove);
-  }, []);
+            // mouse position relative to the box
+            const localX = clientX - box.left;
+            const localY = clientY - box.top;
 
-  return { x, y };
+            // center the item under the cursor
+            const targetX = localX - item.width / 2;
+            const targetY = localY - item.height / 2;
+
+            // clamp so the item never leaves the box
+            const clampedX = clamp(targetX, 0, box.width - item.width);
+            const clampedY = clamp(targetY, 0, box.height - item.height);
+
+            x.set(clampedX);
+            y.set(clampedY);
+        };
+
+        window.addEventListener("pointermove", handlePointerMove);
+        return () =>
+            window.removeEventListener("pointermove", handlePointerMove);
+    }, [boxRef, itemRef]);
+
+    return { x, y };
 }
 
 export function MomoEyes() {
-  return <EyesOpen />;
+    return <EyesOpen />;
 }
 
 export function MomoMouth() {
-  return <Mouth />;
+    return <Mouth />;
 }
 
 export function MomoFace() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { x, y } = useFollowPointer(ref);
-  return (
-    <>
-      <Center h={90} w={160} zIndex={999} top={"140px"} left={"52px"}>
-        <motion.div ref={ref} style={{ x, y, position: "absolute" }}>
-          <Stack justifyContent={"center"} alignItems={"center"}>
-            <MomoEyes />
-            <MomoMouth />
-          </Stack>
-        </motion.div>
-      </Center>
-    </>
-  );
+    const boxRef = useRef<HTMLDivElement>(null); // the bounding box (Center)
+    const itemRef = useRef<HTMLDivElement>(null); // the moving child
+    const { x, y } = useFollowPointer(boxRef, itemRef);
+
+    return (
+        <Center
+            ref={boxRef}
+            h="90px"
+            w="160px"
+            zIndex={-999}
+            top="50px"
+            left="52px"
+            position="absolute"
+            overflow="hidden" // optional, keeps the child visually clipped if it ever tries to escape
+        >
+            <motion.div
+                ref={itemRef}
+                style={{
+                    x,
+                    y,
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    pointerEvents: "none",
+                }}
+            >
+                <Stack justifyContent="center" alignItems="center">
+                    <MomoEyes />
+                    <MomoMouth />
+                </Stack>
+            </motion.div>
+        </Center>
+    );
 }
