@@ -34,6 +34,7 @@ export function MobileNavLinks() {
                                 <NavLink to="/">About</NavLink>
                                 <NavLink to="/events">Events</NavLink>
                                 <NavLink to="/projects">Projects</NavLink>
+                                <NavLink to="/officers">Officers</NavLink>
                                 <AuthButtons />
                             </Stack>
                         </Drawer.Body>

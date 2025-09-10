@@ -2,6 +2,7 @@ import { useGetCurrentSemesterEvents } from "@/hooks/useEvents";
 import { EventCard } from "@/pages/Home/EventCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button, Stack, Text, useBreakpointValue } from "@chakra-ui/react";
+import { NavLink } from "react-router";
 import { Wave } from "@assets/waves/Wave";
 
 export function UpcomingEvents() {
@@ -42,7 +43,9 @@ export function UpcomingEvents() {
                     </Reveal>
                 ))}
             </Stack>
-            <Button>View All Events</Button>
+            <Button asChild>
+                <NavLink to="/events">View All Events</NavLink>
+            </Button>
         </Stack>
     );
 }

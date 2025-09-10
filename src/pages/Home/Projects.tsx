@@ -2,6 +2,7 @@ import { ProjectCard } from "./ProjectCard";
 import { Button, Heading, Stack, useBreakpointValue } from "@chakra-ui/react";
 import { projects } from "@/data/projects"; // Adjust the import path as necessary
 import { Reveal } from "@/components/ui/Reveal";
+import { NavLink } from "react-router";
 
 import { Wave } from "@assets/waves/Wave";
 // TODO:
@@ -43,8 +44,8 @@ export function Projects() {
                     </Reveal>
                 ))}
             </Stack>
-            <Button alignSelf="center" w="auto">
-                View All Projects
+            <Button alignSelf="center" w="auto" asChild>
+                <NavLink to="/projects">View All Projects</NavLink>
             </Button>
         </Stack>
     );
