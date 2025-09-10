@@ -1,8 +1,9 @@
 import { ProjectCard } from "./ProjectCard";
-import { Heading, Stack, useBreakpointValue } from "@chakra-ui/react";
+import { Button, Heading, Stack, useBreakpointValue } from "@chakra-ui/react";
 import { projects } from "@/data/projects"; // Adjust the import path as necessary
 import { Reveal } from "@/components/ui/Reveal";
 
+import { Wave } from "@assets/waves/Wave";
 // TODO:
 // implement view all projects button
 // need seperate page dedicated to all projects
@@ -12,16 +13,18 @@ export function Projects() {
     return (
         <Stack
             gap={12}
-            bg={"#3E0D93"}
             width={"100%"}
             px={isMobile ? 4 : 32}
-            py={16}
+            py={32}
+            position={"relative"}
         >
+            <Wave />
             <Heading
                 fontSize={48}
                 className="space-grotesk-500"
                 textAlign={"center"}
                 lineHeight={1}
+                zIndex={2}
             >
                 Community Projects
             </Heading>
@@ -40,6 +43,9 @@ export function Projects() {
                     </Reveal>
                 ))}
             </Stack>
+            <Button alignSelf="center" w="auto">
+                View All Projects
+            </Button>
         </Stack>
     );
 }

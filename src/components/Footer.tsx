@@ -11,7 +11,6 @@ export function Footer() {
             paddingX={isMobile ? 4 : 32}
             paddingY={16}
             justifyContent={"space-evenly"}
-            alignItems={"center"}
             gap={isMobile ? 12 : 0}
         >
             <Stack>

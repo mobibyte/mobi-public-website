@@ -1,7 +1,8 @@
 import { useGetCurrentSemesterEvents } from "@/hooks/useEvents";
 import { EventCard } from "@/pages/Home/EventCard";
 import { Reveal } from "@/components/ui/Reveal";
-import { Stack, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Button, Stack, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Wave } from "@assets/waves/Wave";
 
 export function UpcomingEvents() {
     const isMobile = useBreakpointValue({ base: true, md: false });
@@ -16,12 +17,21 @@ export function UpcomingEvents() {
     }
 
     return (
-        <Stack gap={12} px={isMobile ? 0 : 32} align="center" width="100%">
+        <Stack
+            gap={12}
+            px={isMobile ? 0 : 32}
+            align="center"
+            width="100%"
+            py={32}
+            position={"relative"}
+        >
+            <Wave fill="#0054C3" />
             <Text
                 fontWeight={600}
                 fontSize={48}
                 className="space-grotesk-500"
                 textAlign="center"
+                zIndex={2}
             >
                 Upcoming Events
             </Text>
@@ -32,6 +42,7 @@ export function UpcomingEvents() {
                     </Reveal>
                 ))}
             </Stack>
+            <Button>View All Events</Button>
         </Stack>
     );
 }
