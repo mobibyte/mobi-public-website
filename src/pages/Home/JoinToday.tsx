@@ -1,6 +1,5 @@
-import { Stack, Heading, Button, Text } from "@chakra-ui/react";
+import { Stack, Heading, Text } from "@chakra-ui/react";
 import { NavLink } from "react-router";
-import { IconBrandDiscordFilled } from "@tabler/icons-react";
 import { StarsBackground } from "@/assets/Stars";
 
 export function JoinToday({ isMobile }: { isMobile: boolean | undefined }) {
