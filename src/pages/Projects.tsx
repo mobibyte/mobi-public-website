@@ -10,11 +10,26 @@ import {
 import { Reveal } from "@/components/ui/Reveal";
 import { ProjectCard } from "./Home/ProjectCard";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router";
 
 export function Projects() {
   const pageSize = 9; // 9 Projects per page
   const [page, setPage] = useState(1);
+
+  const { pageNumber } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setPage(Number(pageNumber) || 1);
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }, [pageNumber]);
+
+  const handlePageChange = (e: { page: number }) => {
+    navigate(`/projects/page/${e.page}`);
+  };
 
   const startRange = (page - 1) * pageSize;
   const endRange = startRange + pageSize;
@@ -59,7 +74,7 @@ export function Projects() {
         count={projects.length}
         pageSize={pageSize}
         page={page}
-        onPageChange={(e) => setPage(e.page)}
+        onPageChange={handlePageChange}
         mx={"auto"}
         alignSelf={"end"}
       >
