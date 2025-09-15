@@ -11,7 +11,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [pathname]);
   return (
-    <Stack minHeight="100dvh">
+    <Stack minHeight="dvh">
       <Navbar />
       {children}
       <Footer />
