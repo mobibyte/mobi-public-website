@@ -3,6 +3,7 @@ import { Stack } from "@chakra-ui/react";
 import { Footer } from "@/components/Footer";
 import { useLocation } from "react-router";
 import { useEffect } from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation();
@@ -15,6 +16,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <Navbar />
       {children}
       <Footer />
+      <Toaster />
     </Stack>
   );
 }
