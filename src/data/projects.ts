@@ -1,6 +1,6 @@
-import type { Project } from "@/types"; // Adjust the import path as necessary
+// Development data
 
-export const projects: Project[] = [
+export const projects  = [
     {
         title: "Project One",
         user: "User One",

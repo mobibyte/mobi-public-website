@@ -1,4 +1,3 @@
-import { projects } from "@/data/projects";
 import {
   Stack,
   IconButton,
@@ -12,8 +11,11 @@ import { ProjectCard } from "./Home/ProjectCard";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
+import { useGetAllProjects } from "@/hooks/useProjects";
 
 export function Projects() {
+  const { data: projects, isPending, isError, error } = useGetAllProjects();
+
   const pageSize = 9; // 9 Projects per page
   const [page, setPage] = useState(1);
 
@@ -34,7 +36,33 @@ export function Projects() {
   const startRange = (page - 1) * pageSize;
   const endRange = startRange + pageSize;
 
-  const visibleProjects = projects.slice(startRange, endRange);
+  const visibleProjects = projects?.slice(startRange, endRange);
+
+  const display = () => {
+    if (isPending) {
+      return <h1>Loading projects...</h1>;
+    }
+    if (isError) {
+      return <h1>Error loading projects: {error.message}</h1>;
+    }
+    return (
+      <Grid
+        templateColumns={{
+          base: "1fr",
+          sm: "repeat(2, 1fr)",
+          md: "repeat(3, 1fr)",
+        }}
+        gap="6"
+        flex={"grow"}
+      >
+        {visibleProjects?.map((project, index) => (
+          <Reveal delay={150}>
+            <ProjectCard key={project.title + index} project={project} />
+          </Reveal>
+        ))}
+      </Grid>
+    );
+  };
   return (
     <>
       <Stack
@@ -54,24 +82,10 @@ export function Projects() {
         >
           Community Projects
         </Heading>
-        <Grid
-          templateColumns={{
-            base: "1fr",
-            sm: "repeat(2, 1fr)",
-            md: "repeat(3, 1fr)",
-          }}
-          gap="6"
-          flex={"grow"}
-        >
-          {visibleProjects.map((project, index) => (
-            <Reveal delay={150}>
-              <ProjectCard key={project.title + index} project={project} />
-            </Reveal>
-          ))}
-        </Grid>
+        {display()}
       </Stack>
       <Pagination.Root
-        count={projects.length}
+        count={projects?.length}
         pageSize={pageSize}
         page={page}
         onPageChange={handlePageChange}

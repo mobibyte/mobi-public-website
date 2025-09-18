@@ -1,3 +1,5 @@
+
+
 export interface Event {
     id: string;
     created_at: Date;
@@ -27,25 +29,34 @@ export type CheckInData = CheckIn & {
 };
 
 export interface Profile {
-    id: string | null;
+    id: string;
     created_at: Date;
     first_name: string;
     last_name: string;
-    username: string | null;
+    username: string;
     email: string;
     momocoins: number;
     role: string | "user";
     is_admin: boolean | false;
     account_status: string | "pending";
     active: boolean | true;
+    avatar_url: string;
+    bio: string | null;
+    links: string[] | null;
 }
 
 export type Project = {
+    id: string;
     title: string;
+    url: string;
     image: string;
-    user: string;
-    userImg: string | undefined;
-    description: string | undefined;
+    created_at: Date;
+    user_id: string;
+    display: boolean;
+    description: string | null;
+    tech_stack: string[];
+    bg_color: string | "FFF";
+    user_profile?: Profile;
 };
 
 export type Officer = {
