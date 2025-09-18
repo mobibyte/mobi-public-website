@@ -5,7 +5,7 @@ import { Center, Text } from "@chakra-ui/react";
 import { BeatLoader } from "react-spinners";
 
 type ProfileContextType = {
-  profile: Profile | null;
+  profile: Profile;
 };
 
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);

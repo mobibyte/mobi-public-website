@@ -1,5 +1,7 @@
 import { SideBar } from "./SideBar";
-import { Stack, Group } from "@chakra-ui/react";
+import { Group, Tabs } from "@chakra-ui/react";
+import { StarsBackground } from "@/assets/Stars";
+import { ProfileProjects } from "./ProfileProjects";
 
 // TODO:
 // show events the user has been to
@@ -7,18 +9,32 @@ import { Stack, Group } from "@chakra-ui/react";
 
 export function Profile() {
   return (
-    <Stack
-      flex={1}
-      justify={"center"}
-      gap={16}
-      minHeight={"vh"}
-      pt={24}
-      maxW={1024}
-      mx={"auto"}
-    >
-      <Group>
+    <>
+      <StarsBackground />
+      <Group
+        w={"full"}
+        align={"stretch"}
+        gap={8}
+        minHeight={"vh"}
+        pt={24}
+        maxW={1024}
+        mx={"auto"}
+      >
         <SideBar />
+        <Tabs.Root defaultValue="projects" flex={1}>
+          <Tabs.List>
+            <Tabs.Trigger value="projects">Projects</Tabs.Trigger>
+            <Tabs.Trigger value="events">Events</Tabs.Trigger>
+
+            <Tabs.Trigger value="tasks">Settings</Tabs.Trigger>
+          </Tabs.List>
+          <Tabs.Content value="projects">
+            <ProfileProjects />
+          </Tabs.Content>
+          <Tabs.Content value="events">View your events</Tabs.Content>
+          <Tabs.Content value="tasks">Some more user settings</Tabs.Content>
+        </Tabs.Root>
       </Group>
-    </Stack>
+    </>
   );
 }

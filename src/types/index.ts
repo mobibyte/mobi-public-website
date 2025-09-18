@@ -1,3 +1,5 @@
+
+
 export interface Event {
     id: string;
     created_at: Date;
@@ -44,11 +46,17 @@ export interface Profile {
 }
 
 export type Project = {
+    id: string;
     title: string;
+    url: string;
     image: string;
-    user: string;
-    userImg: string | null;
+    created_at: Date;
+    user_id: string;
+    display: boolean;
     description: string | null;
+    tech_stack: string[];
+    bg_color: string | "FFF";
+    user_profile?: Profile;
 };
 
 export type Officer = {

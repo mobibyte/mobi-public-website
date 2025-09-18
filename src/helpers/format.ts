@@ -23,3 +23,20 @@ export function FormatDate(date: Date): FormattedDate {
     };
     return formatted;
 }
+
+export function sanitizeFileName(name: string) {
+    // Keep extension
+    const dot = name.lastIndexOf(".");
+    const base = dot === -1 ? name : name.slice(0, dot);
+    const ext  = dot === -1 ? ""   : name.slice(dot);
+  
+    // Normalize & remove weird unicode, collapse spaces, allow [\w.-]
+    const cleanBase = base
+      .normalize("NFKD")
+      .replace(/[\u202F\u00A0]/g, " ")       // narrow NBSP & NBSP -> space
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/[^\w.-]+/g, "-");            // non-url-safe -> hyphen
+  
+    return `${cleanBase}${ext}`;
+  }
