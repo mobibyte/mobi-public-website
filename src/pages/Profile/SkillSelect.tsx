@@ -6,7 +6,6 @@ import {
   Wrap,
 } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
-import type { Form } from "@mantine/form";
 
 const skills = [
   "JavaScript",
