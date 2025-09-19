@@ -7,6 +7,8 @@ import {
   Officers,
   Projects,
 } from "@/pages";
+import { ResetForm } from "./pages/ResetPassword";
+import { ForgotForm } from "./pages/ForgotPassword";
 import { Home as HomePage } from "@/pages/Home/Home";
 import { ProtectedRoutes } from "@/providers/ProtectedRoutes";
 import { AuthRoutes } from "@/providers/AuthRoutes";
@@ -37,6 +39,8 @@ function App() {
           <Route path="/" element={<AuthRoutes />}>
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<RegisterForm />} />
+            <Route path="/forgot-password" element={<ForgotForm />} />
+            <Route path="/reset-password" element={<ResetForm />} />
           </Route>
 
           {/* Protected */}
