@@ -79,6 +79,44 @@ export function useLogout() {
     });
 }
 
+export function useForgotPassword() {
+    return useMutation({
+        mutationFn: async (email: string) => {
+            const { error } = await supabase.auth
+                .resetPasswordForEmail(email, {
+                    redirectTo: "https://your-app.com/reset-password",
+                });
+            if (error) throw error;
+            return email;
+        },
+        onSuccess: (email) => {
+            console.log("Successfully sent link to:", email)
+        },
+        onError: (error) => {
+            console.error("Error sending reset password link:", error);
+        }
+    })
+}
+
+export function useResetPassword() {
+    return useMutation({
+        mutationFn: async (newPassword: string) => {
+            const { error } = await supabase.auth
+                .updateUser({
+                    password: newPassword
+                });
+
+            if (error) throw error;
+        },
+        onSuccess: () => {
+            console.log("Password successfully changed");
+        },
+        onError: (error) => {
+            console.error("Error reseting password:", error)
+        }
+    })
+}
+
 export function useSession() {
     return useQuery({
         queryKey: ["session"],

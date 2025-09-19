@@ -19,19 +19,17 @@ import "./styles/index.css";
 import App from "./App.tsx";
 
 createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-        <QueryClientProvider client={queryClient}>
-            <AuthSessionListener>
-                <BrowserRouter>
-                    <Provider>
-                        <App />
-                    </Provider>
-                </BrowserRouter>
-            </AuthSessionListener>
-            <ReactQueryDevtools
-                initialIsOpen={false}
-                buttonPosition="bottom-left"
-            />
-        </QueryClientProvider>
-    </StrictMode>
+  <StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthSessionListener>
+          <Provider>
+            <App />
+          </Provider>
+        </AuthSessionListener>
+      </BrowserRouter>
+
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+    </QueryClientProvider>
+  </StrictMode>
 );
