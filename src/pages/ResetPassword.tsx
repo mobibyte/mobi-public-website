@@ -1,4 +1,4 @@
-import { useForm, isInRange, matchesField } from "@mantine/form";
+import { useForm, hasLength, matchesField } from "@mantine/form";
 import { Button, Field, Fieldset } from "@chakra-ui/react";
 import { PasswordInput } from "@/components/ui/password-input";
 import { useResetPassword } from "@/hooks/useAuth";
@@ -18,13 +18,17 @@ export function ResetForm() {
       confirmPassword: "",
     },
     validate: {
-      password: isInRange({ min: 8, max: 20 }),
-      confirmPassword: matchesField("password", "Passwords are not the same"),
+      password: hasLength(
+        { min: 8, max: 20 },
+        "Password must be 8-20 characters"
+      ),
+      confirmPassword: matchesField("password", "Passwords do not match"),
     },
   });
 
   const handleReset = () => {
-    if (!form.isValid()) return;
+    const { hasErrors } = form.validate();
+    if (hasErrors) return;
 
     console.log(form.getValues());
     const { password: newPassword } = form.getValues();
@@ -36,7 +40,10 @@ export function ResetForm() {
         title: "Success!",
         description: "Your password was successfully changed",
       },
-      error: { title: "Error changing password", description: error?.message },
+      error: {
+        title: "Error changing password",
+        description: error?.message ?? "Something went wrong",
+      },
     });
 
     if (isSuccess) {
@@ -51,14 +58,14 @@ export function ResetForm() {
     });
   };
   return (
-    <Fieldset.Root mx={"auto"} maxW={300}>
+    <Fieldset.Root mx={"auto"} maxW={300} mt={200}>
       <Fieldset.Legend>Create a new password</Fieldset.Legend>
       <Field.Root disabled={isPending}>
         <Field.Label>New Password</Field.Label>
         <PasswordInput
           key={form.key("password")}
           {...form.getInputProps("password")}
-          placeholder="Enter a new password with 8-16 characters"
+          placeholder="Enter a new password with 8-20 characters"
         />
         <PasswordInput
           key={form.key("confirmPassword")}
