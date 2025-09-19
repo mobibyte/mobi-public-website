@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   useForm,
   isEmail,
@@ -59,13 +58,10 @@ export function RegisterForm() {
     const userInput = form.getValues();
     console.log("Registering user:", userInput);
     register(userInput);
-  };
-
-  useEffect(() => {
     if (isSuccess) {
       form.reset();
     }
-  }, [isSuccess]);
+  };
 
   return (
     <>

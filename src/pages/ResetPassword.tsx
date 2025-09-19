@@ -8,6 +8,7 @@ export function ResetForm() {
   const {
     mutateAsync: changePasswordTo,
     error,
+    isPending,
     isSuccess,
   } = useResetPassword();
   const form = useForm({
@@ -52,7 +53,7 @@ export function ResetForm() {
   return (
     <Fieldset.Root mx={"auto"} maxW={300}>
       <Fieldset.Legend>Create a new password</Fieldset.Legend>
-      <Field.Root>
+      <Field.Root disabled={isPending}>
         <Field.Label>New Password</Field.Label>
         <PasswordInput
           key={form.key("password")}
@@ -64,7 +65,12 @@ export function ResetForm() {
           {...form.getInputProps("confirmPassword")}
           placeholder="Confirm your password"
         />
-        <Button type="submit" onClick={handleReset}>
+        <Button
+          type="submit"
+          onClick={handleReset}
+          disabled={isPending}
+          loading={isPending}
+        >
           Reset Password
         </Button>
       </Field.Root>

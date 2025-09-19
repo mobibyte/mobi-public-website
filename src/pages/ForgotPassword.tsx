@@ -4,7 +4,12 @@ import { useForgotPassword } from "@/hooks/useAuth";
 import { toaster } from "@/components/ui/toaster";
 
 export function ForgotForm() {
-  const { mutateAsync: sendLinkTo, error } = useForgotPassword();
+  const {
+    mutateAsync: sendLinkTo,
+    error,
+    isPending,
+    isSuccess,
+  } = useForgotPassword();
   const field = useField({
     initialValue: "",
     validate: isEmail("Please enter a valid email"),
@@ -25,18 +30,27 @@ export function ForgotForm() {
       },
       error: { title: "Error sending link", description: error?.message },
     });
+
+    if (isSuccess) {
+      field.setValue("");
+    }
   };
   return (
     <Fieldset.Root mx={"auto"} maxW={300}>
       <Fieldset.Legend>Forgot your password?</Fieldset.Legend>
       <Fieldset.HelperText>Enter your account email below</Fieldset.HelperText>
       <Fieldset.Content>
-        <Field.Root>
+        <Field.Root disabled={isPending}>
           <Field.Label>Email</Field.Label>
           <Input {...field.getInputProps()} placeholder="Enter your email" />
         </Field.Root>
       </Fieldset.Content>
-      <Button type="submit" onClick={handleReset}>
+      <Button
+        type="submit"
+        onClick={handleReset}
+        disabled={isPending}
+        loading={isPending}
+      >
         Send Reset Link
       </Button>
     </Fieldset.Root>
