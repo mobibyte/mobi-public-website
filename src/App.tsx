@@ -40,12 +40,12 @@ function App() {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<RegisterForm />} />
             <Route path="/forgot-password" element={<ForgotForm />} />
-            <Route path="/reset-password" element={<ResetForm />} />
           </Route>
 
           {/* Protected */}
           <Route element={<ProtectedRoutes />}>
             <Route path="profile" element={<Profile />} />
+            <Route path="/reset-password" element={<ResetForm />} />
           </Route>
         </Routes>
       </Layout>
