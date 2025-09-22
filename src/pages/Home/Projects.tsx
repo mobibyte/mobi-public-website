@@ -1,4 +1,4 @@
-import { ProjectCard } from "./ProjectCard";
+import { ProjectCard } from "../Projects/ProjectCard";
 import { Button, Heading, Stack, SimpleGrid } from "@chakra-ui/react";
 import { Reveal } from "@/components/ui/Reveal";
 import { NavLink } from "react-router";
