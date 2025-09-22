@@ -11,7 +11,7 @@ export function UpdateProjectButton({ project }: Props) {
   return (
     <Button asChild>
       <Link
-        to={`/projects/edit/${project.id}`}
+        to={`/project/edit/${project.id}`}
         // onMouseEnter={() =>
         //   queryClient.prefetchQuery({
         //     queryKey: ["project", userId, project.id],

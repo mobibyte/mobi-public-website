@@ -12,11 +12,8 @@ import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useGetAllProjects } from "@/hooks/useProjects";
-import { useSession } from "@/hooks/useAuth";
-import { AddProjectButton } from "./Buttons/AddProjectButton";
 
 export function Projects() {
-  const { data: session } = useSession();
   const { data: projects, isPending, isError, error } = useGetAllProjects();
 
   const pageSize = 9; // 9 Projects per page
@@ -86,7 +83,6 @@ export function Projects() {
         >
           Community Projects
         </Heading>
-        {session && <AddProjectButton />}
         {display()}
       </Stack>
       <Pagination.Root

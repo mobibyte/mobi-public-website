@@ -10,5 +10,21 @@ interface ProjectFormValues {
     bg_color: string;
   }
   
-  export const [ProjectFormProvider, useProjectFormContext, useProjectForm] =
+export const [ProjectFormProvider, useProjectFormContext, useProjectForm] =
     createFormContext<ProjectFormValues>();
+
+
+
+type LoginValues = { 
+  email: string; 
+  password: string };
+  
+type RegisterValues = LoginValues & {
+  first_name: string;
+  last_name: string;
+  username: string;
+  confirmPassword: string;
+};
+
+export const [LoginFormProvider, useLoginFormContext, useLoginForm] = createFormContext<LoginValues>();
+export const [RegisterFormProvider, useRegisterFormContext, useRegisterForm] = createFormContext<RegisterValues>();
