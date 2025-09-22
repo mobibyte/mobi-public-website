@@ -7,6 +7,7 @@ import { FileUploadInput } from "../FileUploadInput";
 import { useParams, useNavigate } from "react-router";
 import { convertForm } from "@/helpers/project-form";
 import { DeleteProjectButton } from "../Buttons/DeleteProjectButton";
+import { isNotEmpty } from "@mantine/form";
 
 export function UpdateProjectPage() {
   const navigate = useNavigate();
@@ -30,6 +31,10 @@ export function UpdateProjectPage() {
       display: true,
       bg_color: "#3E0D93",
       image: "",
+    },
+    validate: {
+      title: isNotEmpty("Title cannot be empty"),
+      url: isNotEmpty("URL cannot be empty"),
     },
   });
 
@@ -65,7 +70,7 @@ export function UpdateProjectPage() {
     <ProjectFormProvider form={form}>
       <FileUploadInput image={file} setImage={setFile} />
       <ProjectForm
-        onSubmit={() => handleSubmit()}
+        onSubmit={form.onSubmit(handleSubmit)}
         submitLabel="Update"
         pending={isPending}
       />

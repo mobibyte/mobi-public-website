@@ -4,7 +4,7 @@ import { useProjectFormContext } from "@/context/form-context";
 export function TitleField() {
   const form = useProjectFormContext();
   return (
-    <Field.Root>
+    <Field.Root invalid={!!form.errors.title}>
       <Field.Label>Title</Field.Label>
       <Input key={form.key("title")} {...form.getInputProps("title")} />
       {form.errors.title && (
@@ -30,7 +30,7 @@ export function DescriptionField() {
 export function UrlField() {
   const form = useProjectFormContext();
   return (
-    <Field.Root>
+    <Field.Root invalid={!!form.errors.url}>
       <Field.Label>URL</Field.Label>
       <Input key={form.key("url")} {...form.getInputProps("url")} />
       {form.errors.url && <Field.ErrorText>{form.errors.url}</Field.ErrorText>}
