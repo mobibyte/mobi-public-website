@@ -13,7 +13,7 @@ export function ProfileProjects() {
   return (
     <Stack>
       <Button mx={"auto"} alignSelf={"end"}>
-        <Link to="/projects/add">Add New Project</Link>
+        <Link to="/project/add">Add New Project</Link>
       </Button>
       {isPending && <h1>Loading projects...</h1>}
       {isError && <h1>Error loading projects: {error.message}</h1>}
