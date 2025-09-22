@@ -1,14 +1,12 @@
 import {
     Button,
     Group,
-    HStack,
     Stack,
     Text,
     useBreakpointValue,
-    VStack,
 } from "@chakra-ui/react";
 import type { Event } from "@/types/";
-import { motion, scale } from "framer-motion";
+import { motion } from "framer-motion";
 import { FormatDate } from "@/helpers/format";
 
 // TODO:

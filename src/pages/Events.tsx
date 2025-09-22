@@ -1,4 +1,4 @@
-import { Center, Stack, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Stack, Text } from "@chakra-ui/react";
 import { useGetAllSemesterEvents } from "@/hooks/useEvents";
 import { EventCard } from "@/pages/Home/EventCard";
 
