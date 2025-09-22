@@ -14,6 +14,8 @@ import { ProtectedRoutes } from "@/providers/ProtectedRoutes";
 import { AuthRoutes } from "@/providers/AuthRoutes";
 import { LoginForm, RegisterForm } from "@/forms";
 import { Box } from "@chakra-ui/react";
+import { CreateProjectPage } from "./pages/Projects/Routes/CreateProjectPage";
+import { UpdateProjectPage } from "./pages/Projects/Routes/UpdateProjectPage";
 
 import { Layout } from "@components/Layout";
 
@@ -31,7 +33,11 @@ function App() {
           <Route path="/events" element={<Events />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/officers" element={<Officers />} />
-          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects">
+            <Route index element={<Projects />} />
+            <Route path="add" element={<CreateProjectPage />} />
+            <Route path="edit/:project_id" element={<UpdateProjectPage />} />
+          </Route>
           <Route path="/projects/page/:pageNumber" element={<Projects />} />
           <Route path="/*" element={<NotFound />} />
 

@@ -7,13 +7,16 @@ import {
   Grid,
 } from "@chakra-ui/react";
 import { Reveal } from "@/components/ui/Reveal";
-import { ProjectCard } from "./Home/ProjectCard";
+import { ProjectCard } from "./ProjectCard";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useGetAllProjects } from "@/hooks/useProjects";
+import { useSession } from "@/hooks/useAuth";
+import { AddProjectButton } from "./Buttons/AddProjectButton";
 
 export function Projects() {
+  const { data: session } = useSession();
   const { data: projects, isPending, isError, error } = useGetAllProjects();
 
   const pageSize = 9; // 9 Projects per page
@@ -50,14 +53,15 @@ export function Projects() {
         templateColumns={{
           base: "1fr",
           sm: "repeat(2, 1fr)",
-          md: "repeat(3, 1fr)",
+          md: "repeat(2, 1fr)",
+          lg: "repeat(3, 1fr)",
         }}
         gap="6"
         flex={"grow"}
       >
-        {visibleProjects?.map((project, index) => (
-          <Reveal delay={150}>
-            <ProjectCard key={project.title + index} project={project} />
+        {visibleProjects?.map((project) => (
+          <Reveal delay={150} key={project.id}>
+            <ProjectCard project={project} />
           </Reveal>
         ))}
       </Grid>
@@ -82,6 +86,7 @@ export function Projects() {
         >
           Community Projects
         </Heading>
+        {session && <AddProjectButton />}
         {display()}
       </Stack>
       <Pagination.Root

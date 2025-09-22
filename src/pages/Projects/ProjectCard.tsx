@@ -11,6 +11,7 @@ import type { Project } from "@/types";
 import { IconDotsVertical } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { useSession } from "@/hooks/useAuth";
+import { UpdateProjectButton } from "./Buttons/UpdateProjectButton";
 
 // TODO:
 // enable link functionality
@@ -59,9 +60,7 @@ export function ProjectCard({ project }: { project: Project }) {
           <Text>{project.user_profile?.username}</Text>
         </VStack>
         {session?.user.id === project.user_id && (
-          <IconButton variant={"ghost"} ml={"auto"}>
-            <IconDotsVertical />
-          </IconButton>
+          <UpdateProjectButton project={project} />
         )}
       </HStack>
     </Box>
