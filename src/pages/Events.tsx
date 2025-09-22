@@ -39,31 +39,31 @@ export function Events() {
     return (
         <Stack flex={1} justify={"start"} gap={16} pt={16}>
             <Stack width={1000} mx="auto">
-                <Text fontSize="2xl" mt={8} className="space-grotesk-500">
+                <Text fontSize="5xl" mt={8} className="space-grotesk-500" textAlign="center">
                     Ongoing Events
                 </Text>
                 <Stack>
                     {/* Map through events and display them */}
                     {currentEvents.map((event) => (
-                        <EventCard key={event.id} event={event} />
+                        <EventCard key={event.id} event={event} large={true} />
                     ))}
                 </Stack>
-                <Text fontSize="2xl" mt={8} className="space-grotesk-500">
+                <Text fontSize="4xl" mt={8} className="space-grotesk-500">
                     Upcoming Events
                 </Text>
                 <Stack>
                     {/* Map through events and display them */}
                     {upcomingEvents.map((event) => (
-                        <EventCard key={event.id} event={event} />
+                        <EventCard key={event.id} event={event} large={true}/>
                     ))}
                 </Stack>
-                <Text fontSize="2xl" mt={8} className="space-grotesk-500">
+                <Text fontSize="4xl" mt={8} className="space-grotesk-500">
                     Past Events
                 </Text>
                 <Stack>
                     {/* Map through events and display them */}
                     {pastEvents.map((event) => (
-                        <EventCard key={event.id} event={event} />
+                        <EventCard key={event.id} event={event} large={true} />
                     ))}
                 </Stack>
             </Stack>

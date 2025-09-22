@@ -6,12 +6,13 @@ import {
     useBreakpointValue,
 } from "@chakra-ui/react";
 import type { Event } from "@/types/";
+import { motion } from "framer-motion";
 import { FormatDate } from "@/helpers/format";
 
 // TODO:
 // add RSVP button to card
 
-export function EventCard({ event }: { event: Event }) {
+export function EventCard({ event, large }: { event: Event, large?: boolean }) {
     const {
         day,
         shortMonth,
@@ -22,29 +23,30 @@ export function EventCard({ event }: { event: Event }) {
     const isMobile = useBreakpointValue({ base: true, md: false });
 
     return (
+        <motion.a whileHover={{backgroundColor: "#0f1838"}}>
         <Stack
-            overflow="hidden"
             direction={"row"}
             align={"center"}
             gap={6}
             px={4}
         >
-            <Stack gap={0} alignSelf={"start"} flex={1}>
-                <Text fontWeight={700} fontSize={isMobile ? 20 : 32}>
-                    {event.title}
-                </Text>
-                <Group>
-                    <Text fontWeight={500} fontSize={20}>
-                        <span>{shortWeekDay}, </span>
-                        <span>{shortMonth}</span> <span>{day}</span>
-                        <span> · </span>
-                        <span>{startTime}</span> - <span>{endTime}</span>
-                        <span> · </span>
-                        {event.location}
+                <Stack gap={0} alignSelf={"start"} flex={1}>
+                    <Text fontWeight={700} fontSize={isMobile ? 20 : large ? 28 : 32}>
+                        {event.title}
                     </Text>
-                </Group>
-            </Stack>
-            <Button>RSVP</Button>
+                    <Group>
+                        <Text fontWeight={500} fontSize={large ? 20: 24}>
+                            <span>{shortWeekDay}, </span>
+                            <span>{shortMonth}</span> <span>{day}</span>
+                            <span> · </span>
+                            <span>{startTime}</span> - <span>{endTime}</span>
+                            <span> · </span>
+                            {event.location}
+                        </Text>
+                    </Group>
+                </Stack>
+                <Button>RSVP</Button>
         </Stack>
+        </motion.a>
     );
 }
