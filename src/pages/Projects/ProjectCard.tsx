@@ -1,14 +1,6 @@
-import {
-  Box,
-  HStack,
-  VStack,
-  Link,
-  Text,
-  Avatar,
-  IconButton,
-} from "@chakra-ui/react";
+import { Box, HStack, VStack, Link, Text, Avatar } from "@chakra-ui/react";
 import type { Project } from "@/types";
-import { IconDotsVertical } from "@tabler/icons-react";
+
 import { motion } from "framer-motion";
 import { useSession } from "@/hooks/useAuth";
 import { UpdateProjectButton } from "./Buttons/UpdateProjectButton";

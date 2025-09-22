@@ -1,10 +1,4 @@
-import {
-  ColorPicker,
-  Field,
-  Portal,
-  HStack,
-  parseColor,
-} from "@chakra-ui/react";
+import { ColorPicker, Portal, HStack, parseColor } from "@chakra-ui/react";
 
 import { useProjectFormContext } from "@/context/form-context";
 

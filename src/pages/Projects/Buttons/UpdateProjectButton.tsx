@@ -1,6 +1,5 @@
 import { Button } from "@chakra-ui/react";
 import { Link } from "react-router";
-import { useQueryClient } from "@tanstack/react-query";
 import type { Project } from "@/types";
 
 type Props = {
@@ -9,8 +8,6 @@ type Props = {
 };
 
 export function UpdateProjectButton({ project }: Props) {
-  const queryClient = useQueryClient();
-
   return (
     <Button asChild>
       <Link
