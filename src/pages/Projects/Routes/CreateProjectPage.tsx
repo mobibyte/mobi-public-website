@@ -1,4 +1,5 @@
 import { useProjectForm, ProjectFormProvider } from "@/context/form-context";
+import { isNotEmpty } from "@mantine/form";
 import { ProjectForm } from "../ProjectForm";
 import { useCreateProject } from "@/hooks/useProjects";
 import { toaster } from "@/components/ui/toaster";
@@ -25,9 +26,13 @@ export function CreateProjectPage() {
       display: true,
       bg_color: "#3E0D93",
     },
+    validate: {
+      title: isNotEmpty("Title cannot be empty"),
+      url: isNotEmpty("URL cannot be empty"),
+    },
   });
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     const newProject = form.getValues();
     const result = createProject({ project: newProject, image: file });
     toaster.promise(result, {
@@ -45,7 +50,7 @@ export function CreateProjectPage() {
     <ProjectFormProvider form={form}>
       <FileUploadInput image={file} setImage={setFile} />
       <ProjectForm
-        onSubmit={() => handleSubmit()}
+        onSubmit={form.onSubmit(handleSubmit)}
         submitLabel="Create"
         pending={isPending}
       />
