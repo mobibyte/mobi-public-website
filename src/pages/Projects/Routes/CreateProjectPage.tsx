@@ -34,15 +34,15 @@ export function CreateProjectPage() {
     },
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = form.onSubmit(async () => {
     const newProject = form.getValues();
     const result = createProject({ project: newProject, image: file });
-    toaster.promise(result, {
+    await toaster.promise(result, {
       loading: { title: "Creating project...", description: "Please wait" },
       success: { title: "Successfully created!", description: "Looks great" },
       error: { title: error?.name, description: error?.message },
     });
-  };
+  });
 
   useEffect(() => {
     if (isSuccess) navigate("/profile");
