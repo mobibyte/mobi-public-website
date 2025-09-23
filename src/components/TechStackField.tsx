@@ -8,21 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { useProjectFormContext } from "@/context/form-context";
-
-const SKILLS = [
-  "JavaScript",
-  "TypeScript",
-  "React",
-  "Node.js",
-  "GraphQL",
-  "PostgreSQL",
-  "Python",
-  "HTML",
-  "CSS",
-  "MongoDB",
-  "AWS",
-  "Express.js",
-];
+import { techStack as SKILLS } from "@/data/tech_stack";
 
 export function TechStackField() {
   const form = useProjectFormContext();

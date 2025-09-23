@@ -55,18 +55,18 @@ export function UpdateProjectPage() {
     if (isSuccess) navigate("/profile");
   }, [isSuccess]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = form.onSubmit(async () => {
     const project = form.getValues();
     const result = updateProject({
       project: { ...project, id: project_id },
       image: file,
     });
-    toaster.promise(result, {
+    await toaster.promise(result, {
       loading: { title: "Updating project...", description: "Please wait" },
       success: { title: "Successfully updated!", description: "Looks great" },
       error: { title: error?.name, description: error?.message },
     });
-  };
+  });
 
   return (
     <ProjectFormProvider form={form}>
