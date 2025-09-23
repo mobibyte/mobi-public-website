@@ -18,6 +18,7 @@ export const techStack = [
     "Lua",
     "Assembly",
     "Ruby",
+    "API",
     "Dart",
     "Swift",
     "R",
