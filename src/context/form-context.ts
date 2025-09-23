@@ -28,3 +28,15 @@ type RegisterValues = LoginValues & {
 
 export const [LoginFormProvider, useLoginFormContext, useLoginForm] = createFormContext<LoginValues>();
 export const [RegisterFormProvider, useRegisterFormContext, useRegisterForm] = createFormContext<RegisterValues>();
+
+type AuthValues = {
+  email: string;
+  password: string;
+  first_name?: string;
+  last_name?: string;
+  username?: string;
+  confirmPassword?: string;
+};
+
+export const [AuthFormProvider, useAuthFormContext, useAuthForm] =
+  createFormContext<AuthValues>();

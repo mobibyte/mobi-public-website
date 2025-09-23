@@ -1,15 +1,15 @@
-import { useForm, isEmail, isNotEmpty } from "@mantine/form";
+import { isEmail, isNotEmpty } from "@mantine/form";
 import { useLogin } from "@/hooks/useAuth";
 import { Button, Fieldset, Text } from "@chakra-ui/react";
 import { NavLink } from "react-router";
 import { EmailField, PasswordField } from "./FormFields";
 import { toaster } from "@/components/ui/toaster";
-import { LoginFormProvider } from "@/context/form-context";
+import { AuthFormProvider, useAuthForm } from "@/context/form-context";
 
 export function LoginForm() {
   const { mutateAsync: login, isPending: loginPending, error } = useLogin();
 
-  const form = useForm({
+  const form = useAuthForm({
     mode: "uncontrolled",
     initialValues: {
       email: "",
@@ -35,7 +35,7 @@ export function LoginForm() {
   }
 
   return (
-    <LoginFormProvider form={form}>
+    <AuthFormProvider form={form}>
       <form onSubmit={handleSubmit}>
         <Fieldset.Root disabled={loginPending}>
           <Fieldset.Legend>Login</Fieldset.Legend>
@@ -60,6 +60,6 @@ export function LoginForm() {
           </Fieldset.Content>
         </Fieldset.Root>
       </form>
-    </LoginFormProvider>
+    </AuthFormProvider>
   );
 }

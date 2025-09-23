@@ -11,11 +11,12 @@ import { useRegister } from "@/hooks/useAuth";
 import { Button, Fieldset } from "@chakra-ui/react";
 import { NavLink } from "react-router";
 import { toaster } from "@/components/ui/toaster";
-import { RegisterFormProvider, useRegisterForm } from "@/context/form-context";
+import { AuthFormProvider, useAuthForm } from "@/context/form-context";
+import type { RegisterUser } from "@/hooks/useAuth";
 
 export function RegisterForm() {
   const { mutateAsync: register, isPending, error, isSuccess } = useRegister();
-  const form = useRegisterForm({
+  const form = useAuthForm({
     mode: "uncontrolled",
     initialValues: {
       first_name: "",
@@ -38,10 +39,16 @@ export function RegisterForm() {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const userInput = form.getValues();
-    const result = register(userInput);
+  const handleSubmit = form.onSubmit((v) => {
+    const newUser: RegisterUser = {
+      email: v.email,
+      password: v.password,
+      first_name: v.first_name!,
+      last_name: v.last_name!,
+      username: v.username!,
+    } satisfies RegisterUser;
+
+    const result = register(newUser);
 
     toaster.promise(result, {
       loading: { title: "Creating new account...", description: "Please wait" },
@@ -54,10 +61,10 @@ export function RegisterForm() {
     if (isSuccess) {
       form.reset();
     }
-  };
+  });
 
   return (
-    <RegisterFormProvider form={form}>
+    <AuthFormProvider form={form}>
       <form onSubmit={handleSubmit}>
         <Fieldset.Root className="flex flex-col gap-4 m-4" disabled={isPending}>
           <Fieldset.Legend>Create an account</Fieldset.Legend>
@@ -83,6 +90,6 @@ export function RegisterForm() {
           </Fieldset.Content>
         </Fieldset.Root>
       </form>
-    </RegisterFormProvider>
+    </AuthFormProvider>
   );
 }
