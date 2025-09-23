@@ -14,21 +14,32 @@ import { Reveal } from "./ui/Reveal";
 import { StarsBackground } from "@/assets/Stars";
 
 export function HeroSection() {
-    const isMobile = useBreakpointValue({ base: true, md: false });
-    const textShadow = "-4px -4px 0 #ff00aa";
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  const textShadow = "-4px -4px 0 #ff00aa";
 
-    return (
-        <Stack
-            direction={{ base: "column", md: "row" }}
-            align="center"
-            justify={isMobile ? "center" : "space-between"}
-            p={8}
-            gap={8}
-            minH="100dvh"
-            id="hero-section"
-            bgGradient="radial-gradient(ellipse at center, rgba(28, 0, 94, 1), transparent 60%)"
-            maxWidth={1000}
-            mx="auto"
+  return (
+    <Stack
+      direction={{ base: "column", md: "row" }}
+      align="center"
+      justify={isMobile ? "center" : "space-between"}
+      p={8}
+      gap={8}
+      minH="100dvh"
+      id="hero-section"
+      bgGradient="radial-gradient(ellipse at center, rgba(28, 0, 94, 1), transparent 60%)"
+      maxWidth={1000}
+      mx="auto"
+    >
+      <StarsBackground />
+      <VStack
+        align={isMobile ? "center" : "left"}
+        flex={{ base: "0 0 auto", md: 1 }}
+      >
+        <Heading
+          fontSize={isMobile ? 90 : 130}
+          lineHeight={0.6}
+          className="space-grotesk-500"
+          textShadow={textShadow}
         >
             <StarsBackground />
             <VStack

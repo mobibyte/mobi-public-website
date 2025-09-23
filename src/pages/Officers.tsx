@@ -1,19 +1,10 @@
 import { officers } from "@/data/officers";
-import { Grid, Heading, Stack } from "@chakra-ui/react";
+import { Grid, Heading } from "@chakra-ui/react";
 import { OfficerCard } from "./Home/OfficerCard";
-import { StarsBackground } from "@/assets/Stars";
 
 export function Officers() {
   return (
-    <Stack
-      gap={12}
-      width={"100%"}
-      px={{ base: 4, md: 32 }}
-      py={32}
-      position={"relative"}
-      minHeight={"dvh"}
-    >
-      <StarsBackground />
+    <>
       <Heading
         fontSize={48}
         className="space-grotesk-500"
@@ -36,6 +27,6 @@ export function Officers() {
           return <OfficerCard officer={officer} key={officer.name + key} />;
         })}
       </Grid>
-    </Stack>
+    </>
   );
 }

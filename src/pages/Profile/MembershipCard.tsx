@@ -43,7 +43,10 @@ export function MembershipCard() {
             <Dialog.Header asChild>
               <Stack justify="center" align="center">
                 <Avatar.Root size="xl">
-                  <Avatar.Image alt={profile?.username || "User Avatar"} />
+                  <Avatar.Image
+                    src={profile?.avatar_url}
+                    alt={profile?.username || "User Avatar"}
+                  />
                   <Avatar.Fallback name={fullname} />
                 </Avatar.Root>
                 <Heading size="md" mt="2">

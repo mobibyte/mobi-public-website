@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router";
 import { useSession } from "../hooks/useAuth";
-import { Center, Text, Stack } from "@chakra-ui/react";
+import { Center, Text } from "@chakra-ui/react";
 import { BeatLoader } from "react-spinners";
 
 export function AuthRoutes() {
@@ -9,20 +9,7 @@ export function AuthRoutes() {
     return <LoadingSession />;
   }
 
-  return session ? (
-    <Navigate to="/profile" replace />
-  ) : (
-    <Stack
-      minH="100dvh"
-      align="center"
-      justify="center"
-      gap={8}
-      bgGradient="radial-gradient(ellipse at center, rgba(28, 0, 94, 1), transparent 60%)"
-      width={"100%"}
-    >
-      <Outlet />
-    </Stack>
-  );
+  return session ? <Navigate to="/profile" replace /> : <Outlet />;
 }
 
 function LoadingSession() {

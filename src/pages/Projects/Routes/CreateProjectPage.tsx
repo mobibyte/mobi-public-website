@@ -6,6 +6,7 @@ import { toaster } from "@/components/ui/toaster";
 import { useState, useEffect } from "react";
 import { FileUploadInput } from "../FileUploadInput";
 import { useNavigate } from "react-router";
+import { Stack, Box, Button } from "@chakra-ui/react";
 
 export function CreateProjectPage() {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ export function CreateProjectPage() {
       title: "",
       description: "",
       url: "",
+      github: "",
       tech_stack: [],
       display: true,
       bg_color: "#3E0D93",
@@ -48,12 +50,26 @@ export function CreateProjectPage() {
 
   return (
     <ProjectFormProvider form={form}>
-      <FileUploadInput image={file} setImage={setFile} />
-      <ProjectForm
-        onSubmit={form.onSubmit(handleSubmit)}
-        submitLabel="Create"
-        pending={isPending}
-      />
+      <Stack
+        align={"stretch"}
+        gap={12}
+        direction={{ base: "column", md: "row" }}
+      >
+        <FileUploadInput image={file} setImage={setFile} />
+        <Box flex={1}>
+          <form onSubmit={handleSubmit}>
+            <ProjectForm disabled={isPending} />
+            <Button
+              type="submit"
+              loading={isPending}
+              disabled={isPending}
+              width={"full"}
+            >
+              Upload
+            </Button>
+          </form>
+        </Box>
+      </Stack>
     </ProjectFormProvider>
   );
 }

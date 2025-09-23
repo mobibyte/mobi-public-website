@@ -1,27 +1,16 @@
 import { SideBar } from "./SideBar";
-import { Group, Tabs } from "@chakra-ui/react";
-import { StarsBackground } from "@/assets/Stars";
+import { Stack, Tabs } from "@chakra-ui/react";
 import { ProfileProjects } from "./ProfileProjects";
 
 // TODO:
 // show events the user has been to
-// display momocoins
 
 export function Profile() {
   return (
     <>
-      <StarsBackground />
-      <Group
-        w={"full"}
-        align={"stretch"}
-        gap={8}
-        minHeight={"vh"}
-        pt={24}
-        maxW={1024}
-        mx={"auto"}
-      >
+      <Stack gap={8} direction={{ base: "column", md: "row" }}>
         <SideBar />
-        <Tabs.Root defaultValue="projects" flex={1}>
+        <Tabs.Root defaultValue="projects" flex={1} fitted>
           <Tabs.List>
             <Tabs.Trigger value="projects">Projects</Tabs.Trigger>
             <Tabs.Trigger value="events">Events</Tabs.Trigger>
@@ -34,7 +23,7 @@ export function Profile() {
           <Tabs.Content value="events">View your events</Tabs.Content>
           <Tabs.Content value="tasks">Some more user settings</Tabs.Content>
         </Tabs.Root>
-      </Group>
+      </Stack>
     </>
   );
 }

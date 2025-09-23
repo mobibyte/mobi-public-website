@@ -6,6 +6,7 @@ type FormattedDate = {
     time: string;
     weekDay: string;
     shortWeekDay: string;
+    fullDate: string;
 };
 
 export function FormatDate(date: Date): FormattedDate {
@@ -20,6 +21,7 @@ export function FormatDate(date: Date): FormattedDate {
         }),
         weekDay: date.toLocaleString("default", { weekday: "long" }),
         shortWeekDay: date.toLocaleString("default", { weekday: "short" }),
+        fullDate: new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(date)
     };
     return formatted;
 }
