@@ -14,7 +14,7 @@ export function ColorPickerField() {
       onValueChange={(e) => {
         form.setFieldValue("bg_color", e.valueAsString);
       }}
-      maxW="200px"
+      maxW="100%"
     >
       <ColorPicker.Label>Background Color</ColorPicker.Label>
       <ColorPicker.Control>

@@ -8,6 +8,7 @@ import { useParams, useNavigate } from "react-router";
 import { convertForm } from "@/helpers/project-form";
 import { DeleteProjectButton } from "../Buttons/DeleteProjectButton";
 import { isNotEmpty } from "@mantine/form";
+import { Stack, Button } from "@chakra-ui/react";
 
 export function UpdateProjectPage() {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ export function UpdateProjectPage() {
       title: "",
       description: "",
       url: "",
+      github: "",
       tech_stack: [],
       display: true,
       bg_color: "#3E0D93",
@@ -68,13 +70,27 @@ export function UpdateProjectPage() {
 
   return (
     <ProjectFormProvider form={form}>
-      <FileUploadInput image={file} setImage={setFile} />
-      <ProjectForm
-        onSubmit={form.onSubmit(handleSubmit)}
-        submitLabel="Update"
-        pending={isPending}
-      />
-      {project_id && <DeleteProjectButton id={project_id} />}
+      <Stack
+        gap={12}
+        align={"stretch"}
+        direction={{ base: "column", md: "row" }}
+      >
+        <FileUploadInput image={file} setImage={setFile} />
+        <Stack flex={1}>
+          <form onSubmit={handleSubmit}>
+            <ProjectForm disabled={isPending} />
+            <Button
+              type="submit"
+              disabled={isPending}
+              loading={isPending}
+              width={"full"}
+            >
+              Update
+            </Button>
+          </form>
+          {project_id && <DeleteProjectButton id={project_id} />}
+        </Stack>
+      </Stack>
     </ProjectFormProvider>
   );
 }

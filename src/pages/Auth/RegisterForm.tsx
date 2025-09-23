@@ -66,23 +66,20 @@ export function RegisterForm() {
   return (
     <AuthFormProvider form={form}>
       <form onSubmit={handleSubmit}>
-        <Fieldset.Root className="flex flex-col gap-4 m-4" disabled={isPending}>
-          <Fieldset.Legend>Create an account</Fieldset.Legend>
+        <Fieldset.Root disabled={isPending} mt={24}>
+          <Fieldset.Legend fontSize={"2xl"}>Create an account</Fieldset.Legend>
           <Fieldset.Content>
             <FirstNameField />
             <LastNameField />
-
             <UsernameField />
-
             <EmailField />
-
             <PasswordField />
             <ConfirmPasswordField />
             <Button
               type="submit"
               loading={isPending}
               loadingText="Registering..."
-              mb={4}
+              my={4}
             >
               Register
             </Button>

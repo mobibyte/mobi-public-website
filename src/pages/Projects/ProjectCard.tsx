@@ -1,60 +1,66 @@
-import { Box, HStack, VStack, Link, Text, Avatar } from "@chakra-ui/react";
+import { Center, Image, HStack, Stack, Text, Avatar } from "@chakra-ui/react";
 import type { Project } from "@/types";
-
-import { motion } from "framer-motion";
 import { useSession } from "@/hooks/useAuth";
 import { UpdateProjectButton } from "./Buttons/UpdateProjectButton";
+import { ProjectDialog } from "./ProjectDialog";
 
 // TODO:
 // enable link functionality
 // when user clicks project, navigate to website
 
-const MotionBox = motion(Box);
+type Props = {
+  project: Project;
+  displayUser?: boolean;
+};
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({ project, displayUser = true }: Props) {
   const { data: session } = useSession();
   return (
-    <Box overflow="hidden" flex={"grow"}>
-      <Link href={project.url} target="_blank">
-        <MotionBox
-          position="relative"
-          overflow="hidden"
+    <Stack flexGrow={1}>
+      <ProjectDialog project={project}>
+        <Center
           bg={project.bg_color}
-          aspectRatio={16 / 9}
-          whileHover={{ cursor: "pointer" }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
+          aspectRatio={15 / 10}
+          className="group"
+          overflow={"hidden"}
+          maxW={500}
         >
-          <motion.img
+          <Image
             src={project.image}
-            alt={project.title}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              borderRadius: 8,
-              boxShadow: "var(--chakra-shadows-xl)",
+            objectFit="cover"
+            rounded={"2xl"}
+            boxShadow="lg"
+            aspectRatio={16 / 10}
+            mx={"auto"}
+            transform="scale(0.8)"
+            transition="transform .2s ease, aspect-ratio .2s ease, rounded .2s ease"
+            _groupHover={{
+              transform: "scale(1)",
+              aspectRatio: 15 / 10,
+              rounded: "none",
             }}
-            initial={{ scale: 0.8 }} // looks like padding/inset
-            whileHover={{ scale: 1, borderRadius: 0, cursor: "pointer" }} // fills the box on hover
-            transition={{ duration: 0.35, ease: "easeInOut" }}
           />
-        </MotionBox>
-      </Link>
-      <HStack py={4} gap={4}>
-        <Avatar.Root size={"lg"}>
-          <Avatar.Fallback name={project.user_id} />
-          <Avatar.Image src={project.user_profile?.avatar_url} />
-        </Avatar.Root>
-        <VStack align={"start"} gap={0}>
+        </Center>
+      </ProjectDialog>
+      <HStack py={2} gap={4}>
+        {displayUser && (
+          <Avatar.Root size={{ base: "sm", sm: "md" }}>
+            <Avatar.Fallback name={project.user_id} />
+            <Avatar.Image src={project.user_profile?.avatar_url} />
+          </Avatar.Root>
+        )}
+        <Stack align={"start"} gap={0}>
           <Text fontSize="md" fontWeight={700}>
             {project.title}
           </Text>
-          <Text>{project.user_profile?.username}</Text>
-        </VStack>
+          {displayUser && (
+            <Text color={"fg.subtle"}>{project.user_profile?.username}</Text>
+          )}
+        </Stack>
         {session?.user.id === project.user_id && (
           <UpdateProjectButton project={project} />
         )}
       </HStack>
-    </Box>
+    </Stack>
   );
 }

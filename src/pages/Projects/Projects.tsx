@@ -1,5 +1,4 @@
 import {
-  Stack,
   IconButton,
   ButtonGroup,
   Heading,
@@ -66,55 +65,49 @@ export function Projects() {
   };
   return (
     <>
-      <Stack
-        gap={12}
-        width={"100%"}
-        px={{ base: 4, md: 32 }}
-        py={32}
-        position={"relative"}
-        minHeight={"dvh"}
+      <Heading
+        fontSize={48}
+        className="space-grotesk-500"
+        textAlign={"center"}
+        lineHeight={1}
+        zIndex={2}
       >
-        <Heading
-          fontSize={48}
-          className="space-grotesk-500"
-          textAlign={"center"}
-          lineHeight={1}
-          zIndex={2}
+        Community Projects
+      </Heading>
+      {display()}
+
+      {projects && projects.length > pageSize && (
+        <Pagination.Root
+          count={projects?.length}
+          pageSize={pageSize}
+          page={page}
+          onPageChange={handlePageChange}
+          mx={"auto"}
+          alignSelf={"end"}
         >
-          Community Projects
-        </Heading>
-        {display()}
-      </Stack>
-      <Pagination.Root
-        count={projects?.length}
-        pageSize={pageSize}
-        page={page}
-        onPageChange={handlePageChange}
-        mx={"auto"}
-        alignSelf={"end"}
-      >
-        <ButtonGroup variant="ghost" size="sm">
-          <Pagination.PrevTrigger asChild>
-            <IconButton>
-              <IconChevronLeft />
-            </IconButton>
-          </Pagination.PrevTrigger>
-
-          <Pagination.Items
-            render={(page) => (
-              <IconButton variant={{ base: "ghost", _selected: "outline" }}>
-                {page.value}
+          <ButtonGroup variant="ghost" size="sm">
+            <Pagination.PrevTrigger asChild>
+              <IconButton>
+                <IconChevronLeft />
               </IconButton>
-            )}
-          />
+            </Pagination.PrevTrigger>
 
-          <Pagination.NextTrigger asChild>
-            <IconButton>
-              <IconChevronRight />
-            </IconButton>
-          </Pagination.NextTrigger>
-        </ButtonGroup>
-      </Pagination.Root>
+            <Pagination.Items
+              render={(page) => (
+                <IconButton variant={{ base: "ghost", _selected: "outline" }}>
+                  {page.value}
+                </IconButton>
+              )}
+            />
+
+            <Pagination.NextTrigger asChild>
+              <IconButton>
+                <IconChevronRight />
+              </IconButton>
+            </Pagination.NextTrigger>
+          </ButtonGroup>
+        </Pagination.Root>
+      )}
     </>
   );
 }

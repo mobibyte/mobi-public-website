@@ -31,8 +31,9 @@ export function ProfilePicture() {
           border={"2px solid gray"}
           fit={"cover"}
           aspectRatio={1}
-          boxSize={"full"}
+          boxSize={{ base: 200, md: "full" }}
           _hover={{ cursor: "pointer" }}
+          mx={"auto"}
         />
       </FileUpload.Trigger>
 

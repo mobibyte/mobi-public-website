@@ -21,8 +21,7 @@ export function LoginForm() {
     },
   });
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  const handleSubmit = form.onSubmit(() => {
     const result = login(form.getValues());
     toaster.promise(result, {
       loading: { title: "Logging in...", description: "Please wait" },
@@ -32,25 +31,25 @@ export function LoginForm() {
       },
       error: { title: error?.name, description: error?.message },
     });
-  }
+  });
 
   return (
     <AuthFormProvider form={form}>
       <form onSubmit={handleSubmit}>
         <Fieldset.Root disabled={loginPending}>
-          <Fieldset.Legend>Login</Fieldset.Legend>
-          <Fieldset.Content gap="0">
+          <Fieldset.Legend fontSize={"2xl"}>Login</Fieldset.Legend>
+          <Fieldset.Content>
             <EmailField />
             <PasswordField />
 
-            <Text fontSize="xs" color="gray.500" mb="6">
+            <Text fontSize="xs" color="gray.500">
               <NavLink to="/forgot-password">Forgot Password?</NavLink>
             </Text>
             <Button
               type="submit"
               loading={loginPending}
               loadingText="Logging in..."
-              mb={4}
+              my={2}
             >
               Login
             </Button>

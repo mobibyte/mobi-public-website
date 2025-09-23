@@ -47,7 +47,7 @@ export function TechStackField() {
       <Combobox.Root
         multiple
         closeOnSelect
-        width="320px"
+        width="100"
         value={value}
         collection={collection}
         onValueChange={

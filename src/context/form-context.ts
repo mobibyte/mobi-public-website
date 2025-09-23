@@ -4,6 +4,7 @@ interface ProjectFormValues {
     title: string;
     description: string | null;
     url: string;
+    github: string;
     image?: string;
     tech_stack: string[];
     display: boolean;
@@ -13,21 +14,6 @@ interface ProjectFormValues {
 export const [ProjectFormProvider, useProjectFormContext, useProjectForm] =
     createFormContext<ProjectFormValues>();
 
-
-
-type LoginValues = { 
-  email: string; 
-  password: string };
-  
-type RegisterValues = LoginValues & {
-  first_name: string;
-  last_name: string;
-  username: string;
-  confirmPassword: string;
-};
-
-export const [LoginFormProvider, useLoginFormContext, useLoginForm] = createFormContext<LoginValues>();
-export const [RegisterFormProvider, useRegisterFormContext, useRegisterForm] = createFormContext<RegisterValues>();
 
 type AuthValues = {
   email: string;

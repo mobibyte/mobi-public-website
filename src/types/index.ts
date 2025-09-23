@@ -49,6 +49,7 @@ export type Project = {
     id: string;
     title: string;
     url: string;
+    github: string;
     image: string;
     created_at: Date;
     user_id: string;

@@ -1,6 +1,8 @@
-import { Button } from "@chakra-ui/react";
+import { IconButton } from "@chakra-ui/react";
 import { Link } from "react-router";
 import type { Project } from "@/types";
+import { IconDotsVertical } from "@tabler/icons-react";
+import { Tooltip } from "@/components/ui/tooltip";
 
 type Props = {
   project: Project;
@@ -9,18 +11,12 @@ type Props = {
 
 export function UpdateProjectButton({ project }: Props) {
   return (
-    <Button asChild>
-      <Link
-        to={`/project/edit/${project.id}`}
-        // onMouseEnter={() =>
-        //   queryClient.prefetchQuery({
-        //     queryKey: ["project", userId, project.id],
-        //     queryFn: () => fetchProjectById(userId, project.id),
-        //   })
-        // }
-      >
-        Edit
-      </Link>
-    </Button>
+    <Tooltip content="Edit" openDelay={100} closeDelay={100}>
+      <IconButton variant={"ghost"} ml={"auto"} asChild>
+        <Link to={`/project/edit/${project.id}`}>
+          <IconDotsVertical />
+        </Link>
+      </IconButton>
+    </Tooltip>
   );
 }
