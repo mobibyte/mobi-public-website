@@ -1,12 +1,9 @@
 import { Field, Input } from "@chakra-ui/react";
 import { PasswordInput } from "@/components/ui/password-input";
-import {
-  useLoginFormContext,
-  useRegisterFormContext,
-} from "@/context/form-context";
+import { useAuthFormContext } from "@/context/form-context";
 
 export function EmailField() {
-  const form = useLoginFormContext();
+  const form = useAuthFormContext();
   return (
     <Field.Root invalid={!!form.errors.email}>
       <Field.Label>Email</Field.Label>
@@ -19,7 +16,7 @@ export function EmailField() {
 }
 
 export function PasswordField() {
-  const form = useLoginFormContext();
+  const form = useAuthFormContext();
   return (
     <Field.Root invalid={!!form.errors.password}>
       <Field.Label>Password</Field.Label>
@@ -35,7 +32,7 @@ export function PasswordField() {
 }
 
 export function ConfirmPasswordField() {
-  const form = useRegisterFormContext();
+  const form = useAuthFormContext();
   return (
     <Field.Root invalid={!!form.errors.confirmPassword}>
       <Field.Label>Confirm Password</Field.Label>
@@ -51,7 +48,7 @@ export function ConfirmPasswordField() {
 }
 
 export function UsernameField() {
-  const form = useRegisterFormContext();
+  const form = useAuthFormContext();
   return (
     <Field.Root invalid={!!form.errors.username}>
       <Field.Label>Username</Field.Label>
@@ -64,7 +61,7 @@ export function UsernameField() {
 }
 
 export function FirstNameField() {
-  const form = useRegisterFormContext();
+  const form = useAuthFormContext();
   return (
     <Field.Root invalid={!!form.errors.first_name}>
       <Field.Label>First Name</Field.Label>
@@ -80,7 +77,7 @@ export function FirstNameField() {
 }
 
 export function LastNameField() {
-  const form = useRegisterFormContext();
+  const form = useAuthFormContext();
   return (
     <Field.Root invalid={!!form.errors.last_name}>
       <Field.Label>Last Name</Field.Label>

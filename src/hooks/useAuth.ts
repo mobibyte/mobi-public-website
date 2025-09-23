@@ -27,7 +27,7 @@ export function useLogin() {
     });
 }
 
-interface RegisterUser extends AuthUser {
+export interface RegisterUser extends AuthUser {
     first_name: string;
     last_name: string;
     username: string;
