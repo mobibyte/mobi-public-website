@@ -49,6 +49,7 @@ export function MainLayout() {
         <Outlet />
       </Container>
       <Footer />
+      <Toaster />
     </Box>
   );
 }
@@ -66,6 +67,7 @@ export function FullWidthLayout() {
         <Outlet />
       </Box>
       <Footer />
+      <Toaster />
     </Box>
   );
 }
@@ -84,6 +86,7 @@ export function AuthLayout() {
         <Outlet />
       </Center>
       <Footer />
+      <Toaster />
     </Box>
   );
 }
