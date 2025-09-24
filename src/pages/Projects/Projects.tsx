@@ -57,7 +57,7 @@ export function Projects() {
       >
         {visibleProjects?.map((project) => (
           <Reveal delay={150} key={project.id}>
-            <ProjectCard project={project} />
+            <ProjectCard project={project} key={project.id} />
           </Reveal>
         ))}
       </Grid>
