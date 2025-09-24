@@ -54,7 +54,7 @@ export function LoginForm() {
               Login
             </Button>
 
-            <Text asChild zIndex={10}>
+            <Text asChild>
               <NavLink to="/signup">Don't have an account? Sign up!</NavLink>
             </Text>
           </Fieldset.Content>

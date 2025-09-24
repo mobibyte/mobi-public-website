@@ -7,7 +7,6 @@ export function useGetCurrentSemesterEvents() {
     return useQuery<Event[], Error>({
         queryKey: ["events"],
         queryFn: async () => {
-            console.log("today:", today.toISOString());
             const { data, error } = await supabase
                 .from("events")
                 .select("*, profiles (*)")
@@ -23,7 +22,6 @@ export function useGetCurrentSemesterEvents() {
                     ends_at: new Date(event.ends_at),
                 };
             });
-            console.log("Fetched events:", events);
             return (events as Event[]) || [];
         },
         refetchOnWindowFocus: true,

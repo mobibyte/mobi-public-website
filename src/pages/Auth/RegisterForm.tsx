@@ -83,7 +83,7 @@ export function RegisterForm() {
             >
               Register
             </Button>
-            <Text asChild zIndex={10}>
+            <Text asChild>
               <NavLink to="/login">Already have an account? Login!</NavLink>
             </Text>
           </Fieldset.Content>
