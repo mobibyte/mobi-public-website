@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { StarsBackground } from "@/assets/Stars";
 import { Outlet } from "react-router";
+import { GalaxyBg } from "@/assets/background/GalaxyBg";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation();
@@ -24,6 +25,25 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+export function AuthLayout() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, [pathname]);
+  return (
+    <Box position={"relative"}>
+      <GalaxyBg subtle={true} />
+      <Navbar />
+      <Center as="main" minH="100dvh" px={{ base: 4, md: 32 }}>
+        <Outlet />
+      </Center>
+      <Footer />
+      <Toaster />
+    </Box>
+  );
+}
+
 export function MainLayout() {
   const { pathname } = useLocation();
 
@@ -31,13 +51,8 @@ export function MainLayout() {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [pathname]);
   return (
-    <Box
-      minH="100dvh"
-      position={"relative"}
-      px={{ base: 2, lg: 32 }}
-      pt={{ base: 24, md: 32 }}
-    >
-      <StarsBackground />
+    <Box minH="100dvh" position={"relative"}>
+      <GalaxyBg subtle={true} />
       <Navbar />
       <Container
         as="main"
@@ -45,6 +60,8 @@ export function MainLayout() {
         gap={12}
         display={"flex"}
         flexDirection={"column"}
+        px={{ base: 2, lg: 32 }}
+        pt={{ base: 24, md: 32 }}
       >
         <Outlet />
       </Container>
@@ -66,25 +83,6 @@ export function FullWidthLayout() {
       <Box as="main">
         <Outlet />
       </Box>
-      <Footer />
-      <Toaster />
-    </Box>
-  );
-}
-
-export function AuthLayout() {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, [pathname]);
-  return (
-    <Box position={"relative"} px={{ base: 4, md: 32 }}>
-      <StarsBackground />
-      <Navbar />
-      <Center as="main" minH="100dvh">
-        <Outlet />
-      </Center>
       <Footer />
       <Toaster />
     </Box>

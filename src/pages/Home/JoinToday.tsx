@@ -1,64 +1,80 @@
-import { Stack, Heading, Text } from "@chakra-ui/react";
+import { Stack, Heading, Text, Group } from "@chakra-ui/react";
 import { NavLink } from "react-router";
-import { StarsBackground } from "@/assets/Stars";
+import RotatingText from "@/assets/animations/RotatingText";
+import { GalaxyBg } from "@/assets/background/GalaxyBg";
 
-export function JoinToday({ isMobile }: { isMobile: boolean | undefined }) {
-    return (
-        <Stack
-            gap={12}
-            px={isMobile ? 4 : 32}
-            align="center"
-            py={32}
-            bgGradient="radial-gradient(ellipse at center, rgba(28, 0, 94, 1), transparent 60%)"
-            width={"100%"}
-            position={"relative"}
-            minH="100dvh"
-            justifyContent={"center"}
+export function JoinToday() {
+  return (
+    <Stack
+      gap={12}
+      px={{ base: 4, md: 32 }}
+      align="center"
+      py={32}
+      width={"100%"}
+      position={"relative"}
+      minH="100dvh"
+      justifyContent={"center"}
+    >
+      <GalaxyBg />
+      <Stack>
+        <Heading
+          fontWeight={700}
+          fontSize={{ base: 64, md: 96 }}
+          className="space-grotesk-500"
+          lineHeight={1}
+          textAlign="center"
+          textShadow="-4px -4px 0 #ff00aa"
+          zIndex={10}
         >
-            <StarsBackground />
+          Join{" "}
+          <span
+            style={{
+              color: "#0084FF",
+            }}
+          >
+            MOBI
+          </span>{" "}
+          Today!
+        </Heading>
 
-            <Stack>
-                <Heading
-                    fontWeight={700}
-                    fontSize={{ base: 64, md: 96 }}
-                    className="space-grotesk-500"
-                    lineHeight={1}
-                    textAlign="center"
-                    textShadow="-4px -4px 0 #ff00aa"
-                >
-                    Join{" "}
-                    <span
-                        style={{
-                            color: "#0084FF",
-                        }}
-                    >
-                        MOBI
-                    </span>{" "}
-                    Today!
-                </Heading>
-                <Text
-                    fontSize={{ base: 24, md: 64 }}
-                    fontWeight={700}
-                    textAlign={"center"}
-                >
-                    <NavLink
-                        to="/register"
-                        style={{
-                            color: "#ff00aa",
-                            textDecoration: "underline",
-                        }}
-                    >
-                        Sign Up
-                    </NavLink>{" "}
-                    and become a part of our vibrant community!
-                </Text>
-                <Stack
-                    direction={isMobile ? "column" : "row"}
-                    gap={4}
-                    align={"center"}
-                    justifyContent={"space-evenly"}
-                ></Stack>
-            </Stack>
-        </Stack>
-    );
+        <Group
+          justify={"center"}
+          fontSize={{ base: 24, md: 64 }}
+          fontWeight={700}
+          textAlign={"center"}
+        >
+          <Text>
+            <NavLink
+              to="/signup"
+              style={{
+                color: "#ff00aa",
+                textDecoration: "underline",
+              }}
+            >
+              Sign Up
+            </NavLink>{" "}
+            and let's
+          </Text>
+          <RotatingText
+            texts={["code", "design", "socialize", "learn"]}
+            staggerFrom={"last"}
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "-120%" }}
+            staggerDuration={0.025}
+            splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+            transition={{ type: "spring", damping: 30, stiffness: 400 }}
+            rotationInterval={2000}
+          />
+          <Text>together!</Text>
+        </Group>
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          gap={4}
+          align={"center"}
+          justifyContent={"space-evenly"}
+        ></Stack>
+      </Stack>
+    </Stack>
+  );
 }
