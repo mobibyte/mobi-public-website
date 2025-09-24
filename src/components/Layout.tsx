@@ -19,8 +19,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <StarsBackground />
       <Navbar />
       {children}
-      <Footer />
       <Toaster />
+      <Footer />
     </Stack>
   );
 }
@@ -64,8 +64,8 @@ export function MainLayout() {
         pt={{ base: 24, md: 32 }}
       >
         <Outlet />
+        <Footer />
       </Container>
-      <Footer />
       <Toaster />
     </Box>
   );
