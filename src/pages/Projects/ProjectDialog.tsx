@@ -29,7 +29,7 @@ export function ProjectDialog({ children, project }: Props) {
     </Badge>
   ));
   return (
-    <Dialog.Root>
+    <Dialog.Root placement={"center"}>
       <Dialog.Trigger cursor={"pointer"}>{children}</Dialog.Trigger>
       <Portal>
         <Dialog.Backdrop />

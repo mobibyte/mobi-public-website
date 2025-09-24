@@ -11,7 +11,7 @@ export function SideBar() {
   const [editMode, setEditMode] = useState<boolean>(false);
   const { profile } = useProfile();
   return (
-    <Stack gap={4} maxW={300}>
+    <Stack gap={4} maxW={{ base: "full", md: 300 }}>
       <ProfilePicture />
 
       {editMode ? (

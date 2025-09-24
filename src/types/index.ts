@@ -28,6 +28,14 @@ export type CheckInData = CheckIn & {
     checked_in_by_profile: Profile;
 };
 
+export type Admin = {
+    id: string;
+    created_at: Date;
+    user_id: string;
+    role: string;
+    user_profile: Profile;
+}
+
 export interface Profile {
     id: string;
     created_at: Date;

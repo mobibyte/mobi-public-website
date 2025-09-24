@@ -35,7 +35,7 @@ export function ProfileProjects() {
       {isPending && <h1>Loading projects...</h1>}
       {isError && <h1>Error loading projects: {error.message}</h1>}
       {data ? (
-        <SimpleGrid columns={{ base: 1, md: 2 }} gap={8}>
+        <SimpleGrid columns={{ base: 1, sm: 2 }} gap={8}>
           {projects}
         </SimpleGrid>
       ) : (

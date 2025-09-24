@@ -1,8 +1,21 @@
-import { officers } from "@/data/officers";
-import { Grid, Heading } from "@chakra-ui/react";
+import { Grid, Heading, Text } from "@chakra-ui/react";
 import { OfficerCard } from "./Home/OfficerCard";
+import { useGetAllOfficers } from "@/hooks/useAdmin";
 
 export function Officers() {
+  const { data, isPending, error } = useGetAllOfficers();
+
+  const officers = () => {
+    if (isPending) <Text>Loading...</Text>;
+    else if (error) <Text>{error.message}</Text>;
+    else if (!data) <Text>No officers found</Text>;
+    else {
+      return data.map((officer) => {
+        return <OfficerCard officer={officer} key={officer.user_id} />;
+      });
+    }
+  };
+
   return (
     <>
       <Heading
@@ -23,9 +36,7 @@ export function Officers() {
         }}
         gap="6"
       >
-        {officers.map((officer, key) => {
-          return <OfficerCard officer={officer} key={officer.name + key} />;
-        })}
+        {officers()}
       </Grid>
     </>
   );
