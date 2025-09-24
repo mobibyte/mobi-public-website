@@ -1,7 +1,7 @@
-import type { Officer } from "@/types";
+
 import preston from "../assets/officers/preston-smiling.webp";
 
-export const officers: Officer[] = [
+export const officers = [
     {
         name: "Preston Nguyen",
         role: "President",

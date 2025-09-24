@@ -1,6 +1,6 @@
 import { Grid, Heading, Text } from "@chakra-ui/react";
-import { OfficerCard } from "./Home/OfficerCard";
-import { useGetAllOfficers } from "@/hooks/useAdmin";
+import { OfficerCard } from "./OfficerCard";
+import { useGetAllOfficers } from "@/hooks/useOfficer";
 
 export function Officers() {
   const { data, isPending, error } = useGetAllOfficers();
