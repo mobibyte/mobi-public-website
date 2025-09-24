@@ -1,11 +1,11 @@
-import { Button, Group, Dialog, CloseButton, Portal } from "@chakra-ui/react";
-import { AspectRatio, Link, Stack, Image, Text } from "@chakra-ui/react";
+import { Dialog, CloseButton, Portal } from "@chakra-ui/react";
+import { AspectRatio, Image } from "@chakra-ui/react";
 import type { ReactNode } from "react";
-import type { Admin } from "@/types";
+import type { Officer } from "@/types";
 
 type Props = {
   children: ReactNode;
-  officer: Admin;
+  officer: Officer;
 };
 
 export function OfficerDialog({ children, officer }: Props) {

@@ -6,13 +6,13 @@ import {
   IconWorld,
 } from "@tabler/icons-react";
 import { Reveal } from "@/components/ui/Reveal";
-import type { Admin } from "@/types";
+import type { Officer } from "@/types";
 import { OfficerDialog } from "./OfficerDialog";
 
 // TODO:
 // hover over officer card opens modal and shows more about them
 
-export function OfficerCard({ officer }: { officer: Admin }) {
+export function OfficerCard({ officer }: { officer: Officer }) {
   const { user_profile } = officer;
   const iconSize = 30;
   return (

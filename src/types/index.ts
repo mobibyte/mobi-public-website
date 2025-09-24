@@ -11,7 +11,6 @@ export interface Event {
     starts_at: Date;
     ends_at: Date;
     semester: string;
-    profiles: Profile;
 }
 
 export interface CheckIn {
@@ -28,12 +27,13 @@ export type CheckInData = CheckIn & {
     checked_in_by_profile: Profile;
 };
 
-export type Admin = {
+export type Officer = {
     id: string;
     created_at: Date;
     user_id: string;
     role: string;
     user_profile: Profile;
+    level: number;
 }
 
 export interface Profile {
@@ -68,13 +68,6 @@ export type Project = {
     user_profile?: Profile;
 };
 
-export type Officer = {
-    name: string;
-    role: string;
-    image: string;
-    links?: string[];
-};
-
 export interface Event {
     id: string;
     created_at: Date;
@@ -87,4 +80,12 @@ export interface Event {
     ends_at: Date;
     semester: string;
     profiles: Profile;
+}
+
+export type RSVP = {
+    id: string,
+    created_at: Date;
+    event_id: string;
+    user_id: string;
+    user_profile?: Profile;
 }

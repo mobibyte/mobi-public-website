@@ -1,10 +1,9 @@
 import { supabase } from "./supabaseClient";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Event } from "../types";
 
 export function useGetCurrentSemesterEvents() {
     const today = new Date();
-
     return useQuery<Event[], Error>({
         queryKey: ["events"],
         queryFn: async () => {
@@ -80,5 +79,100 @@ export function useGetAllSemesterEvents() {
         },
         refetchOnWindowFocus: true,
         gcTime: 1000 * 60 * 60, // 1 hour
+    });
+}
+
+export function useCreateEvent() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (event: Partial<Event>) => {
+            const { data, error } = await supabase
+                .from("events")
+                .insert([event])
+                .select()
+                .single();
+            if (error) {
+                throw new Error(error.message);
+            }
+            return data as Event;
+        },
+        onSuccess: (data) => {
+            queryClient.invalidateQueries({ queryKey: ["events"] });
+            console.log("Successfully created", data.title);
+        },
+        onError: (err) => {
+            console.error(err.message)
+        },
+    });
+}
+
+export function useUpdateEvent() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (event: Event) => {
+            const { data, error } = await supabase
+                .from("events")
+                .update(event)
+                .eq("id", event.id)
+                .select()
+                .single();
+            if (error) {
+                throw new Error(error.message);
+            }
+            return data as Event;
+        },
+        onSuccess: (data) => {
+            queryClient.invalidateQueries({ queryKey: ["events"] });
+            console.log("Successfully updated", data.title)
+        },
+        onError: (err) => {
+            console.error(err.message)
+        },
+    });
+}
+
+export function useDeleteEvent() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (event: Event) => {
+            const { error } = await supabase
+                .from("events")
+                .delete()
+                .eq("id", event.id);
+            if (error) {
+                throw new Error(error.message);
+            }
+            return event;
+        },
+        onSuccess: (event) => {
+            queryClient.invalidateQueries({ queryKey: ["events"] });
+            console.log("Successfully deleted", event.title)
+        },
+        onError: (err) => {
+            console.error(err.message)
+        },
+    });
+}
+
+export function useIncrementEventAttendance() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (eventId: number) => {
+            console.log("Incrementing attendance for event:", eventId);
+            const { error } = await supabase.rpc("increment_attendance", {
+                event_id: eventId,
+            });
+            if (error) {
+                throw new Error(error.message);
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["events"] });
+            queryClient.invalidateQueries({ queryKey: ["currentEvent"] });
+            console.log("Attendance incremented successfully");
+        },
+        onError: (error) => {
+            console.error("Error updating event attendance:", error.message);
+        },
     });
 }
