@@ -1,12 +1,11 @@
 import { useGetCurrentSemesterEvents } from "@/hooks/useEvents";
 import { EventCard } from "./EventCard";
 import { Reveal } from "@/components/ui/Reveal";
-import { Button, Stack, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Button, Stack, Text } from "@chakra-ui/react";
 import { NavLink } from "react-router";
 import { Wave } from "@assets/waves/Wave";
 
 export function UpcomingEvents() {
-  const isMobile = useBreakpointValue({ base: true, md: false });
   const { data: events, isLoading } = useGetCurrentSemesterEvents();
 
   if (isLoading) {

@@ -1,4 +1,4 @@
-import { Button, Stack, Heading, Text, Group } from "@chakra-ui/react";
+import { Stack, Heading, Text, Group } from "@chakra-ui/react";
 import { NavLink } from "react-router";
 import RotatingText from "@/assets/animations/RotatingText";
 import { GalaxyBg } from "@/assets/background/GalaxyBg";
