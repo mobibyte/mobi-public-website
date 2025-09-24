@@ -34,7 +34,7 @@ export function ProjectDialog({ children, project }: Props) {
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <Dialog.Content>
+          <Dialog.Content mx={4}>
             <Dialog.CloseTrigger />
             <Dialog.Header>
               <Dialog.Title>{project.title}</Dialog.Title>
@@ -56,6 +56,12 @@ export function ProjectDialog({ children, project }: Props) {
               </Group>
               <Text>{project.description}</Text>
               <Separator />
+              <Button asChild>
+                <Link href={project.url} target="_blank">
+                  <IconLink />
+                  Website
+                </Link>
+              </Button>
               {project.github.length > 0 && (
                 <Button variant={"outline"} asChild>
                   <Link href={project.github} target="_blank">
@@ -64,12 +70,6 @@ export function ProjectDialog({ children, project }: Props) {
                   </Link>
                 </Button>
               )}
-              <Button asChild>
-                <Link href={project.url} target="_blank">
-                  <IconLink />
-                  Website
-                </Link>
-              </Button>
             </Dialog.Body>
 
             <Dialog.CloseTrigger asChild>

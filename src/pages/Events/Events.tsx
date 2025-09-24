@@ -2,6 +2,7 @@ import { Stack, Heading } from "@chakra-ui/react";
 import { useGetAllSemesterEvents } from "@/hooks/useEvents";
 import { EventList } from "./EventList";
 import { EventListSkeleton } from "./EventListSkeleton";
+import { getSemester, FormatDate } from "@/helpers/format";
 
 // TODO:
 // sort through events from current and past
@@ -31,7 +32,7 @@ export function Events() {
         lineHeight={1}
         zIndex={2}
       >
-        Events
+        {`${getSemester()} ${FormatDate(new Date()).year} Events`}
       </Heading>
       {isPending && (
         <>

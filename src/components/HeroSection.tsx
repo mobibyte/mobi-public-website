@@ -1,7 +1,6 @@
 import {
   Center,
   Stack,
-  VStack,
   Button,
   Heading,
   Text,
@@ -26,18 +25,19 @@ export function HeroSection() {
       <Stack
         direction={{ base: "column", md: "row" }}
         align="center"
-        justify={isMobile ? "center" : "space-between"}
+        justify={{ base: "center", md: "space-between" }}
         p={8}
         gap={8}
         minH="100dvh"
-        id="hero-section"
         maxWidth={1000}
         mx="auto"
         position={"relative"}
       >
-        <VStack
+        <Stack
           align={{ base: "center", md: "left" }}
           flex={{ base: "0 0 auto", md: 1 }}
+          textAlign={{ base: "center", md: "left" }}
+          id="verticalstacker"
         >
           <Heading
             fontSize={isMobile ? 90 : 130}
@@ -56,11 +56,7 @@ export function HeroSection() {
           >
             BYTE
           </Heading>
-          <Text
-            fontSize={24}
-            fontWeight={700}
-            textAlign={isMobile ? "center" : "left"}
-          >
+          <Text fontSize={24} fontWeight={700}>
             The Web & App Development club open to everyone from beginner to
             wizard. 🚀
           </Text>
@@ -92,7 +88,7 @@ export function HeroSection() {
               </Button>
             </a>
           </HStack>
-        </VStack>
+        </Stack>
         {!isMobile && (
           <Center flex={1}>
             <Reveal delay={300}>
