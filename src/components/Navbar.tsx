@@ -16,7 +16,7 @@ import { useScrollHide } from "@/helpers/scroll";
 // turn logo into link to go home
 
 export function Navbar() {
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isMobile = useBreakpointValue({ base: true, lg: false });
   const { hidden, scrolled } = useScrollHide(8);
 
   return (

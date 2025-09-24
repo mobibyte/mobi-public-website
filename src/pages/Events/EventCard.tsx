@@ -1,8 +1,8 @@
-import { Group, Stack, Text } from "@chakra-ui/react";
+import { Stack, Text } from "@chakra-ui/react";
 import type { Event } from "@/types/";
-import { motion } from "framer-motion";
 import { FormatDate } from "@/helpers/format";
 import { RSVPButton } from "./RsvpButton";
+import { EventDialog } from "./EventDialog";
 
 // TODO:
 // add RSVP button to card
@@ -18,7 +18,7 @@ export function EventCard({ event }: { event: Event }) {
   const hasNotEnded = new Date(event.ends_at) > new Date();
 
   return (
-    <motion.a whileHover={{ backgroundColor: "#0f1838" }}>
+    <EventDialog event={event}>
       <Stack direction={"row"} align={"center"} gap={6} className="group">
         <Stack gap={0} alignSelf={"start"} flex={1}>
           <Text
@@ -34,20 +34,18 @@ export function EventCard({ event }: { event: Event }) {
             fontSize={{ base: 12, md: 16 }}
             gap={0}
           >
-            <Group>
-              <Text>
-                <span>{shortWeekDay}, </span>
-                <span>{shortMonth}</span> <span>{day}</span>
-                <span> · </span>
-                <span>{startTime}</span> - <span>{endTime}</span>
-              </Text>
+            <Text>
+              <span>{shortWeekDay}, </span>
+              <span>{shortMonth}</span> <span>{day}</span>
               <span> · </span>
-            </Group>
-            <Text>{event.location}</Text>
+              <span>{startTime}</span> - <span>{endTime}</span>
+              <span> · </span>
+              {event.location}
+            </Text>
           </Stack>
         </Stack>
         {hasNotEnded && <RSVPButton eventId={event.id} />}
       </Stack>
-    </motion.a>
+    </EventDialog>
   );
 }
