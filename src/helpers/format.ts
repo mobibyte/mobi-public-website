@@ -26,6 +26,12 @@ export function FormatDate(date: Date): FormattedDate {
     return formatted;
 }
 
+export function getSemester(): "Spring" | "Fall" {
+    const today = new Date()
+    const month = today.getMonth(); // 0 = January, 11 = December
+    return month < 6 ? "Spring" : "Fall";
+  }
+
 export function sanitizeFileName(name: string) {
     // Keep extension
     const dot = name.lastIndexOf(".");

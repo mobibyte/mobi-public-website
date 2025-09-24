@@ -1,4 +1,4 @@
-import { Stack, Heading, Text, Group } from "@chakra-ui/react";
+import { Button, Stack, Heading, Text, Group } from "@chakra-ui/react";
 import { NavLink } from "react-router";
 import RotatingText from "@/assets/animations/RotatingText";
 import { GalaxyBg } from "@/assets/background/GalaxyBg";
@@ -36,25 +36,13 @@ export function JoinToday() {
           </span>{" "}
           Today!
         </Heading>
-
         <Group
           justify={"center"}
           fontSize={{ base: 24, md: 64 }}
           fontWeight={700}
           textAlign={"center"}
         >
-          <Text>
-            <NavLink
-              to="/signup"
-              style={{
-                color: "#ff00aa",
-                textDecoration: "underline",
-              }}
-            >
-              Sign Up
-            </NavLink>{" "}
-            and let's
-          </Text>
+          <Text>Let's</Text>
           <RotatingText
             texts={["code", "design", "socialize", "learn"]}
             staggerFrom={"last"}
@@ -63,11 +51,28 @@ export function JoinToday() {
             exit={{ y: "-120%" }}
             staggerDuration={0.025}
             splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
-            transition={{ type: "spring", damping: 30, stiffness: 400 }}
-            rotationInterval={2000}
+            transition={{ type: "spring", damping: 20, stiffness: 400 }}
+            rotationInterval={3000}
           />
           <Text>together!</Text>
         </Group>
+        <Heading
+          fontSize={{ base: 24, md: 64 }}
+          mx={"auto"}
+          mt={4}
+          zIndex={10}
+          asChild
+        >
+          <NavLink
+            to="/signup"
+            style={{
+              color: "#ff00aa",
+              textDecoration: "underline",
+            }}
+          >
+            Sign Up
+          </NavLink>
+        </Heading>
         <Stack
           direction={{ base: "column", md: "row" }}
           gap={4}

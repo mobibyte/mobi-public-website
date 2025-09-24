@@ -43,7 +43,14 @@ export function Navbar() {
         }}
       >
         <HStack gap={4}>
-          <Image src={mobiLogo} alt="MOBI Logo" h="24px" />
+          <NavLink to={"/"}>
+            <Image
+              src={mobiLogo}
+              alt="MOBI Logo"
+              h="24px"
+              ml={{ base: 2, md: 0 }}
+            />
+          </NavLink>
           {!isMobile && (
             <Text
               className="space-grotesk-500"

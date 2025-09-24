@@ -41,26 +41,26 @@ export function ProjectCard({ project, displayUser = true }: Props) {
             }}
           />
         </Center>
-      </ProjectDialog>
-      <HStack py={2} gap={4}>
-        {displayUser && (
-          <Avatar.Root size={{ base: "sm", sm: "md" }}>
-            <Avatar.Fallback name={project.user_id} />
-            <Avatar.Image src={project.user_profile?.avatar_url} />
-          </Avatar.Root>
-        )}
-        <Stack align={"start"} gap={0}>
-          <Text fontSize="md" fontWeight={700}>
-            {project.title}
-          </Text>
+        <HStack py={2} gap={4}>
           {displayUser && (
-            <Text color={"fg.subtle"}>{project.user_profile?.username}</Text>
+            <Avatar.Root size={{ base: "sm", sm: "md" }}>
+              <Avatar.Fallback name={project.user_id} />
+              <Avatar.Image src={project.user_profile?.avatar_url} />
+            </Avatar.Root>
           )}
-        </Stack>
-        {session?.user.id === project.user_id && (
-          <UpdateProjectButton project={project} />
-        )}
-      </HStack>
+          <Stack align={"start"} gap={0}>
+            <Text fontSize="md" fontWeight={700}>
+              {project.title}
+            </Text>
+            {displayUser && (
+              <Text color={"fg.subtle"}>{project.user_profile?.username}</Text>
+            )}
+          </Stack>
+          {session?.user.id === project.user_id && (
+            <UpdateProjectButton project={project} />
+          )}
+        </HStack>
+      </ProjectDialog>
     </Stack>
   );
 }

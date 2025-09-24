@@ -8,7 +8,7 @@ import {
   UsernameField,
 } from "./FormFields";
 import { useRegister } from "@/hooks/useAuth";
-import { Button, Fieldset } from "@chakra-ui/react";
+import { Button, Fieldset, Text } from "@chakra-ui/react";
 import { NavLink } from "react-router";
 import { toaster } from "@/components/ui/toaster";
 import { AuthFormProvider, useAuthForm } from "@/context/form-context";
@@ -83,7 +83,9 @@ export function RegisterForm() {
             >
               Register
             </Button>
-            <NavLink to="/login">Already have an account? Login!</NavLink>
+            <Text asChild zIndex={10}>
+              <NavLink to="/login">Already have an account? Login!</NavLink>
+            </Text>
           </Fieldset.Content>
         </Fieldset.Root>
       </form>
