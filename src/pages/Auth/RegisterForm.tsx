@@ -1,4 +1,4 @@
-import { isEmail, isInRange, matchesField, isNotEmpty } from "@mantine/form";
+import { isEmail, hasLength, matchesField, isNotEmpty } from "@mantine/form";
 import {
   EmailField,
   PasswordField,
@@ -31,7 +31,7 @@ export function RegisterForm() {
       last_name: isNotEmpty("Last name is required"),
       username: isNotEmpty("Username is required"),
       email: isEmail("Invalid email"),
-      password: isInRange(
+      password: hasLength(
         { min: 8, max: 20 },
         "Password must be 8-20 characters long"
       ),
