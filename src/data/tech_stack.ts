@@ -106,5 +106,8 @@ export const techStack = [
     "Gemini",
     "Supabase",
     "Firebase",
-    "Jupyter Notebooks"
+    "Jupyter Notebooks",
+    "Godot",
+    "Unity",
+    "Unreal"
   ]
