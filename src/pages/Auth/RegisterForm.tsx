@@ -57,7 +57,7 @@ export function RegisterForm() {
         title: "Success!",
         description: "Check your email for a confirmation link",
       },
-      error: { title: "Error", description: "Something went wrong" },
+      error: { title: "Error", description: error?.message },
     });
     if (isSuccess) {
       form.reset();
