@@ -3,9 +3,7 @@ import { Box, Center, Container } from "@chakra-ui/react";
 import { Footer } from "@/components/Footer";
 import { useLocation } from "react-router";
 import { useEffect } from "react";
-import { Toaster } from "@/components/ui/toaster";
 import { Outlet } from "react-router";
-import { GalaxyBg } from "@/assets/background/GalaxyBg";
 
 export function AuthLayout() {
   const { pathname } = useLocation();
@@ -15,14 +13,12 @@ export function AuthLayout() {
   }, [pathname]);
   return (
     <>
-      <GalaxyBg subtle={true} />
       <Box position={"relative"}>
         <Navbar />
         <Center as="main" minH="100dvh" px={{ base: 4, md: 32 }}>
           <Outlet />
         </Center>
         <Footer />
-        <Toaster />
       </Box>
     </>
   );
@@ -36,7 +32,6 @@ export function MainLayout() {
   }, [pathname]);
   return (
     <>
-      <GalaxyBg subtle={true} />
       <Box position={"relative"}>
         <Navbar />
         <Container
@@ -51,7 +46,6 @@ export function MainLayout() {
           <Outlet />
         </Container>
         <Footer />
-        <Toaster />
       </Box>
     </>
   );
@@ -70,7 +64,6 @@ export function FullWidthLayout() {
         <Outlet />
       </Box>
       <Footer />
-      <Toaster />
     </Box>
   );
 }

@@ -1,22 +1,14 @@
 import { isEmail, hasLength, matchesField, isNotEmpty } from "@mantine/form";
-import {
-  EmailField,
-  PasswordField,
-  ConfirmPasswordField,
-  FirstNameField,
-  LastNameField,
-  UsernameField,
-} from "./FormFields";
-import { useRegister } from "@/hooks/useAuth";
-import { Alert, Button, Fieldset, Text } from "@chakra-ui/react";
+import { Button, Fieldset, Group, Text } from "@chakra-ui/react";
 import { NavLink } from "react-router";
-import { toaster } from "@/components/ui/toaster";
+import * as Form from "./FormFields";
+import { useRegister } from "@/hooks/useAuth";
 import { AuthFormProvider, useAuthForm } from "@/context/form-context";
 import type { RegisterUser } from "@/hooks/useAuth";
 import { useEffect } from "react";
 
 export function RegisterForm() {
-  const { mutateAsync: register, isPending, error, isSuccess } = useRegister();
+  const { mutateAsync: register, isPending, isSuccess } = useRegister();
   const form = useAuthForm({
     mode: "uncontrolled",
     initialValues: {
@@ -40,56 +32,28 @@ export function RegisterForm() {
     },
   });
 
-  const handleSubmit = form.onSubmit((v) => {
-    const newUser: RegisterUser = {
-      email: v.email,
-      password: v.password,
-      first_name: v.first_name!,
-      last_name: v.last_name!,
-      username: v.username!,
-    } satisfies RegisterUser;
-
-    const result = register(newUser);
-
-    toaster.promise(result, {
-      loading: { title: "Creating new account...", description: "Please wait" },
-      success: {
-        title: "Success!",
-        description: "Check your email for a confirmation link",
-      },
-      error: { title: "Error", description: error?.message },
-    });
-    if (isSuccess) {
-      form.reset();
-    }
+  const handleSubmit = form.onSubmit(async (values) => {
+    await register(values as RegisterUser);
   });
 
   useEffect(() => {
-    if (isSuccess) {
-      form.reset();
-    }
+    if (isSuccess) form.reset();
   }, [isSuccess]);
 
   return (
     <AuthFormProvider form={form}>
       <form onSubmit={handleSubmit}>
-        <Fieldset.Root disabled={isPending} mt={24}>
+        <Fieldset.Root disabled={isPending} mt={12}>
           <Fieldset.Legend fontSize={"2xl"}>Create an account</Fieldset.Legend>
-          {isSuccess && (
-            <Alert.Root status="success" title="Success!">
-              <Alert.Indicator />
-              <Alert.Title>
-                Check your email for a verification link!
-              </Alert.Title>
-            </Alert.Root>
-          )}
           <Fieldset.Content>
-            <FirstNameField />
-            <LastNameField />
-            <UsernameField />
-            <EmailField />
-            <PasswordField />
-            <ConfirmPasswordField />
+            <Group>
+              <Form.FirstNameField />
+              <Form.LastNameField />
+            </Group>
+            <Form.UsernameField />
+            <Form.EmailField />
+            <Form.PasswordField />
+            <Form.ConfirmPasswordField />
             <Button
               type="submit"
               loading={isPending}

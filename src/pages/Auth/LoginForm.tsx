@@ -3,11 +3,10 @@ import { useLogin } from "@/hooks/useAuth";
 import { Button, Fieldset, Text } from "@chakra-ui/react";
 import { NavLink } from "react-router";
 import { EmailField, PasswordField } from "./FormFields";
-import { toaster } from "@/components/ui/toaster";
 import { AuthFormProvider, useAuthForm } from "@/context/form-context";
 
 export function LoginForm() {
-  const { mutateAsync: login, isPending: loginPending, error } = useLogin();
+  const { mutateAsync: login, isPending } = useLogin();
 
   const form = useAuthForm({
     mode: "uncontrolled",
@@ -21,22 +20,14 @@ export function LoginForm() {
     },
   });
 
-  const handleSubmit = form.onSubmit(() => {
-    const result = login(form.getValues());
-    toaster.promise(result, {
-      loading: { title: "Logging in...", description: "Please wait" },
-      success: {
-        title: "Success!",
-        description: "Redirecting...",
-      },
-      error: { title: error?.name, description: error?.message },
-    });
+  const handleSubmit = form.onSubmit((user) => {
+    login(user);
   });
 
   return (
     <AuthFormProvider form={form}>
       <form onSubmit={handleSubmit}>
-        <Fieldset.Root disabled={loginPending}>
+        <Fieldset.Root disabled={isPending}>
           <Fieldset.Legend fontSize={"2xl"}>Login</Fieldset.Legend>
           <Fieldset.Content>
             <EmailField />
@@ -47,7 +38,7 @@ export function LoginForm() {
             </Text>
             <Button
               type="submit"
-              loading={loginPending}
+              loading={isPending}
               loadingText="Logging in..."
               my={2}
             >

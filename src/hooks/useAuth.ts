@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "./supabaseClient";
+import { toaster } from "@/components/ui/toaster";
 
 interface AuthUser {
     email: string;
@@ -19,10 +20,18 @@ export function useLogin() {
         },
         onSuccess: ({ session }) => {
             queryClient.setQueryData(["session"], session);
-            console.log("Login successful");
+            toaster.create({
+                title: "Login successful!",
+                type: "success"
+            })
         },
         onError: (error) => {
             console.error("Login error:", error);
+            toaster.create({
+                title: error.name,
+                description: error.message,
+                type: "error"
+            })
         },
     });
 }
@@ -53,10 +62,20 @@ export function useRegister() {
         },
         onSuccess: (data) => {
             queryClient.setQueryData(["session"], data.session);
-            console.log("Registration successful");
+            console.log("Registration successful")
+            toaster.create({
+                title: "Registration successful!",
+                description: "Check your email for a verification link",
+                type: "success"
+            })
         },
         onError: (error) => {
             console.error("Registration error:", error);
+            toaster.create({
+                title: error.name,
+                description: error.message,
+                type: "error"
+            })
         },
     });
 }
@@ -72,9 +91,18 @@ export function useLogout() {
         onSuccess: () => {
             queryClient.setQueryData(["session"], null);
             console.log("Logout successful");
+            toaster.create({
+                title: "Logged out successfully",
+                type: "info"
+            })
         },
         onError: (error) => {
             console.error("Logout error:", error);
+            toaster.create({
+                title: error.name,
+                description: error.message,
+                type: "error"
+            })
         },
     });
 }
@@ -91,9 +119,19 @@ export function useForgotPassword() {
         },
         onSuccess: (email) => {
             console.log("Successfully sent link to:", email)
+            toaster.create({
+                title: "Success",
+                description: `Reset password link sent to ${email}`,
+                type: "success"
+            })
         },
         onError: (error) => {
             console.error("Error sending reset password link:", error);
+            toaster.create({
+                title: error.name,
+                description: error.message,
+                type: "error"
+            })
         }
     })
 }
@@ -110,9 +148,18 @@ export function useResetPassword() {
         },
         onSuccess: () => {
             console.log("Password successfully changed");
+            toaster.create({
+                title: "Password successfully reset!",
+                type: "success"
+            })
         },
         onError: (error) => {
-            console.error("Error reseting password:", error)
+            console.error("Error reseting password:", error);
+            toaster.create({
+                title: error.name,
+                description: error.message,
+                type: "error"
+            })
         }
     })
 }
