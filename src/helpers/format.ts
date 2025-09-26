@@ -9,6 +9,8 @@ type FormattedDate = {
     fullDate: string;
 };
 
+import type { Officer } from "@/types";
+
 export function FormatDate(date: Date): FormattedDate {
     const formatted = {
         month: date.toLocaleString("default", { month: "long" }),
@@ -48,3 +50,9 @@ export function sanitizeFileName(name: string) {
   
     return `${cleanBase}${ext}`;
   }
+
+  export const sortOfficers = (officers: Officer[]) =>
+    // Sorts by officer's level and then their seniority
+    [...officers].sort((a, b) =>
+      (b.level - a.level) || (a.created_at.getTime() - b.created_at.getTime())
+    );

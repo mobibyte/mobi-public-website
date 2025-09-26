@@ -14,6 +14,8 @@ export function useGetAllOfficers() {
 
             return data as Officer[];
         },
+        select: (rows): Officer[] =>
+            rows.map((officer) => ({ ...officer, created_at: new Date(officer.created_at) })),
         staleTime: 60_000,
     })
 }
