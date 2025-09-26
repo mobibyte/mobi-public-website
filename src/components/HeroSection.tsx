@@ -13,7 +13,6 @@ import {
   IconBrandInstagram,
 } from "@tabler/icons-react";
 import { Reveal } from "./ui/Reveal";
-import { GalaxyBg } from "@/assets/background/GalaxyBg";
 
 export function HeroSection() {
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -21,7 +20,6 @@ export function HeroSection() {
 
   return (
     <>
-      <GalaxyBg />
       <Stack
         direction={{ base: "column", md: "row" }}
         align="center"
