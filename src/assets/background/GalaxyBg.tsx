@@ -1,6 +1,6 @@
 import Galaxy from "./Galaxy";
 import { Box } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router";
 import { animate } from "framer-motion";
 
@@ -36,12 +36,16 @@ const subtleValues = {
   density: 0.8,
   glowIntensity: 0.2,
   twinkleIntensity: 0.2,
-  saturation: 0,
+  saturation: 0.1,
   hueShift: 100,
-  speed: 0.2,
+  speed: 1,
 };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+const lerpAngle = (a: number, b: number, t: number) => {
+  let diff = ((b - a + 540) % 360) - 180;
+  return a + diff * t;
+};
 const mix = (
   from: typeof defaultValues,
   to: typeof defaultValues,
@@ -51,7 +55,7 @@ const mix = (
   glowIntensity: lerp(from.glowIntensity, to.glowIntensity, t),
   twinkleIntensity: lerp(from.twinkleIntensity, to.twinkleIntensity, t),
   saturation: lerp(from.saturation, to.saturation, t),
-  hueShift: lerp(from.hueShift, to.hueShift, t), // if this is an angle, consider shortest-arc wrap
+  hueShift: lerpAngle(from.hueShift, to.hueShift, t),
   speed: lerp(from.speed, to.speed, t),
 });
 
@@ -62,9 +66,14 @@ export function GalaxyBg() {
     pathname === "/" ? defaultValues : subtleValues
   );
 
+  const propsRef = useRef(props);
+  useEffect(() => {
+    propsRef.current = props;
+  }, [props]);
+
   useEffect(() => {
     const to = pathname === "/" ? defaultValues : subtleValues;
-    const from = props;
+    const from = propsRef.current;
 
     const controls = animate(0, 1, {
       duration: 0.9,

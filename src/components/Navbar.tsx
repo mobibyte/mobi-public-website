@@ -40,6 +40,18 @@ export function Navbar() {
             "transform 220ms ease, box-shadow 220ms ease, background 220ms ease",
           willChange: "transform",
           boxShadow: scrolled ? "0 2px 10px rgba(0,0,0,0.15)" : "none",
+          maskImage: `
+          linear-gradient(
+            to bottom,
+            rgba(0,0,0,1) 75%,     /* fully visible until 75% */
+            rgba(0,0,0,0) 100%     /* fade out again at bottom */
+          )`,
+          WebkitMaskImage: `
+          linear-gradient(
+            to bottom,
+            rgba(0,0,0,1) 75%,
+            rgba(0,0,0,0) 100%
+          )`,
         }}
       >
         <HStack gap={4}>

@@ -1,4 +1,4 @@
-import { Box, Text, Stack, Skeleton } from "@chakra-ui/react";
+import { Text, Stack, Skeleton } from "@chakra-ui/react";
 
 type Props = {
   heading: string;
@@ -8,15 +8,20 @@ type Props = {
 export function EventListSkeleton({ heading, count }: Props) {
   return (
     <>
-      <Text fontSize="2xl" mt={8} className="space-grotesk-500">
+      <Text
+        fontSize="3xl"
+        mt={8}
+        className="space-grotesk-500"
+        color={"#0084FF"}
+      >
         {heading}
       </Text>
       <Stack>
         {Array.from({ length: count }, (_, index) => (
-          <Box key={index}>
-            <Skeleton height="5" />
-            <Skeleton height="4" width="80%" />
-          </Box>
+          <Stack key={index}>
+            <Skeleton height="6" width="40%" />
+            <Skeleton height="4" width="30%" />
+          </Stack>
         ))}
       </Stack>
     </>

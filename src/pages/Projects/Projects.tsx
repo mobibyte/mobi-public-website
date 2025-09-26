@@ -11,6 +11,7 @@ import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useGetAllProjects } from "@/hooks/useProjects";
+import { ProjectSkeleton } from "./ProjectSkeleton";
 
 export function Projects() {
   const { data: projects, isPending, isError, error } = useGetAllProjects();
@@ -37,32 +38,6 @@ export function Projects() {
 
   const visibleProjects = projects?.slice(startRange, endRange);
 
-  const display = () => {
-    if (isPending) {
-      return <h1>Loading projects...</h1>;
-    }
-    if (isError) {
-      return <h1>Error loading projects: {error.message}</h1>;
-    }
-    return (
-      <Grid
-        templateColumns={{
-          base: "1fr",
-          sm: "repeat(2, 1fr)",
-          md: "repeat(2, 1fr)",
-          lg: "repeat(3, 1fr)",
-        }}
-        gap="6"
-        flex={"grow"}
-      >
-        {visibleProjects?.map((project) => (
-          <Reveal delay={150} key={project.id}>
-            <ProjectCard project={project} key={project.id} />
-          </Reveal>
-        ))}
-      </Grid>
-    );
-  };
   return (
     <>
       <Heading
@@ -74,7 +49,25 @@ export function Projects() {
       >
         Community Projects
       </Heading>
-      {display()}
+      {isError && <h1>Error loading projects: {error.message}</h1>}
+      <Reveal delay={150}>
+        <Grid
+          templateColumns={{
+            base: "1fr",
+            sm: "repeat(2, 1fr)",
+            md: "repeat(2, 1fr)",
+            lg: "repeat(3, 1fr)",
+          }}
+          gap="6"
+          flex={"grow"}
+        >
+          {isPending
+            ? Array.from({ length: 9 }, (_, i) => <ProjectSkeleton key={i} />)
+            : visibleProjects?.map((project) => (
+                <ProjectCard project={project} key={project.id} />
+              ))}
+        </Grid>
+      </Reveal>
 
       {projects && projects.length > pageSize && (
         <Pagination.Root

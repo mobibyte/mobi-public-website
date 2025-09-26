@@ -1,6 +1,7 @@
 import { Grid, Heading, Text } from "@chakra-ui/react";
 import { OfficerCard } from "./OfficerCard";
 import { useGetAllOfficers } from "@/hooks/useOfficer";
+import { sortOfficers } from "@/helpers/format";
 
 export function Officers() {
   const { data, isPending, error } = useGetAllOfficers();
@@ -10,7 +11,7 @@ export function Officers() {
     else if (error) <Text>{error.message}</Text>;
     else if (!data) <Text>No officers found</Text>;
     else {
-      return data.map((officer) => {
+      return sortOfficers(data).map((officer) => {
         return <OfficerCard officer={officer} key={officer.user_id} />;
       });
     }
