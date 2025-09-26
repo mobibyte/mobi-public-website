@@ -1,4 +1,4 @@
-import { isEmail, isInRange, matchesField, isNotEmpty } from "@mantine/form";
+import { isEmail, hasLength, matchesField, isNotEmpty } from "@mantine/form";
 import {
   EmailField,
   PasswordField,
@@ -8,11 +8,12 @@ import {
   UsernameField,
 } from "./FormFields";
 import { useRegister } from "@/hooks/useAuth";
-import { Button, Fieldset, Text } from "@chakra-ui/react";
+import { Alert, Button, Fieldset, Text } from "@chakra-ui/react";
 import { NavLink } from "react-router";
 import { toaster } from "@/components/ui/toaster";
 import { AuthFormProvider, useAuthForm } from "@/context/form-context";
 import type { RegisterUser } from "@/hooks/useAuth";
+import { useEffect } from "react";
 
 export function RegisterForm() {
   const { mutateAsync: register, isPending, error, isSuccess } = useRegister();
@@ -31,7 +32,7 @@ export function RegisterForm() {
       last_name: isNotEmpty("Last name is required"),
       username: isNotEmpty("Username is required"),
       email: isEmail("Invalid email"),
-      password: isInRange(
+      password: hasLength(
         { min: 8, max: 20 },
         "Password must be 8-20 characters long"
       ),
@@ -56,18 +57,32 @@ export function RegisterForm() {
         title: "Success!",
         description: "Check your email for a confirmation link",
       },
-      error: { title: error?.name, description: error?.message },
+      error: { title: "Error", description: "Something went wrong" },
     });
     if (isSuccess) {
       form.reset();
     }
   });
 
+  useEffect(() => {
+    if (isSuccess) {
+      form.reset();
+    }
+  }, [isSuccess]);
+
   return (
     <AuthFormProvider form={form}>
       <form onSubmit={handleSubmit}>
         <Fieldset.Root disabled={isPending} mt={24}>
           <Fieldset.Legend fontSize={"2xl"}>Create an account</Fieldset.Legend>
+          {isSuccess && (
+            <Alert.Root status="success" title="Success!">
+              <Alert.Indicator />
+              <Alert.Title>
+                Check your email for a verification link!
+              </Alert.Title>
+            </Alert.Root>
+          )}
           <Fieldset.Content>
             <FirstNameField />
             <LastNameField />
