@@ -22,7 +22,7 @@ export function EventCard({ event }: { event: Event }) {
 
     return (
         <Stack direction={"row"} align={"center"} gap={6} className="group">
-            <EventDialog event={event} rsvp={rsvp}>
+            <EventDialog event={event}>
                 <Stack gap={0} alignSelf={"start"} flex={1}>
                     <Group>
                         {isAttending && <IconCalendarCheck color="#FF00AA" />}

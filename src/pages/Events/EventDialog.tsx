@@ -8,7 +8,7 @@ import {
     Stack,
 } from "@chakra-ui/react";
 import type { ReactNode } from "react";
-import type { Event, RSVP } from "@/types";
+import type { Event } from "@/types";
 import {
     IconCalendar,
     IconPin,
@@ -23,10 +23,9 @@ import { useGetEventRsvp } from "@/hooks/useRsvp";
 type Props = {
     children: ReactNode;
     event: Event;
-    rsvp: RSVP[];
 };
 
-export function EventDialog({ children, event, rsvp }: Props) {
+export function EventDialog({ children, event }: Props) {
     const hasNotEnded = new Date(event.ends_at) > new Date();
     const { data: eventRsvp, isPending } = useGetEventRsvp(event);
     return (
