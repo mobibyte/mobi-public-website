@@ -1,5 +1,3 @@
-
-
 export interface Event {
     id: string;
     created_at: Date;
@@ -34,7 +32,7 @@ export type Officer = {
     role: string;
     user_profile: Profile;
     level: number;
-}
+};
 
 export interface Profile {
     id: string;
@@ -80,12 +78,15 @@ export interface Event {
     ends_at: Date;
     semester: string;
     profiles: Profile;
+    mavengage_url: string;
+    description: string;
+    image: string;
 }
 
 export type RSVP = {
-    id: string,
+    id: string;
     created_at: Date;
     event_id: string;
     user_id: string;
     user_profile?: Profile;
-}
+};

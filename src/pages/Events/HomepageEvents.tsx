@@ -1,21 +1,20 @@
 import { useGetCurrentSemesterEvents } from "@/hooks/useEvents";
+import { useGetUserRsvp } from "@/hooks/useRsvp";
 import { EventCard } from "./EventCard";
 import { Reveal } from "@/components/ui/Reveal";
-import { Button, Stack, Text } from "@chakra-ui/react";
+import { Button, Stack, Text, Heading } from "@chakra-ui/react";
 import { NavLink } from "react-router";
 import { Wave } from "@assets/waves/Wave";
-import { RsvpProvider } from "@/providers/RsvpProvider";
+import { EventListSkeleton } from "./EventListSkeleton";
 
-export function UpcomingEvents() {
-    const { data: events, isLoading } = useGetCurrentSemesterEvents();
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (!events || events.length === 0) {
-        return <div>No upcoming events</div>;
-    }
+// Displayed on the homepage
+// Rename to HomepageEvents later
+export function HomepageEvents() {
+    const { data: events, isPending: eventsPending } =
+        useGetCurrentSemesterEvents();
+    const { isPending: rsvpPending } = useGetUserRsvp();
+    const pending = rsvpPending || eventsPending;
+    const noEvents = !events || events.length === 0;
 
     return (
         <Stack
@@ -36,7 +35,11 @@ export function UpcomingEvents() {
             >
                 Upcoming Events
             </Text>
-            <RsvpProvider>
+            {pending ? (
+                <EventListSkeleton count={2} />
+            ) : noEvents ? (
+                <Heading>No events available. Check back soon!</Heading>
+            ) : (
                 <Stack
                     gap={4}
                     width="100%"
@@ -48,7 +51,7 @@ export function UpcomingEvents() {
                         </Reveal>
                     ))}
                 </Stack>
-            </RsvpProvider>
+            )}
             <Button asChild>
                 <NavLink to="/events">View All Events</NavLink>
             </Button>
