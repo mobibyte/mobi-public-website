@@ -3,25 +3,31 @@ import { useGetAllSemesterEvents } from "@/hooks/useEvents";
 import { EventList } from "./EventList";
 import { EventListSkeleton } from "./EventListSkeleton";
 import { getSemester, FormatDate } from "@/helpers/format";
-import { RsvpProvider } from "@/providers/RsvpProvider";
+import { useGetUserRsvp } from "@/hooks/useRsvp";
+import type { Event } from "@/types/";
 
 // TODO:
 // sort through events from current and past
 // incorporate a calendar view
 
 export function Events() {
-    const { data: events, isPending } = useGetAllSemesterEvents();
+    const { data: events, isPending: eventsPending } =
+        useGetAllSemesterEvents();
+    const { isPending: rsvpPending } = useGetUserRsvp();
+    const noEvents = !events || events.length === 0;
+
+    const pending = rsvpPending || eventsPending;
 
     const currentEvents = events?.filter(
-        (event) =>
+        (event: Event) =>
             new Date(event.starts_at) <= new Date() &&
             new Date(event.ends_at) >= new Date()
     );
     const upcomingEvents = events?.filter(
-        (event) => new Date(event.starts_at) >= new Date()
+        (event: Event) => new Date(event.starts_at) >= new Date()
     );
     const pastEvents = events?.filter(
-        (event) => new Date(event.ends_at) < new Date()
+        (event: Event) => new Date(event.ends_at) < new Date()
     );
 
     return (
@@ -35,15 +41,16 @@ export function Events() {
             >
                 {`${getSemester()} ${FormatDate(new Date()).year} Events`}
             </Heading>
-            {isPending && (
+            {pending ? (
                 <>
                     <EventListSkeleton heading="Current Events" count={1} />
                     <EventListSkeleton heading="Upcoming Events" count={2} />
                     <EventListSkeleton heading="Past Events" count={3} />
                 </>
-            )}
-            {events ? (
-                <RsvpProvider>
+            ) : noEvents ? (
+                <Heading>No events available. Check back soon!</Heading>
+            ) : (
+                <>
                     <EventList
                         events={currentEvents}
                         heading="Current Events"
@@ -53,9 +60,7 @@ export function Events() {
                         heading="Upcoming Events"
                     />
                     <EventList events={pastEvents} heading="Past Events" />
-                </RsvpProvider>
-            ) : (
-                <Heading>No events available. Check back soon!</Heading>
+                </>
             )}
         </Stack>
     );

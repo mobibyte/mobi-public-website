@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { useRsvpContext } from "@/providers/RsvpProvider";
+import { useGetUserRsvp } from "@/hooks/useRsvp";
 import { userIsAttending } from "@/helpers/sort";
 import { useSession } from "@/hooks/useAuth";
 import { useNavigate } from "react-router";
@@ -9,9 +9,10 @@ import { Tooltip } from "@/components/ui/tooltip";
 export function RSVPButton({ eventId }: { eventId: string }) {
     const { mutate: createRsvp, isPending: createPending } = useCreateRsvp();
     const { mutate: deleteRsvp, isPending: deletePending } = useDeleteRsvp();
-    const rsvp = useRsvpContext();
-    const isAttending = userIsAttending(rsvp, eventId);
     const { data: session } = useSession();
+    const { data: rsvp = [] } = useGetUserRsvp();
+    const isAttending = userIsAttending(rsvp, eventId);
+
     const navigate = useNavigate();
     const handleClick = () => {
         if (!session) {
@@ -19,7 +20,8 @@ export function RSVPButton({ eventId }: { eventId: string }) {
             return;
         }
         if (isAttending) {
-            deleteRsvp();
+            console.log("Cancelling RSVP for event:", eventId);
+            deleteRsvp(eventId);
             return;
         }
         createRsvp({ event_id: eventId, user_id: session.user.id });
@@ -46,11 +48,7 @@ export function RSVPButton({ eventId }: { eventId: string }) {
                 size={"sm"}
                 variant={isAttending ? "outline" : "solid"}
             >
-                {isAttending
-                    ? "Attending"
-                    : session
-                    ? "RSVP"
-                    : "Log in to RSVP"}
+                {isAttending ? "Going" : session ? "RSVP" : "Log in to RSVP"}
             </Button>
         </Tooltip>
     );

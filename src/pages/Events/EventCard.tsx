@@ -2,13 +2,14 @@ import { Group, Stack, Text, useBreakpointValue } from "@chakra-ui/react";
 import type { Event } from "@/types/";
 import { FormatDate } from "@/helpers/format";
 import { RSVPButton } from "./RsvpButton";
-import { EventDialog } from "./EventDialog";
 import { IconCalendarCheck } from "@tabler/icons-react";
-import { useRsvpContext } from "@/providers/RsvpProvider";
+import { useGetUserRsvp } from "@/hooks/useRsvp";
 import { userIsAttending } from "@/helpers/sort";
+import { Link } from "react-router";
 
 export function EventCard({ event }: { event: Event }) {
-    const rsvp = useRsvpContext();
+    const { data: rsvp } = useGetUserRsvp();
+
     const isAttending = userIsAttending(rsvp, event.id);
     const {
         day,
@@ -22,8 +23,8 @@ export function EventCard({ event }: { event: Event }) {
 
     return (
         <Stack direction={"row"} align={"center"} gap={6} className="group">
-            <EventDialog event={event}>
-                <Stack gap={0} alignSelf={"start"} flex={1}>
+            <Stack gap={0} alignSelf={"start"} flex={1}>
+                <Link to={`/events/${event.id}`}>
                     <Group>
                         {isAttending && <IconCalendarCheck color="#FF00AA" />}
                         <Text
@@ -49,8 +50,8 @@ export function EventCard({ event }: { event: Event }) {
                             {event.location}
                         </Text>
                     </Stack>
-                </Stack>
-            </EventDialog>
+                </Link>
+            </Stack>
             {hasNotEnded && !isMobile && <RSVPButton eventId={event.id} />}
         </Stack>
     );
