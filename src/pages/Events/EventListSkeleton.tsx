@@ -16,7 +16,7 @@ export function EventListSkeleton({ heading, count }: Props) {
       >
         {heading}
       </Text>
-      <Stack>
+      <Stack gap={4}>
         {Array.from({ length: count }, (_, index) => (
           <Stack key={index}>
             <Skeleton height="6" width="40%" />

@@ -9,7 +9,11 @@ const config = defineConfig({
         brand: {
           500: { value: "#5c7cfa" },
         },
-        appBg: { value: "#0C001A" }, 
+        mobi: { 
+          purple: {
+            900: {value: "#0C001A"}
+          }
+         }, 
       },
     },
 
@@ -17,9 +21,24 @@ const config = defineConfig({
     semanticTokens: {
       colors: {
         bg: {
+          default: { value: "{colors.mobi.purple.900}"},
+          _dark: { value: "{colors.mobi.purple.900}"},
           canvas: {
-            value: { base: "{colors.white}", _dark: "{colors.appBg}" },
+            value: { base: "{colors.mobi.purple.900}", _dark: "{colors.mobi.purple.900}" },
           },
+        },
+        fg: {
+          default: { value: "#1a1a1a" },
+          _dark: { value: "#f5f5f5" },
+        },
+        // optional: muted surfaces (cards/menus often reference this)
+        muted: {
+          default: { value: "#f9f9f9" },
+          _dark: { value: "#1e1e1e" },
+        },
+        accent: {
+          default: { value: "#3182ce" },
+          _dark: { value: "#63b3ed" },
         },
       },
     },

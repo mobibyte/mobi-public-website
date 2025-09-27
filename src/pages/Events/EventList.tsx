@@ -1,6 +1,8 @@
 import { Text, Stack, Separator } from "@chakra-ui/react";
 import { EventCard } from "./EventCard";
 import type { Event } from "@/types";
+import { Reveal } from "@/components/ui/Reveal";
+import { RsvpProvider } from "@/providers/RsvpProvider";
 
 type Props = {
   events: Event[] | undefined;
@@ -22,11 +24,15 @@ export function EventList({ events, heading }: Props) {
         {heading}
       </Text>
       <Separator />
-      <Stack gap={4}>
-        {events.map((event: Event) => (
-          <EventCard key={event.id} event={event} />
-        ))}
-      </Stack>
+      <RsvpProvider>
+        <Reveal delay={150}>
+          <Stack gap={4}>
+            {events.map((event: Event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+          </Stack>
+        </Reveal>
+      </RsvpProvider>
     </Stack>
   );
 }

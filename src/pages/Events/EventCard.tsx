@@ -44,7 +44,7 @@ export function EventCard({ event }: { event: Event }) {
             </Text>
           </Stack>
         </Stack>
-        {hasNotEnded && <RSVPButton eventId={event.id} />}
+        {hasNotEnded && <RSVPButton event={event} />}
       </Stack>
     </EventDialog>
   );

@@ -34,15 +34,7 @@ export function Events() {
       >
         {`${getSemester()} ${FormatDate(new Date()).year} Events`}
       </Heading>
-      {isPending && (
-        <>
-          {" "}
-          <EventListSkeleton heading="Current Events" count={1} />
-          <EventListSkeleton heading="Upcoming Events" count={2} />
-          <EventListSkeleton heading="Past Events" count={3} />
-        </>
-      )}
-      {events ? (
+      {events && !isPending ? (
         <>
           <EventList events={currentEvents} heading="Current Events" />
           <EventList events={upcomingEvents} heading="Upcoming Events" />
@@ -50,6 +42,12 @@ export function Events() {
         </>
       ) : (
         <Heading>No events available. Check back soon!</Heading>
+      )}
+      {isPending && (
+        <>
+          <EventListSkeleton heading="Upcoming Events" count={2} />
+          <EventListSkeleton heading="Past Events" count={3} />
+        </>
       )}
     </Stack>
   );

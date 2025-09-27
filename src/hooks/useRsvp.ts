@@ -2,6 +2,7 @@ import { supabase } from "./supabaseClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { RSVP } from "@/types";
 import type { Event } from "@/types";
+import { useSession } from "./useAuth";
 
 export function useCreateRsvp() {
     const queryClient = useQueryClient();
@@ -22,6 +23,21 @@ export function useCreateRsvp() {
             console.error(err)
         },
     });
+}
+
+export function useGetUserRsvp() {
+    const { data: session } = useSession();
+    return useQuery({
+        queryKey: ["rsvp", session?.user.id],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from("rsvp")
+                .select("*")
+                .eq("user_id", session?.user.id)
+            if (error) throw error;
+            return data as RSVP[] ?? [];
+        }
+    })
 }
 
 export function useGetEventRsvp(event: Event) {
