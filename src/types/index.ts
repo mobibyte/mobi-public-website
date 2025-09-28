@@ -1,16 +1,3 @@
-export interface Event {
-    id: string;
-    created_at: Date;
-    created_by: string;
-    title: string;
-    location: string;
-    momocoins: number;
-    attendance: number;
-    starts_at: Date;
-    ends_at: Date;
-    semester: string;
-}
-
 export interface CheckIn {
     id: string;
     event_id: number;
