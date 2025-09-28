@@ -1,6 +1,7 @@
 import { Stack, Heading, Text, Group } from "@chakra-ui/react";
 import { NavLink } from "react-router";
 import RotatingText from "@/assets/animations/RotatingText";
+import { GalaxyBg } from "@/assets/background/GalaxyBg";
 
 export function JoinToday() {
     return (
@@ -14,7 +15,7 @@ export function JoinToday() {
             minH="100dvh"
             justifyContent={"center"}
         >
-            {/* Galaxy background static here */}
+            <GalaxyBg />
             <Stack>
                 <Heading
                     fontWeight={700}
