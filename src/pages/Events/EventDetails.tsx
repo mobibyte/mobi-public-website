@@ -9,6 +9,7 @@ import {
     Heading,
     Text,
     Separator,
+    AspectRatio,
 } from "@chakra-ui/react";
 import { AttendeesAvatars } from "./AttendeesAvatars";
 import {
@@ -19,8 +20,10 @@ import {
 } from "@tabler/icons-react";
 import { FormatDate } from "@/helpers/format";
 import { Link } from "react-router";
+import { useGetUserOfficer } from "@/hooks/useOfficer";
 
 export function EventDetails() {
+    const { data: officer } = useGetUserOfficer();
     const params = useParams();
     const { data: event, isPending } = useGetEvent(params.event_id);
 
@@ -40,7 +43,9 @@ export function EventDetails() {
     const hasNotEnded = new Date(event.ends_at) > new Date();
     return (
         <Stack direction={{ base: "column", md: "row" }} gap={8}>
-            <Image src={event?.image ?? null} alt={event?.title} flex={1} />
+            <AspectRatio flex={1} ratio={4 / 3}>
+                <Image src={event?.image ?? undefined} alt={event?.title} />
+            </AspectRatio>
             <Stack flex={1}>
                 <Heading size={"2xl"}>{event?.title}</Heading>
                 <Text>{event.description}</Text>
@@ -68,11 +73,22 @@ export function EventDetails() {
                 <Heading>Attendees</Heading>
                 <AttendeesAvatars />
                 <Group>
-                    <Button asChild variant={"outline"} size={"sm"}>
-                        <Link to={event.mavengage_url ?? null} target="_blank">
-                            MavEngage
-                        </Link>
-                    </Button>
+                    {officer && (
+                        <Button size={"sm"}>
+                            <Link to={`/event/edit/${event.id}`}>Edit</Link>
+                        </Button>
+                    )}
+                    {event.mavengage_url && (
+                        <Button asChild variant={"outline"} size={"sm"}>
+                            <Link
+                                to={event.mavengage_url ?? null}
+                                target="_blank"
+                            >
+                                MavEngage
+                            </Link>
+                        </Button>
+                    )}
+
                     {hasNotEnded && <RSVPButton eventId={event?.id} />}
                 </Group>
             </Stack>
