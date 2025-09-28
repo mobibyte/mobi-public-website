@@ -1,10 +1,12 @@
-import { Stack, Heading } from "@chakra-ui/react";
+import { Stack, Heading, Button } from "@chakra-ui/react";
 import { useGetAllSemesterEvents } from "@/hooks/useEvents";
 import { EventList } from "./EventList";
 import { EventListSkeleton } from "./EventListSkeleton";
 import { getSemester, FormatDate } from "@/helpers/format";
 import { useGetUserRsvp } from "@/hooks/useRsvp";
-import type { Event } from "@/types/";
+import { useGetUserOfficer } from "@/hooks/useOfficer";
+import { sortEventsByDate } from "@/helpers/sort";
+import { Link } from "react-router";
 
 // TODO:
 // sort through events from current and past
@@ -13,22 +15,15 @@ import type { Event } from "@/types/";
 export function Events() {
     const { data: events, isPending: eventsPending } =
         useGetAllSemesterEvents();
-    const { isPending: rsvpPending } = useGetUserRsvp();
+    void useGetUserRsvp();
+
+    const { data: officer } = useGetUserOfficer();
+
     const noEvents = !events || events.length === 0;
+    const pending = eventsPending;
 
-    const pending = rsvpPending || eventsPending;
-
-    const currentEvents = events?.filter(
-        (event: Event) =>
-            new Date(event.starts_at) <= new Date() &&
-            new Date(event.ends_at) >= new Date()
-    );
-    const upcomingEvents = events?.filter(
-        (event: Event) => new Date(event.starts_at) >= new Date()
-    );
-    const pastEvents = events?.filter(
-        (event: Event) => new Date(event.ends_at) < new Date()
-    );
+    const { currentEvents, upcomingEvents, pastEvents } =
+        sortEventsByDate(events);
 
     return (
         <Stack mx="auto" w={"full"} gap={8}>
@@ -41,6 +36,11 @@ export function Events() {
             >
                 {`${getSemester()} ${FormatDate(new Date()).year} Events`}
             </Heading>
+            {officer && (
+                <Button ml={"auto"} size={"sm"} asChild>
+                    <Link to={"/event/add"}>Create Event</Link>
+                </Button>
+            )}
             {pending ? (
                 <>
                     <EventListSkeleton heading="Current Events" count={1} />
