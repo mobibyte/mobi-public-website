@@ -51,6 +51,7 @@ export type Project = {
     tech_stack: string[];
     bg_color: string | "FFF";
     user_profile?: Profile;
+    slug: string;
 };
 
 export interface Event {

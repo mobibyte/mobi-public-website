@@ -4,6 +4,7 @@ import type { Project } from "@/types";
 import { useSession } from "./useAuth";
 import { sanitizeFileName } from "@/helpers/format";
 import { useParams } from "react-router";
+import { slugify } from "@/helpers/format";
 
 export function useCreateProject() {
     const { data: session } = useSession();
@@ -45,6 +46,7 @@ export function useCreateProject() {
                 .insert({
                     ...project,
                     user_id: session.user.id,
+                    slug: slugify(project?.title ?? "")
                 });
 
             if (createError) throw createError;
@@ -110,6 +112,28 @@ export function useGetProjectById(project_id: string | undefined) {
         gcTime: 1000 * 60 * 60,
         enabled: !!project_id,
     });
+}
+
+type Props = {
+    slug: string | undefined;
+    username: string | undefined;
+}
+
+export function useGetProjectByName({username, slug}: Props) {
+    return useQuery({
+        queryKey: ["project", slug],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from("projects")
+                .select("*, profiles!inner(username)")
+                .eq("slug", slug)
+                .eq("profiles.username", username)
+                .single()
+
+            if (error) throw error;
+            return data as Project;
+        }
+    })
 }
 
 export function useGetRecentProjects() {
