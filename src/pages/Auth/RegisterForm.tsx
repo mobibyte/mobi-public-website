@@ -1,6 +1,6 @@
 import { isEmail, hasLength, matchesField, isNotEmpty } from "@mantine/form";
 import { Button, Fieldset, Group, Text } from "@chakra-ui/react";
-import { NavLink } from "react-router";
+import { Link } from "react-router";
 import * as Form from "./FormFields";
 import { useRegister } from "@/hooks/useAuth";
 import { AuthFormProvider, useAuthForm } from "@/context/form-context";
@@ -54,6 +54,7 @@ export function RegisterForm() {
             <Form.EmailField />
             <Form.PasswordField />
             <Form.ConfirmPasswordField />
+
             <Button
               type="submit"
               loading={isPending}
@@ -62,8 +63,11 @@ export function RegisterForm() {
             >
               Register
             </Button>
+            <Text color={"fg.subtle"} asChild>
+              <Link to="/resend-verification">Resend Verification Email</Link>
+            </Text>
             <Text asChild>
-              <NavLink to="/login">Already have an account? Login!</NavLink>
+              <Link to="/login">Already have an account? Login!</Link>
             </Text>
           </Fieldset.Content>
         </Fieldset.Root>
