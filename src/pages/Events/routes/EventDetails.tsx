@@ -1,6 +1,6 @@
 import { useGetEvent } from "@/hooks/useEvents";
 import { useParams } from "react-router";
-import { RSVPButton } from "./RsvpButton";
+import { RSVPButton } from "../RsvpButton";
 import {
     Stack,
     Image,
@@ -11,7 +11,7 @@ import {
     Separator,
     AspectRatio,
 } from "@chakra-ui/react";
-import { AttendeesAvatars } from "./AttendeesAvatars";
+import { AttendeesAvatars } from "../AttendeesAvatars";
 import {
     IconCalendar,
     IconPin,
@@ -72,9 +72,9 @@ export function EventDetails() {
                 <Separator />
                 <Heading>Attendees</Heading>
                 <AttendeesAvatars />
-                <Group>
+                <Group mt={4}>
                     {officer && (
-                        <Button size={"sm"}>
+                        <Button size={"sm"} asChild>
                             <Link to={`/event/edit/${event.id}`}>Edit</Link>
                         </Button>
                     )}
