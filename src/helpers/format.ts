@@ -96,3 +96,15 @@ export const toLocalInputValue = (d?: Date | string) => {
     const mi = pad(date.getMinutes());
     return `${yyyy}-${mm}-${dd}T${hh}:${mi}`;
 };
+
+export function slugify(str: string): string {
+    return str
+      .normalize("NFD")                 // split accented letters into base + accent
+      .replace(/[\u0300-\u036f]/g, "")  // remove accents
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")     // remove invalid chars
+      .replace(/\s+/g, "-")             // spaces → dashes
+      .replace(/-+/g, "-");             // collapse multiple dashes
+}
+  
