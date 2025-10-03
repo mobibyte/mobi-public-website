@@ -80,36 +80,6 @@ export function useRegister() {
     });
 }
 
-export function useResendVerificationEmail() {
-    return useMutation({
-        mutationFn: async (email: string) => {
-            const { error } = await supabase.auth.resend({
-                type: 'signup',
-                email: email,
-                options: {
-                  emailRedirectTo: 'https://mobi-public-website.vercel.app'
-                }
-              })
-            if (error) throw error;
-        },
-        onSuccess: () => {
-            console.log("Verification email resent");
-            toaster.create({
-                title: "Verification email resent",
-                type: "info"
-            })
-        },
-        onError: (error) => {
-            console.error("Logout error:", error);
-            toaster.create({
-                title: error.name,
-                description: error.message,
-                type: "error"
-            })
-        }
-    })
-}
-
 export function useLogout() {
     const queryClient = useQueryClient();
     return useMutation({

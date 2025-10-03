@@ -3,11 +3,9 @@ import { useSession } from "../hooks/useAuth";
 import { ProfileProvider } from "@/providers/ProfileProvider";
 import { Center, Text } from "@chakra-ui/react";
 import { BeatLoader } from "react-spinners";
-import { useGetUserOfficer } from "@/hooks/useOfficer";
 
 export function ProtectedRoutes() {
     const { data: session, isPending: sessionPending } = useSession();
-    void useGetUserOfficer();
 
     if (sessionPending) {
         return <LoadingSession />;

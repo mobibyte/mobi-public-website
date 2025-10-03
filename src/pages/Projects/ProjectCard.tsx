@@ -2,7 +2,7 @@ import { Center, Image, HStack, Stack, Text, Avatar } from "@chakra-ui/react";
 import type { Project } from "@/types";
 import { useSession } from "@/hooks/useAuth";
 import { UpdateProjectButton } from "./Buttons/UpdateProjectButton";
-import { Link } from "react-router";
+import { ProjectDialog } from "./ProjectDialog";
 
 // TODO:
 // enable link functionality
@@ -17,7 +17,7 @@ export function ProjectCard({ project, displayUser = true }: Props) {
   const { data: session } = useSession();
   return (
     <Stack flexGrow={1}>
-      <Link to={`/${project.user_profile?.username}/${project.slug}`}>
+      <ProjectDialog project={project}>
         <Center
           bg={project.bg_color}
           aspectRatio={15 / 10}
@@ -60,7 +60,7 @@ export function ProjectCard({ project, displayUser = true }: Props) {
             <UpdateProjectButton project={project} />
           )}
         </HStack>
-      </Link>
+      </ProjectDialog>
     </Stack>
   );
 }

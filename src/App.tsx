@@ -5,17 +5,17 @@ import { Layout } from "./components/Layout";
 import { Routes } from "react-router";
 
 function App() {
-    return (
-        <>
-            <Layout>
-                <Routes>
-                    {PublicRoutes}
-                    {AuthRoutes}
-                    {ProtectedRoutes}
-                </Routes>
-            </Layout>
-        </>
-    );
+  return (
+    <>
+      <Layout>
+        <Routes>
+          {PublicRoutes}
+          {AuthRoutes}
+          {ProtectedRoutes}
+        </Routes>
+      </Layout>
+    </>
+  );
 }
 
 export default App;

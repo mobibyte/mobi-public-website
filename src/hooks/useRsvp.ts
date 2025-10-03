@@ -1,25 +1,26 @@
 import { supabase } from "./supabaseClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { RSVP } from "@/types";
+import type { Event } from "@/types";
 import { useSession } from "./useAuth";
 
 export function useCreateRsvp() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (rsvp: Partial<RSVP>) => {
-            const { error } = await supabase.from("rsvp").insert(rsvp);
+            const { error } = await supabase
+                .from("rsvp")
+                .insert(rsvp)
             if (error) {
                 throw new Error(error.message);
             }
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["rsvp"],
-            });
-            console.log("Successfully created rsvp");
+            queryClient.invalidateQueries({ queryKey: ["rsvp"] });
+            console.log("Successfully created rsvp")
         },
         onError: (err) => {
-            console.error(err);
+            console.error(err)
         },
     });
 }
@@ -29,64 +30,45 @@ export function useGetUserRsvp() {
     return useQuery({
         queryKey: ["rsvp", session?.user.id],
         queryFn: async () => {
-            if (!session?.user.id) return [];
             const { data, error } = await supabase
                 .from("rsvp")
                 .select("*")
-                .eq("user_id", session?.user.id);
+                .eq("user_id", session?.user.id)
             if (error) throw error;
-            return (data as RSVP[]) ?? [];
-        },
-        select: (data) => {
-            data.map((row) => (row.created_at = new Date(row.created_at)));
-            return data;
-        },
-        gcTime: 1000 * 60 * 60, // Data is considered fresh for 1 hour
-        refetchOnWindowFocus: true,
-    });
+            return data as RSVP[] ?? [];
+        }
+    })
 }
 
-export function useGetEventRsvp(event_id: string | undefined) {
+export function useGetEventRsvp(event: Event) {
     return useQuery<RSVP[]>({
-        queryKey: ["rsvp", event_id],
+        queryKey: ["rsvp"],
         queryFn: async () => {
             const { data, error } = await supabase
                 .from("rsvp")
                 .select("*, user_profile:profiles (*)")
-                .eq("event_id", event_id);
+                .eq("event_id", event.id)
             if (error) throw error;
-            return (data as RSVP[]) ?? [];
-        },
-        select: (data) => {
-            data.map((row) => (row.created_at = new Date(row.created_at)));
-            return data;
-        },
-        gcTime: 1000 * 60 * 60,
-    });
+            return data as RSVP[] ?? [];
+        }
+    })
 }
 
-export function useDeleteRsvp() {
-    const { data: session } = useSession();
-    const queryClient = useQueryClient();
+export function useDeleteRsvp(rsvp: RSVP) {
     return useMutation({
-        mutationFn: async (event_id: string) => {
-            console.log("Deleting rsvp for event:", event_id);
+        mutationFn: async () => {
             const { error } = await supabase
-                .from("rsvp")
-                .delete()
-                .eq("user_id", session?.user.id)
-                .eq("event_id", event_id);
+            .from("rsvp")
+            .delete()
+            .eq("id", rsvp.id);
 
             if (error) throw error;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["rsvp"],
-            });
-            console.log("Successfully deleted rsvp");
+            console.log("Successfully deleted rsvp")
         },
         onError: (err) => {
-            console.error(err.message);
-        },
-    });
+            console.error(err.message)
+        }
+    })
 }

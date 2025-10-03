@@ -20,22 +20,22 @@ import "./styles/index.css";
 import App from "./App.tsx";
 
 createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-        <Provider>
-            <QueryClientProvider client={queryClient}>
-                <BrowserRouter>
-                    <AuthSessionListener>
-                        <Provider>
-                            <App />
-                        </Provider>
-                    </AuthSessionListener>
-                </BrowserRouter>
+  <StrictMode>
+    <Provider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AuthSessionListener>
+            <Provider>
+              <App />
+            </Provider>
+          </AuthSessionListener>
+        </BrowserRouter>
 
-                <ReactQueryDevtools
-                    initialIsOpen={false}
-                    buttonPosition="bottom-left"
-                />
-            </QueryClientProvider>
-        </Provider>
-    </StrictMode>
+        <ReactQueryDevtools
+          initialIsOpen={false}
+          buttonPosition="bottom-left"
+        />
+      </QueryClientProvider>
+    </Provider>
+  </StrictMode>
 );

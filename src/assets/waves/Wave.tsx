@@ -6,7 +6,7 @@ const seq = (start = 0) => {
         ...frontwave.paths.slice(start),
         ...frontwave.paths.slice(0, start),
     ];
-    return [...a, a[0]];
+    return [...a, a[0]]; // close the loop
 };
 
 export function Wave({ fill }: { fill?: string }) {
@@ -29,22 +29,28 @@ export function Wave({ fill }: { fill?: string }) {
         >
             <motion.path
                 opacity={frontwave.opacity}
-                initial={{ d: frontwave.paths[0] }}
-                animate={{ d: seq(0) }}
+                d={frontwave.paths[0]}
+                animate={{
+                    d: seq(0),
+                }}
                 transition={{
                     duration: 15,
                     repeat: Infinity,
+                    repeatType: "loop",
                     ease: "linear",
                 }}
                 fill={fill || frontwave.fill}
             />
             <motion.path
                 opacity={0.5}
-                initial={{ d: frontwave.paths[1] }}
-                animate={{ d: seq(1) }}
+                d={frontwave.paths[1]}
+                animate={{
+                    d: seq(1),
+                }}
                 transition={{
                     duration: 15,
                     repeat: Infinity,
+                    repeatType: "loop",
                     ease: "linear",
                 }}
                 fill={fill || frontwave.fill}
