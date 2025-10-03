@@ -46,7 +46,7 @@ export function useCreateProject() {
                 .insert({
                     ...project,
                     user_id: session.user.id,
-                    slug: slugify(project?.title ?? "")
+                    slug: slugify(project?.title ?? ""),
                 });
 
             if (createError) throw createError;
@@ -117,23 +117,23 @@ export function useGetProjectById(project_id: string | undefined) {
 type Props = {
     slug: string | undefined;
     username: string | undefined;
-}
+};
 
-export function useGetProjectByName({username, slug}: Props) {
+export function useGetProjectByName({ username, slug }: Props) {
     return useQuery({
         queryKey: ["project", slug],
         queryFn: async () => {
             const { data, error } = await supabase
                 .from("projects")
-                .select("*, profiles!inner(username)")
+                .select("*, user_profile:profiles!inner(*)")
                 .eq("slug", slug)
-                .eq("profiles.username", username)
-                .single()
+                .eq("user_profile.username", username)
+                .single();
 
             if (error) throw error;
             return data as Project;
-        }
-    })
+        },
+    });
 }
 
 export function useGetRecentProjects() {
