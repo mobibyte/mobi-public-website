@@ -1,28 +1,55 @@
-import { Button, useBreakpointValue } from "@chakra-ui/react";
-import type { Event } from "@/types";
+import { Button } from "@chakra-ui/react";
+import { useGetUserRsvp } from "@/hooks/useRsvp";
+import { userIsAttending } from "@/helpers/sort";
 import { useSession } from "@/hooks/useAuth";
-import { useCreateRsvp } from "@/hooks/useRsvp";
+import { useNavigate } from "react-router";
+import { useCreateRsvp, useDeleteRsvp } from "@/hooks/useRsvp";
+import { Tooltip } from "@/components/ui/tooltip";
 
-export function RSVPButton({ event }: { event: Event }) {
-  const { data: session } = useSession();
-  const { mutate: create, isPending } = useCreateRsvp();
-  const isMobile = useBreakpointValue({ base: true, md: false });
-  const handleClick = () => {
-    if (!session) return;
-    const rsvp = {
-      event_id: event.id,
-      user_id: session.user.id,
+export function RSVPButton({ eventId }: { eventId: string }) {
+    const { mutate: createRsvp, isPending: createPending } = useCreateRsvp();
+    const { mutate: deleteRsvp, isPending: deletePending } = useDeleteRsvp();
+    const { data: session } = useSession();
+    const { data: rsvp = [] } = useGetUserRsvp();
+    const isAttending = userIsAttending(rsvp, eventId);
+
+    const navigate = useNavigate();
+    const handleClick = () => {
+        if (!session) {
+            navigate("/login");
+            return;
+        }
+        if (isAttending) {
+            console.log("Cancelling RSVP for event:", eventId);
+            deleteRsvp(eventId);
+            return;
+        }
+        createRsvp({ event_id: eventId, user_id: session.user.id });
     };
-    create(rsvp);
-  };
 
-  // Only render if in desktop view
-  // Mobile is too small to accomodate button inline
-  return (
-    !isMobile && (
-      <Button disabled={isPending} loading={isPending} onClick={handleClick}>
-        RSVP
-      </Button>
-    )
-  );
+    const pending = createPending || deletePending;
+    const tooltipText = !session
+        ? "Log in to RSVP"
+        : isAttending
+        ? "Cancel RSVP"
+        : "RSVP to this event";
+    // Display only if user is logged in and not on mobile
+    return (
+        <Tooltip
+            content={tooltipText}
+            positioning={{ placement: "bottom" }}
+            openDelay={500}
+            closeDelay={100}
+        >
+            <Button
+                onClick={handleClick}
+                disabled={pending}
+                loading={pending}
+                size={"sm"}
+                variant={isAttending ? "outline" : "solid"}
+            >
+                {isAttending ? "Going" : session ? "RSVP" : "Log in to RSVP"}
+            </Button>
+        </Tooltip>
+    );
 }

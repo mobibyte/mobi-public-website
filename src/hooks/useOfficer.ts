@@ -1,6 +1,7 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { supabase } from "./supabaseClient";
 import type { Officer } from "@/types";
+import { useSession } from "./useAuth";
 
 export function useGetAllOfficers() {
     return useQuery({
@@ -15,9 +16,29 @@ export function useGetAllOfficers() {
             return data as Officer[];
         },
         select: (rows): Officer[] =>
-            rows.map((officer) => ({ ...officer, created_at: new Date(officer.created_at) })),
+            rows.map((officer) => ({
+                ...officer,
+                created_at: new Date(officer.created_at),
+            })),
         staleTime: 60_000,
-    })
+    });
+}
+
+export function useGetUserOfficer() {
+    const { data: session } = useSession();
+    return useQuery({
+        queryKey: ["officer", session?.user.id],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from("admins")
+                .select("*")
+                .eq("user_id", session?.user.id)
+                .single();
+            if (error) throw error;
+            return data as Officer;
+        },
+        enabled: !!session,
+    });
 }
 
 interface OfficerProps {
@@ -26,20 +47,18 @@ interface OfficerProps {
 
 export function useCreateOfficer() {
     return useMutation({
-        mutationFn: async ({officer}: OfficerProps) => {
-            const { error } = await supabase
-                .from("admins")
-                .insert(officer)
+        mutationFn: async ({ officer }: OfficerProps) => {
+            const { error } = await supabase.from("admins").insert(officer);
 
             if (error) throw error;
             return officer;
         },
         onSuccess: (officer) => {
-            console.log("Successfully promoted", officer.id)
+            console.log("Successfully promoted", officer.id);
         },
         onError: (err) => {
             console.error(err);
-        }
+        },
     });
 }
 
@@ -50,11 +69,11 @@ interface UpdateOfficer extends OfficerProps {
 // Promote or demote officer
 export function useUpdateOfficer() {
     return useMutation({
-        mutationFn: async ({officer, level}: UpdateOfficer) => {
+        mutationFn: async ({ officer, level }: UpdateOfficer) => {
             const { error } = await supabase
                 .from("admins")
-                .update({ level: level})
-                .eq("user_id", officer.user_id)
+                .update({ level: level })
+                .eq("user_id", officer.user_id);
 
             if (error) throw error;
         },
@@ -63,17 +82,17 @@ export function useUpdateOfficer() {
         },
         onError: (err) => {
             console.error(err);
-        }
-    })
+        },
+    });
 }
 
 export function useDeleteOfficer() {
     return useMutation({
-        mutationFn: async ({officer}: OfficerProps) => {
+        mutationFn: async ({ officer }: OfficerProps) => {
             const { error } = await supabase
                 .from("admins")
                 .delete()
-                .eq("user_id", officer.user_id)
+                .eq("user_id", officer.user_id);
 
             if (error) throw error;
         },
@@ -82,6 +101,6 @@ export function useDeleteOfficer() {
         },
         onError: (err) => {
             console.error(err);
-        }
-    })
+        },
+    });
 }

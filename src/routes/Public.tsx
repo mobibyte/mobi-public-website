@@ -1,6 +1,8 @@
 import { Route } from "react-router";
 import { Home as HomePage } from "@/pages/Home/Home";
 import { NotFound, Events, Officers, Projects } from "@/pages";
+import { ProjectDetails } from "@/pages/Projects/Routes/ProjectDetails";
+import { EventDetails } from "@/pages/Events/routes/EventDetails";
 import { MainLayout, FullWidthLayout } from "@components/Layout";
 
 export const PublicRoutes = (
@@ -9,9 +11,13 @@ export const PublicRoutes = (
       <Route index element={<HomePage />} />
     </Route>
     <Route element={<MainLayout />}>
-      <Route path="/events" element={<Events />} />
+      <Route path="/events">
+        <Route index element={<Events />} />
+        <Route path=":event_id" element={<EventDetails />} />
+      </Route>
       <Route path="/officers" element={<Officers />} />
       <Route path="/projects" element={<Projects />} />
+      <Route path=":username/:project_title" element={<ProjectDetails />} />
 
       <Route path="/projects/page/:pageNumber" element={<Projects />} />
       <Route path="/*" element={<NotFound />} />
