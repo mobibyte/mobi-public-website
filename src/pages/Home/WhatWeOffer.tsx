@@ -12,7 +12,11 @@ export function WhatWeOffer() {
     >
       <Image src={offer} alt="A description of the image" borderRadius="md" />
       <Stack gap={12} flex={1} fontWeight={500}>
-        <Heading fontSize={32} className="space-grotesk-500" color={"#ff00aa"}>
+        <Heading
+          fontSize={32}
+          className="space-grotesk-500"
+          color={"{colors.mobi.pink.900}"}
+        >
           WHAT WE OFFER
         </Heading>
         <Reveal delay={150}>

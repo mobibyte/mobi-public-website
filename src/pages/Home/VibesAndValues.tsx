@@ -11,7 +11,11 @@ export function VibesAndValues() {
       mx={{ base: 4, md: 32 }}
     >
       <Stack gap={12} flex={1} fontWeight={500}>
-        <Heading fontSize={32} className="space-grotesk-500" color={"#0084FF"}>
+        <Heading
+          fontSize={32}
+          className="space-grotesk-500"
+          color={"{colors.mobi.blue.900}"}
+        >
           VIBES & VALUES
         </Heading>
         <Reveal delay={150}>

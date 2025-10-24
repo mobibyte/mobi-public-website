@@ -1,4 +1,3 @@
-
 import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
 
 const config = defineConfig({
@@ -9,11 +8,22 @@ const config = defineConfig({
         brand: {
           500: { value: "#5c7cfa" },
         },
-        mobi: { 
+        mobi: {
           purple: {
-            900: {value: "#0C001A"}
-          }
-         }, 
+            900: { value: "#0C001A" },
+          },
+          pink: {
+            900: { value: "#FF00AA" },
+          },
+          blue: {
+            900: { value: "#0084FF" },
+            800: { value: "#0054C3" },
+          },
+        },
+        socialMedia: {
+          instagram: { value: "#C13584" },
+          discord: { value: "#7289da" },
+        },
       },
     },
 
@@ -21,10 +31,13 @@ const config = defineConfig({
     semanticTokens: {
       colors: {
         bg: {
-          default: { value: "{colors.mobi.purple.900}"},
-          _dark: { value: "{colors.mobi.purple.900}"},
+          default: { value: "{colors.mobi.purple.900}" },
+          _dark: { value: "{colors.mobi.purple.900}" },
           canvas: {
-            value: { base: "{colors.mobi.purple.900}", _dark: "{colors.mobi.purple.900}" },
+            value: {
+              base: "{colors.mobi.purple.900}",
+              _dark: "{colors.mobi.purple.900}",
+            },
           },
         },
         fg: {

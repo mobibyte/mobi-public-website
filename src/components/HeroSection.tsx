@@ -16,7 +16,7 @@ import { Reveal } from "./ui/Reveal";
 
 export function HeroSection() {
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const textShadow = "-4px -4px 0 #ff00aa";
+  const textShadow = "-4px -4px 0 {colors.mobi.pink.900}";
 
   return (
     <>
@@ -54,14 +54,14 @@ export function HeroSection() {
           >
             BYTE
           </Heading>
-          <Text fontSize={24} fontWeight={700}>
+          <Text fontSize={24} fontWeight={700} textAlign={"center"}>
             The Web & App Development club open to everyone from beginner to
             wizard. 🚀
           </Text>
           <HStack>
             <a href="https://discord.gg/xsY7HxSdvp" target="_blank">
               <Button
-                bg="#7289da"
+                bg="{colors.socialMedia.discord}"
                 alignSelf={isMobile ? "center" : "flex-start"}
                 marginTop={4}
                 shadow={"lg"}
@@ -74,7 +74,7 @@ export function HeroSection() {
             </a>
             <a href="https://www.instagram.com/codewithmobi/" target="_blank">
               <Button
-                bg="#C13584"
+                bg="{colors.socialMedia.instagram}"
                 alignSelf={isMobile ? "center" : "flex-start"}
                 marginTop={4}
                 shadow={"lg"}
