@@ -1,6 +1,7 @@
 name: Keep Supabase Alive
 # This workflow pings the /projects endpoint every 6 hours to keep the Supabase free tier instance awake.
 on:
+    workflow_dispatch: # Enables manual triggering of the workflow
     schedule:
         - cron: "0 */6 * * *" # Every 6 hours
 jobs:
