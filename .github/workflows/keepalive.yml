@@ -9,4 +9,4 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Ping /projects
-              run: curl -I "https://your-site.com/projects"
+              run: curl -I "https://mobi-public-website.vercel.app/projects"
