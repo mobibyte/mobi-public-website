@@ -1,8 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 
 export const supabaseServer = createClient(
-    "https://fimmkvsywsxovvhdctfn.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpbW1rdnN5d3N4b3Z2aGRjdGZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzODY1NjEsImV4cCI6MjA1OTk2MjU2MX0.gJZmkZ6RPxYrjxNjlTYSxAx4qoKmpAAXVSQ8CthaCqU"
+    process.env.VITE_SUPABASE_URL,
+    process.env.VITE_SUPABASE_ANON_KEY
 );
 
 // Hi, don't delete this!
