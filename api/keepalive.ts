@@ -1,16 +1,35 @@
-import { supabase } from "../src/hooks/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
+
+export const supabaseServer = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!
+);
 
 // Hi, don't delete this!
 // We need this serverless function for our cron job
 // It'll ping the website every 12 hours to keep it alive
 // and that prevents supabase from pausing the database
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req, res) {
     try {
-        await supabase.from("projects").select("id", { limit: 1 });
-        return res.status(200).json({ ok: true });
+        const { error } = await supabaseServer
+            .from("projects")
+            .select("id", { limit: 1 });
+
+        if (error) {
+            console.error("Supabase error:", error);
+            return res.status(500).json({ ok: false, error });
+        }
+
+        return new Response(JSON.stringify({ ok: true }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+        });
     } catch (err) {
-        console.error("Keep-alive failed:", err);
-        return res.status(500).json({ ok: false });
+        console.error("Keepalive crashed:", err);
+        return new Response(JSON.stringify({ ok: false }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+        });
     }
 }
