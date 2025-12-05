@@ -1,12 +1,12 @@
 name: Keep Supabase Alive
-# This workflow pings the /projects endpoint every 6 hours to keep the Supabase free tier instance awake.
+# This workflow pings the /projects endpoint every 12 hours to keep the Supabase free tier instance awake.
 on:
     workflow_dispatch: # Enables manual triggering of the workflow
     schedule:
-        - cron: "0 */6 * * *" # Every 6 hours
+        - cron: "0 */12 * * *" # Every 12 hours
 jobs:
     ping:
         runs-on: ubuntu-latest
         steps:
             - name: Ping /projects
-              run: curl -I "https://mobi-public-website.vercel.app/keepalive"
+              run: curl "https://mobi-public-website.vercel.app/api/keepalive"
