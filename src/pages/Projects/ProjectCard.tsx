@@ -2,7 +2,7 @@ import { Center, Image, HStack, Stack, Text, Avatar } from "@chakra-ui/react";
 import type { Project } from "@/types";
 import { useSession } from "@/hooks/useAuth";
 import { UpdateProjectButton } from "./Buttons/UpdateProjectButton";
-import { Link } from "react-router";
+import { Link as RouterLink } from "react-router";
 
 // TODO:
 // enable link functionality
@@ -17,14 +17,14 @@ export function ProjectCard({ project, displayUser = true }: Props) {
   const { data: session } = useSession();
   return (
     <Stack flexGrow={1}>
-      <Link to={`/${project.user_profile?.username}/${project.slug}`}>
-        <Center
-          bg={project.bg_color}
-          aspectRatio={15 / 10}
-          className="group"
-          overflow={"hidden"}
-          maxW={500}
-        >
+      <Center
+        bg={project.bg_color}
+        aspectRatio={15 / 10}
+        className="group"
+        overflow={"hidden"}
+        maxW={500}
+      >
+        <RouterLink to={`/${project.user_profile?.username}/${project.slug}`}>
           <Image
             src={project.image}
             objectFit="cover"
@@ -40,27 +40,35 @@ export function ProjectCard({ project, displayUser = true }: Props) {
               rounded: "none",
             }}
           />
-        </Center>
-        <HStack py={2} gap={4}>
-          {displayUser && (
-            <Avatar.Root size={{ base: "sm", sm: "md" }}>
-              <Avatar.Fallback name={project.user_id} />
-              <Avatar.Image src={project.user_profile?.avatar_url} />
-            </Avatar.Root>
-          )}
-          <Stack align={"start"} gap={0}>
-            <Text fontSize="md" fontWeight={700}>
+        </RouterLink>
+      </Center>
+      <HStack py={2} gap={4}>
+        {displayUser && (
+          <Avatar.Root size={{ base: "sm", sm: "md" }}>
+            <Avatar.Fallback name={project.user_id} />
+            <Avatar.Image src={project.user_profile?.avatar_url} />
+          </Avatar.Root>
+        )}
+
+        <Stack align={"start"} gap={0}>
+          <Text asChild fontSize="md" fontWeight={700}>
+            <RouterLink
+              to={`/${project.user_profile?.username}/${project.slug}`}
+            >
               {project.title}
+            </RouterLink>
+          </Text>
+
+          {displayUser && (
+            <Text as={RouterLink} color={"fg.subtle"}>
+              {project.user_profile?.username}
             </Text>
-            {displayUser && (
-              <Text color={"fg.subtle"}>{project.user_profile?.username}</Text>
-            )}
-          </Stack>
-          {session?.user.id === project.user_id && (
-            <UpdateProjectButton project={project} />
           )}
-        </HStack>
-      </Link>
+        </Stack>
+        {session?.user.id === project.user_id && (
+          <UpdateProjectButton project={project} />
+        )}
+      </HStack>
     </Stack>
   );
 }

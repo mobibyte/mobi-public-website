@@ -86,7 +86,7 @@ export function useGetAllProjects() {
         queryFn: async () => {
             const { data, error } = await supabase
                 .from("projects")
-                .select("*, user_profile:profiles (*)")
+                .select("*, user_profile:profiles (*), likes: likes(user_id)")
                 .eq("display", true);
 
             if (error) throw error;

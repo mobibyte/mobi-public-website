@@ -54,6 +54,13 @@ export type Project = {
     slug: string;
 };
 
+export type Like = {
+    id: string;
+    created_at: Date;
+    user_id: string;
+    project_id: string;
+}
+
 export interface Event {
     id: string;
     created_at: Date;

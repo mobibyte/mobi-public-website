@@ -1,10 +1,10 @@
 import { supabase } from "./supabaseClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Event } from "../types";
-import { sanitizeFileName } from "@/helpers/format";
 import { useSession } from "./useAuth";
-import { todayFolder } from "@/helpers/format";
 import { toaster } from "@/components/ui/toaster";
+import { getPublicImageUrl, getSemesterDate } from "@/helpers/events";
+import { useNavigate } from "react-router";
 
 // Main fetch for events
 export function useGetCurrentSemesterEvents() {
@@ -58,37 +58,14 @@ export function useGetEvent(event_id: string | undefined) {
 
 // Used only when user requests to see all events
 export function useGetAllSemesterEvents() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth(); // 0 = Jan
-
-    let startDate: string;
-    let endDate: string;
-
-    // Spring: Jan–May
-    if (month >= 0 && month <= 4) {
-        startDate = `${year}-01-01`;
-        endDate = `${year}-05-31`;
-    }
-    // Fall: Aug–Dec
-    else if (month >= 7 && month <= 11) {
-        startDate = `${year}-08-01`;
-        endDate = `${year}-12-31`;
-    }
-    // Optional: handle summer (Jun–Jul)
-    else {
-        startDate = `${year}-06-01`;
-        endDate = `${year}-07-31`;
-    }
-
     return useQuery<Event[], Error>({
         queryKey: ["events", "all"],
         queryFn: async () => {
             const { data, error } = await supabase
                 .from("events")
                 .select("*, profiles (*)")
-                .gte("ends_at", startDate)
-                .lte("ends_at", endDate);
+                .gte("starts_at", getSemesterDate().start)
+                .lte("ends_at", getSemesterDate().end);
             if (error) {
                 throw new Error(error.message);
             }
@@ -109,6 +86,7 @@ export function useGetAllSemesterEvents() {
 }
 
 export function useCreateEvent() {
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
     const { data: session } = useSession();
     return useMutation({
@@ -121,24 +99,9 @@ export function useCreateEvent() {
         }) => {
             if (!session) return;
             if (image) {
-                const path = `${todayFolder()}/${sanitizeFileName(
-                    image.name
-                )}-${Date.now()}`;
-                const { error: uploadErr } = await supabase.storage
-                    .from("events")
-                    .upload(path, image, {
-                        contentType: image.type,
-                        cacheControl: "3600",
-                    });
-
-                if (uploadErr) throw uploadErr;
-                const {
-                    data: { publicUrl },
-                } = supabase.storage.from("events").getPublicUrl(path);
-                event.image = publicUrl;
+                // Needs to upload image first and get an image url to insert into column
+                event.image = await getPublicImageUrl(image);
             }
-            const { data: sess } = await supabase.auth.getSession();
-            console.log("jwt user id:", sess?.session?.user?.id);
             const { error } = await supabase
                 .from("events")
                 .insert([{ ...event, created_by: session.user.id }]);
@@ -147,9 +110,10 @@ export function useCreateEvent() {
             }
             return event;
         },
-        onSuccess: (data) => {
+        onSuccess: (event) => {
             queryClient.invalidateQueries({ queryKey: ["events"] });
-            console.log("Successfully created", data?.title);
+            console.log("Successfully created", event?.title);
+            navigate("/events");
             toaster.create({
                 title: "Event created successfully!",
                 type: "success",
@@ -167,6 +131,7 @@ export function useCreateEvent() {
 }
 
 export function useUpdateEvent() {
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async ({
@@ -177,21 +142,7 @@ export function useUpdateEvent() {
             image: File | undefined;
         }) => {
             if (image) {
-                const path = `${todayFolder()}/${sanitizeFileName(
-                    image.name
-                )}-${Date.now()}`;
-                const { error: uploadErr } = await supabase.storage
-                    .from("events")
-                    .upload(path, image, {
-                        contentType: image.type,
-                        cacheControl: "3600",
-                    });
-
-                if (uploadErr) throw uploadErr;
-                const {
-                    data: { publicUrl },
-                } = supabase.storage.from("events").getPublicUrl(path);
-                event.image = publicUrl;
+                event.image = await getPublicImageUrl(image);
             }
             const { data, error } = await supabase
                 .from("events")
@@ -204,9 +155,10 @@ export function useUpdateEvent() {
             }
             return data as Event;
         },
-        onSuccess: (data) => {
+        onSuccess: (event) => {
             queryClient.invalidateQueries({ queryKey: ["events"] });
-            console.log("Successfully updated", data.title);
+            console.log("Successfully updated", event.title);
+            navigate("/events");
             toaster.create({
                 title: "Event updated successfully!",
                 type: "success",
@@ -225,6 +177,7 @@ export function useUpdateEvent() {
 
 export function useDeleteEvent() {
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
     return useMutation({
         mutationFn: async (event: Event) => {
             const { error } = await supabase
@@ -239,6 +192,7 @@ export function useDeleteEvent() {
         onSuccess: (event) => {
             queryClient.invalidateQueries({ queryKey: ["events"] });
             console.log("Successfully deleted", event.title);
+            navigate("/events");
             toaster.create({
                 title: "Event deleted successfully!",
                 type: "success",
