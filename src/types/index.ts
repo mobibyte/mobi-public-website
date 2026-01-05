@@ -52,6 +52,14 @@ export type Project = {
     bg_color: string | "FFF";
     user_profile?: Profile;
     slug: string;
+    likes: Like[];
+};
+
+export type Like = {
+    id: string;
+    created_at: Date;
+    user_id: string;
+    project_id: string;
 };
 
 export interface Event {
