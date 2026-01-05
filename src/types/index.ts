@@ -52,6 +52,7 @@ export type Project = {
     bg_color: string | "FFF";
     user_profile?: Profile;
     slug: string;
+    likes: Like[];
 };
 
 export type Like = {
@@ -59,7 +60,7 @@ export type Like = {
     created_at: Date;
     user_id: string;
     project_id: string;
-}
+};
 
 export interface Event {
     id: string;

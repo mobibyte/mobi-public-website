@@ -22,16 +22,16 @@ export function useLogin() {
             queryClient.setQueryData(["session"], session);
             toaster.create({
                 title: "Login successful!",
-                type: "success"
-            })
+                type: "success",
+            });
         },
         onError: (error) => {
             console.error("Login error:", error);
             toaster.create({
                 title: error.name,
                 description: error.message,
-                type: "error"
-            })
+                type: "error",
+            });
         },
     });
 }
@@ -62,20 +62,20 @@ export function useRegister() {
         },
         onSuccess: (data) => {
             queryClient.setQueryData(["session"], data.session);
-            console.log("Registration successful")
+            console.log("Registration successful");
             toaster.create({
                 title: "Registration successful!",
                 description: "Check your email for a verification link",
-                type: "success"
-            })
+                type: "success",
+            });
         },
         onError: (error) => {
             console.error("Registration error:", error);
             toaster.create({
                 title: error.name,
                 description: error.message,
-                type: "error"
-            })
+                type: "error",
+            });
         },
     });
 }
@@ -84,30 +84,30 @@ export function useResendVerificationEmail() {
     return useMutation({
         mutationFn: async (email: string) => {
             const { error } = await supabase.auth.resend({
-                type: 'signup',
+                type: "signup",
                 email: email,
                 options: {
-                  emailRedirectTo: 'https://mobi-public-website.vercel.app'
-                }
-              })
+                    emailRedirectTo: "https://mobi-public-website.vercel.app",
+                },
+            });
             if (error) throw error;
         },
         onSuccess: () => {
             console.log("Verification email resent");
             toaster.create({
                 title: "Verification email resent",
-                type: "info"
-            })
+                type: "info",
+            });
         },
         onError: (error) => {
             console.error("Logout error:", error);
             toaster.create({
                 title: error.name,
                 description: error.message,
-                type: "error"
-            })
-        }
-    })
+                type: "error",
+            });
+        },
+    });
 }
 
 export function useLogout() {
@@ -120,19 +120,20 @@ export function useLogout() {
         },
         onSuccess: () => {
             queryClient.setQueryData(["session"], null);
+            queryClient.refetchQueries();
             console.log("Logout successful");
             toaster.create({
                 title: "Logged out successfully",
-                type: "info"
-            })
+                type: "info",
+            });
         },
         onError: (error) => {
             console.error("Logout error:", error);
             toaster.create({
                 title: error.name,
                 description: error.message,
-                type: "error"
-            })
+                type: "error",
+            });
         },
     });
 }
@@ -140,39 +141,37 @@ export function useLogout() {
 export function useForgotPassword() {
     return useMutation({
         mutationFn: async (email: string) => {
-            const { error } = await supabase.auth
-                .resetPasswordForEmail(email, {
-                    redirectTo: "https://your-app.com/reset-password",
-                });
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: "https://your-app.com/reset-password",
+            });
             if (error) throw error;
             return email;
         },
         onSuccess: (email) => {
-            console.log("Successfully sent link to:", email)
+            console.log("Successfully sent link to:", email);
             toaster.create({
                 title: "Success",
                 description: `Reset password link sent to ${email}`,
-                type: "success"
-            })
+                type: "success",
+            });
         },
         onError: (error) => {
             console.error("Error sending reset password link:", error);
             toaster.create({
                 title: error.name,
                 description: error.message,
-                type: "error"
-            })
-        }
-    })
+                type: "error",
+            });
+        },
+    });
 }
 
 export function useResetPassword() {
     return useMutation({
         mutationFn: async (newPassword: string) => {
-            const { error } = await supabase.auth
-                .updateUser({
-                    password: newPassword
-                });
+            const { error } = await supabase.auth.updateUser({
+                password: newPassword,
+            });
 
             if (error) throw error;
         },
@@ -180,18 +179,18 @@ export function useResetPassword() {
             console.log("Password successfully changed");
             toaster.create({
                 title: "Password successfully reset!",
-                type: "success"
-            })
+                type: "success",
+            });
         },
         onError: (error) => {
             console.error("Error reseting password:", error);
             toaster.create({
                 title: error.name,
                 description: error.message,
-                type: "error"
-            })
-        }
-    })
+                type: "error",
+            });
+        },
+    });
 }
 
 export function useSession() {

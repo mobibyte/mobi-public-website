@@ -2,7 +2,7 @@ import { supabase } from "./supabaseClient";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import type { Project } from "@/types";
 import { useSession } from "./useAuth";
-import { sanitizeFileName } from "@/helpers/format";
+import { getPublicProjectImageUrl } from "@/helpers/projects";
 import { useParams } from "react-router";
 import { slugify } from "@/helpers/format";
 
@@ -23,22 +23,7 @@ export function useCreateProject() {
             // Uploads image if there is one
             // Otherwise, supabase already has default image url
             if (image) {
-                const path = `${session.user.id}/${sanitizeFileName(
-                    image.name
-                )}-${Date.now()}`;
-                const { error: uploadErr } = await supabase.storage
-                    .from("projects")
-                    .upload(path, image, {
-                        upsert: true,
-                        contentType: image.type,
-                        cacheControl: "3600",
-                    });
-
-                if (uploadErr) throw uploadErr;
-                const {
-                    data: { publicUrl },
-                } = supabase.storage.from("projects").getPublicUrl(path);
-                project.image = publicUrl;
+                project.image = await getPublicProjectImageUrl(image);
             }
 
             const { error: createError } = await supabase
@@ -69,7 +54,7 @@ export function useGetUserProjects() {
             if (!session) return [];
             const { data, error } = await supabase
                 .from("projects")
-                .select(`*, user_profile:profiles (*)`)
+                .select("*, user_profile:profiles (*), likes: likes(user_id)")
                 .eq("user_id", session.user.id);
 
             if (error) throw error;
@@ -102,7 +87,7 @@ export function useGetProjectById(project_id: string | undefined) {
         queryFn: async () => {
             const { data, error } = await supabase
                 .from("projects")
-                .select("*, user_profile:profiles (*)")
+                .select("*, user_profile:profiles (*), likes: likes(user_id)")
                 .eq("id", project_id)
                 .single();
 
@@ -125,7 +110,7 @@ export function useGetProjectByName({ username, slug }: Props) {
         queryFn: async () => {
             const { data, error } = await supabase
                 .from("projects")
-                .select("*, user_profile:profiles!inner(*)")
+                .select("*, user_profile:profiles (*), likes: likes(user_id)")
                 .eq("slug", slug)
                 .eq("user_profile.username", username)
                 .single();
@@ -142,7 +127,7 @@ export function useGetRecentProjects() {
         queryFn: async () => {
             const { data, error } = await supabase
                 .from("projects")
-                .select("*, user_profile:profiles (*)")
+                .select("*, user_profile:profiles (*), likes: likes(user_id)")
                 .eq("display", true)
                 .order("created_at", { ascending: false }) // newest first
                 .limit(4);
@@ -155,7 +140,6 @@ export function useGetRecentProjects() {
 }
 
 export function useUpdateProject() {
-    const { data: session } = useSession();
     return useMutation({
         mutationFn: async ({
             image,
@@ -166,22 +150,7 @@ export function useUpdateProject() {
         }) => {
             console.log("Updating project", project.title);
             if (image) {
-                const path = `${session?.user.id}/${sanitizeFileName(
-                    image.name
-                )}-${Date.now()}`;
-                const { error: uploadErr } = await supabase.storage
-                    .from("projects")
-                    .upload(path, image, {
-                        upsert: true,
-                        contentType: image.type,
-                        cacheControl: "3600",
-                    });
-
-                if (uploadErr) throw uploadErr;
-                const {
-                    data: { publicUrl },
-                } = supabase.storage.from("projects").getPublicUrl(path);
-                project.image = publicUrl;
+                project.image = await getPublicProjectImageUrl(image);
             }
             const { error } = await supabase
                 .from("projects")
