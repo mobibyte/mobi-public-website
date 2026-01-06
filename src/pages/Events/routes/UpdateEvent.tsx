@@ -1,83 +1,57 @@
 import { Box, Button, Stack, Heading } from "@chakra-ui/react";
-import { EventFormProvider, useEventForm } from "@/context/form-context";
-import { isNotEmpty, isInRange } from "@mantine/form";
-import { EventForm } from "../EventForm";
+import { EventFormFields } from "../EventFormFields";
 import { useUpdateEvent, useGetEvent } from "@/hooks/useEvents";
-import { useState, useEffect } from "react";
+
 import { FileUploadInput } from "@/components/FileUploadInput";
-import { EventImagePreview } from "../EventImagePreview";
-import { useNavigate, useParams } from "react-router";
-import { toLocalInputValue } from "@/helpers/format";
+import { useParams } from "react-router";
 import { DeleteEventButton } from "../DeleteEventButton";
 
+import { ImagePreview } from "@/components/ImagePreview";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { eventFormSchema, type EventFormValues } from "@/schema/events";
+import type { Event } from "@/types";
+
 export function UpdateEvent() {
-    const navigate = useNavigate();
     const { event_id } = useParams();
     const { data: event } = useGetEvent(event_id);
-    const { mutateAsync: createEvent, isPending, isSuccess } = useUpdateEvent();
-    const [file, setFile] = useState<File | undefined>(undefined);
-    const form = useEventForm({
-        initialValues: {
-            title: "",
-            description: "",
-            location: "",
-            starts_at: new Date(),
-            ends_at: new Date(),
-            momocoins: 1,
-            mavengage_url: "",
-            image: "",
+    const { mutateAsync: updateEvent, isPending } = useUpdateEvent();
+
+    const form = useForm<EventFormValues>({
+        resolver: zodResolver(eventFormSchema),
+        values: {
+            title: event?.title ?? "",
+            description: event?.description ?? "",
+            location: event?.location ?? "",
+            starts_at: event?.starts_at ?? new Date(),
+            ends_at: event?.ends_at ?? new Date(),
+            momocoins: event?.momocoins ?? 1,
+            mavengage_url: event?.mavengage_url ?? "",
+            image: event?.image ?? "",
+            image_file: null,
         },
-        validate: {
-            title: isNotEmpty("Title cannot be empty"),
-            location: isNotEmpty("Location cannot be empty"),
-            starts_at: isNotEmpty("Start date cannot be empty"),
-            ends_at: isNotEmpty("End date cannot be empty"),
-            momocoins: isInRange(
-                { min: 0, max: 10 },
-                "Momocoins must be between 0 and 10"
-            ),
-        },
+        mode: "onSubmit",
     });
 
-    useEffect(() => {
-        if (event) {
-            const values = {
-                ...event,
-                starts_at: toLocalInputValue(event.starts_at),
-                ends_at: toLocalInputValue(event.ends_at),
-            };
-            form.initialize(values);
-        }
-    }, [event]);
-
-    const handleSubmit = form.onSubmit(async (values) => {
-        const newEvent = {
-            ...values,
-            momocoins: Number(values.momocoins),
-            starts_at: new Date(values.starts_at),
-            ends_at: new Date(values.ends_at),
-        };
-        await createEvent({ event: newEvent, image: file });
-    });
-
-    useEffect(() => {
-        if (isSuccess) navigate("/events");
-    }, [isSuccess]);
+    const onSubmit = async (newEvent: Partial<Event>) => {
+        const imageFile = form.getValues("image_file");
+        await updateEvent({ event: newEvent, image: imageFile });
+    };
 
     return (
-        <EventFormProvider form={form}>
+        <FormProvider {...form}>
             <Heading>Edit Event</Heading>
             <Stack
                 align={"stretch"}
                 gap={12}
                 direction={{ base: "column", md: "row" }}
             >
-                <FileUploadInput setImage={setFile} label="Event Image Preview">
-                    <EventImagePreview file={file} />
+                <FileUploadInput disabled={isPending}>
+                    <ImagePreview />
                 </FileUploadInput>
-                <Box flex={1}>
-                    <form onSubmit={handleSubmit}>
-                        <EventForm />
+                <Box flex={1} asChild>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <EventFormFields />
                         <Stack gap={4} my={4}>
                             <Button
                                 type="submit"
@@ -92,6 +66,6 @@ export function UpdateEvent() {
                     </form>
                 </Box>
             </Stack>
-        </EventFormProvider>
+        </FormProvider>
     );
 }

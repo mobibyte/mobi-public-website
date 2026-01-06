@@ -1,108 +1,71 @@
-import { useProjectForm, ProjectFormProvider } from "@/context/form-context";
-import { ProjectForm } from "../ProjectForm";
-import { useUpdateProject, useGetUserProjects } from "@/hooks/useProjects";
-import { toaster } from "@/components/ui/toaster";
-import { useState, useEffect } from "react";
+import { ProjectFormFields } from "../ProjectFormFields";
+import { useUpdateProject, useGetProjectById } from "@/hooks/useProjects";
+
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { projectFormSchema } from "@/schema/projects";
+import type { ProjectFormValues } from "@/schema/projects";
+
 import { FileUploadInput } from "../../../components/FileUploadInput";
-import { useParams, useNavigate } from "react-router";
-import { convertForm } from "@/helpers/project-form";
+import { useParams } from "react-router";
 import { DeleteProjectButton } from "../Buttons/DeleteProjectButton";
-import { isNotEmpty } from "@mantine/form";
-import { Stack, Button } from "@chakra-ui/react";
-import { ProjectImagePreview } from "../ProjectImagePreview";
+
+import { Stack } from "@chakra-ui/react";
+import { ImagePreview } from "../../../components/ImagePreview";
+import type { Project } from "@/types";
 
 export function UpdateProjectPage() {
-    const navigate = useNavigate();
     const { project_id } = useParams();
-    const { data: projects } = useGetUserProjects();
-    const [file, setFile] = useState<File | undefined>(undefined);
-    const {
-        mutateAsync: updateProject,
-        error,
-        isPending,
-        isSuccess,
-    } = useUpdateProject();
+    const { data: project, isPending } = useGetProjectById(project_id);
+    const { mutateAsync: updateProject, isPending: isUpdating } =
+        useUpdateProject();
 
-    const form = useProjectForm({
-        mode: "uncontrolled",
-        initialValues: {
-            title: "",
-            description: "",
-            url: "",
-            github: "",
-            tech_stack: [],
-            display: true,
-            bg_color: "#3E0D93",
-            image: "",
+    const form = useForm<ProjectFormValues>({
+        resolver: zodResolver(projectFormSchema),
+        values: {
+            title: project?.title ?? "",
+            description: project?.description ?? "",
+            url: project?.url ?? "",
+            github: project?.github ?? "",
+            image: project?.image ?? "",
+            display: project?.display ?? false,
+            tech_stack: project?.tech_stack ?? [],
+            bg_color: project?.bg_color ?? "",
+            image_file: null,
         },
-        validate: {
-            title: isNotEmpty("Title cannot be empty"),
-            url: isNotEmpty("URL cannot be empty"),
-        },
+        mode: "onSubmit",
     });
 
-    useEffect(() => {
-        if (projects) {
-            const project = projects.find((project) => {
-                return project.id === project_id;
-            });
-            if (project) {
-                form.initialize(convertForm(project));
-            }
-        }
-    }, [projects]);
+    const onSubmit = async (formValues: Partial<Project>) => {
+        const imageFile = form.getValues("image_file");
+        await updateProject({ project: formValues, image: imageFile });
+    };
 
-    useEffect(() => {
-        if (isSuccess) navigate("/profile");
-    }, [isSuccess]);
-
-    const handleSubmit = form.onSubmit(async () => {
-        const project = form.getValues();
-        const result = updateProject({
-            project: { ...project, id: project_id },
-            image: file,
-        });
-        await toaster.promise(result, {
-            loading: {
-                title: "Updating project...",
-                description: "Please wait",
-            },
-            success: {
-                title: "Successfully updated!",
-                description: "Looks great",
-            },
-            error: { title: error?.name, description: error?.message },
-        });
-    });
+    if (isPending) {
+        return <div>Loading</div>;
+    }
 
     return (
-        <ProjectFormProvider form={form}>
+        <FormProvider {...form}>
             <Stack
                 gap={12}
                 align={"stretch"}
                 direction={{ base: "column", md: "row" }}
             >
-                <FileUploadInput
-                    setImage={setFile}
-                    label="Project Image Preview"
-                >
-                    <ProjectImagePreview file={file} />
+                <FileUploadInput disabled={isUpdating}>
+                    <ImagePreview />
                 </FileUploadInput>
-                <Stack flex={1}>
-                    <form onSubmit={handleSubmit}>
-                        <ProjectForm disabled={isPending} />
-                        <Button
-                            type="submit"
-                            disabled={isPending}
-                            loading={isPending}
-                            width={"full"}
-                        >
-                            Update
-                        </Button>
+                <Stack flex={1} asChild>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <ProjectFormFields
+                            legend="Update Project"
+                            buttonName="Update"
+                            isDisabled={isUpdating}
+                        />
+                        {project_id && <DeleteProjectButton id={project_id} />}
                     </form>
-                    {project_id && <DeleteProjectButton id={project_id} />}
                 </Stack>
             </Stack>
-        </ProjectFormProvider>
+        </FormProvider>
     );
 }

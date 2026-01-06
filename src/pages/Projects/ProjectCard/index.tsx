@@ -1,10 +1,10 @@
-import { Center, HStack, Stack, Text, Avatar } from "@chakra-ui/react";
+import { HStack, Stack, Text, Avatar } from "@chakra-ui/react";
 import type { Project } from "@/types";
 import { UpdateProjectButton } from "../Buttons/UpdateProjectButton";
 import { Link as RouterLink } from "react-router";
-import { LikeButton } from "../Buttons/LikeButton";
 import { isMyProject } from "@/helpers/projects";
 import { ProjectImage } from "./ProjectImage";
+import { makePalette } from "@/helpers/colors";
 
 // TODO:
 // enable link functionality
@@ -17,31 +17,23 @@ type Props = {
 };
 
 export function ProjectCard({ project, displayUser = true }: Props) {
+    const color = makePalette(project.bg_color);
     return (
         <Stack
             flexGrow={1}
             transition="padding .2s ease, margin .2s ease, background .2s ease"
-            rounded={"md"}
+            rounded={"2xl"}
+            bg={"transparent"}
             _hover={{
-                bg: project.bg_color,
+                bg: color.dark,
                 padding: 3,
                 margin: -3,
             }}
+            className="group"
+            gap={1}
         >
-            <Center
-                bg={project.bg_color}
-                aspectRatio={15 / 10}
-                className="group"
-                overflow={"hidden"}
-                maxW={500}
-            >
-                <RouterLink
-                    to={`/${project.user_profile?.username}/${project.slug}`}
-                >
-                    <ProjectImage project={project} />
-                </RouterLink>
-            </Center>
-            <HStack py={2} gap={4} alignItems={"start"}>
+            <ProjectImage project={project} />
+            <HStack py={2} gap={3} alignItems={"start"}>
                 {displayUser && (
                     <Avatar.Root size={{ base: "sm", sm: "md" }}>
                         <Avatar.Fallback name={project.user_id} />
@@ -50,7 +42,16 @@ export function ProjectCard({ project, displayUser = true }: Props) {
                 )}
 
                 <Stack align={"start"} gap={0}>
-                    <Text asChild fontSize="md" fontWeight={700}>
+                    <Text
+                        asChild
+                        fontSize="md"
+                        fontWeight={700}
+                        transition={"color 0.2s ease"}
+                        color={"whiteAlpha.950"}
+                        _groupHover={{
+                            color: color.light,
+                        }}
+                    >
                         <RouterLink
                             to={`/${project.user_profile?.username}/${project.slug}`}
                         >
@@ -59,12 +60,21 @@ export function ProjectCard({ project, displayUser = true }: Props) {
                     </Text>
 
                     {displayUser && (
-                        <Text as={RouterLink} color={"fg.subtle"}>
-                            {project.user_profile?.username}
+                        <Text
+                            asChild
+                            fontWeight={500}
+                            fontSize="sm"
+                            color={"whiteAlpha.600"}
+                            transition={"color 0.2s ease"}
+                            _groupHover={{ color: color.medium }}
+                        >
+                            <RouterLink
+                                to={`/${project.user_profile?.username}`}
+                            >
+                                {project.user_profile?.username}
+                            </RouterLink>
                         </Text>
                     )}
-
-                    <LikeButton project={project} displayCount />
                 </Stack>
 
                 {isMyProject(project) && (

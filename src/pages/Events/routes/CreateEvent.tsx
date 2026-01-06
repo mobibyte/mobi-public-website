@@ -1,13 +1,17 @@
 import { Box, Button, Stack, Heading } from "@chakra-ui/react";
-import { EventFormProvider, useEventForm } from "@/context/form-context";
-import { isNotEmpty, isInRange } from "@mantine/form";
-import { EventForm } from "../EventForm";
+import { EventFormFields } from "../EventFormFields";
 import { useCreateEvent } from "@/hooks/useEvents";
-import { useState } from "react";
 import { FileUploadInput } from "@/components/FileUploadInput";
-import { EventImagePreview } from "../EventImagePreview";
+
 import { todayAt } from "@/helpers/format";
-import { useNavigate } from "react-router";
+
+import { ImagePreview } from "@/components/ImagePreview";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { eventFormSchema } from "@/schema/events";
+
+import type { EventFormValues } from "@/schema/events";
+import type { Event } from "@/types";
 
 const todayAt5PM = todayAt(17);
 const todayAt7PM = todayAt(19);
@@ -16,11 +20,10 @@ const default_image =
     "https://fimmkvsywsxovvhdctfn.supabase.co/storage/v1/object/public/events/default-event-image.png";
 
 export function CreateEvent() {
-    const navigate = useNavigate();
-    const { mutateAsync: createEvent, isPending, isSuccess } = useCreateEvent();
-    const [file, setFile] = useState<File | undefined>(undefined);
-    const form = useEventForm({
-        initialValues: {
+    const { mutateAsync: createEvent, isPending } = useCreateEvent();
+    const form = useForm<EventFormValues>({
+        resolver: zodResolver(eventFormSchema),
+        defaultValues: {
             title: "",
             description: "",
             location: "",
@@ -29,45 +32,30 @@ export function CreateEvent() {
             momocoins: 1,
             mavengage_url: "",
             image: default_image,
+            image_file: null,
         },
-        validate: {
-            title: isNotEmpty("Title cannot be empty"),
-            location: isNotEmpty("Location cannot be empty"),
-            starts_at: isNotEmpty("Start date cannot be empty"),
-            ends_at: isNotEmpty("End date cannot be empty"),
-            momocoins: isInRange(
-                { min: 0, max: 10 },
-                "Momocoins must be between 0 and 10"
-            ),
-        },
+        mode: "onSubmit",
     });
 
-    const handleSubmit = form.onSubmit(async (values) => {
-        const newEvent = {
-            ...values,
-            momocoins: Number(values.momocoins),
-            starts_at: new Date(values.starts_at),
-            ends_at: new Date(values.ends_at),
-        };
-        await createEvent({ event: newEvent, image: file });
-        if (isSuccess) {
-            navigate("/events");
-        }
-    });
+    const onSubmit = async (newEvent: Partial<Event>) => {
+        const imageFile = form.getValues("image_file");
+        await createEvent({ event: newEvent, image: imageFile });
+    };
+
     return (
-        <EventFormProvider form={form}>
+        <FormProvider {...form}>
             <Heading>Create Event</Heading>
             <Stack
                 align={"stretch"}
                 gap={12}
                 direction={{ base: "column", md: "row" }}
             >
-                <FileUploadInput setImage={setFile} label="Event Image Preview">
-                    <EventImagePreview file={file} />
+                <FileUploadInput disabled={isPending}>
+                    <ImagePreview fallbackUrl={default_image} />
                 </FileUploadInput>
-                <Box flex={1}>
-                    <form onSubmit={handleSubmit}>
-                        <EventForm />
+                <Box flex={1} asChild>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <EventFormFields />
                         <Button
                             type="submit"
                             loading={isPending}
@@ -80,6 +68,6 @@ export function CreateEvent() {
                     </form>
                 </Box>
             </Stack>
-        </EventFormProvider>
+        </FormProvider>
     );
 }

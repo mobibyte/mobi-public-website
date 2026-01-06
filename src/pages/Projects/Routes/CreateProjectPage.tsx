@@ -1,71 +1,61 @@
-import { useProjectForm, ProjectFormProvider } from "@/context/form-context";
-import { isNotEmpty } from "@mantine/form";
-import { ProjectForm } from "../ProjectForm";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { projectFormSchema } from "@/schema/projects";
+import type { ProjectFormValues } from "@/schema/projects";
+
 import { useCreateProject } from "@/hooks/useProjects";
-import { useState, useEffect } from "react";
 import { FileUploadInput } from "@/components/FileUploadInput";
-import { useNavigate } from "react-router";
-import { Stack, Box, Button } from "@chakra-ui/react";
-import { ProjectImagePreview } from "../ProjectImagePreview";
+import { Stack, Box } from "@chakra-ui/react";
+import { ImagePreview } from "@components/ImagePreview";
+
+import { ProjectFormFields } from "../ProjectFormFields";
+
+import type { Project } from "@/types";
 
 export function CreateProjectPage() {
-    const navigate = useNavigate();
-    const [file, setFile] = useState<File | undefined>(undefined);
-    const {
-        mutateAsync: createProject,
-        isPending,
-        isSuccess,
-    } = useCreateProject();
-    const form = useProjectForm({
-        mode: "uncontrolled",
-        initialValues: {
+    const { mutateAsync: createProject, isPending } = useCreateProject();
+
+    const form = useForm<ProjectFormValues>({
+        resolver: zodResolver(projectFormSchema),
+        defaultValues: {
             title: "",
             description: "",
             url: "",
             github: "",
+            image: "",
+            display: false,
             tech_stack: [],
-            display: true,
-            bg_color: "#3E0D93",
+            bg_color: "",
+            image_file: null,
         },
-        validate: {
-            title: isNotEmpty("Title cannot be empty"),
-            url: isNotEmpty("URL cannot be empty"),
-        },
+        mode: "onSubmit",
     });
 
-    const handleSubmit = form.onSubmit(async () => {
-        const newProject = form.getValues();
-        createProject({ project: newProject, image: file });
-    });
-
-    useEffect(() => {
-        if (isSuccess) navigate("/profile");
-    }, [isSuccess]);
+    const onSubmit = async (formValues: Partial<Project>) => {
+        const imageFile = form.getValues("image_file");
+        await createProject({ project: formValues, image: imageFile });
+    };
 
     return (
-        <ProjectFormProvider form={form}>
+        <FormProvider {...form}>
             <Stack
                 align={"stretch"}
                 gap={12}
                 direction={{ base: "column", md: "row" }}
             >
-                <FileUploadInput setImage={setFile} label="Project Preview">
-                    <ProjectImagePreview file={file} />
+                <FileUploadInput disabled={isPending}>
+                    <ImagePreview />
                 </FileUploadInput>
                 <Box flex={1}>
-                    <form onSubmit={handleSubmit}>
-                        <ProjectForm disabled={isPending} />
-                        <Button
-                            type="submit"
-                            loading={isPending}
-                            disabled={isPending}
-                            width={"full"}
-                        >
-                            Upload
-                        </Button>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <ProjectFormFields
+                            legend="Upload New Project"
+                            buttonName="Upload"
+                            isDisabled={isPending}
+                        />
                     </form>
                 </Box>
             </Stack>
-        </ProjectFormProvider>
+        </FormProvider>
     );
 }

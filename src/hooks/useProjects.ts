@@ -5,8 +5,10 @@ import { useSession } from "./useAuth";
 import { getPublicProjectImageUrl } from "@/helpers/projects";
 import { useParams } from "react-router";
 import { slugify } from "@/helpers/format";
+import { useNavigate } from "react-router";
 
 export function useCreateProject() {
+    const navigate = useNavigate();
     const { data: session } = useSession();
     const queryClient = useQueryClient();
     return useMutation({
@@ -14,7 +16,7 @@ export function useCreateProject() {
             image,
             project,
         }: {
-            image?: File;
+            image?: File | null;
             project: Partial<Project>;
         }) => {
             if (!session) return;
@@ -38,6 +40,7 @@ export function useCreateProject() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries();
+            navigate("/profile");
             console.log("Successfully uploaded project");
         },
         onError: (err) => {
@@ -140,12 +143,13 @@ export function useGetRecentProjects() {
 }
 
 export function useUpdateProject() {
+    const navigate = useNavigate();
     return useMutation({
         mutationFn: async ({
             image,
             project,
         }: {
-            image?: File;
+            image?: File | null;
             project: Partial<Project>;
         }) => {
             console.log("Updating project", project.title);
@@ -161,6 +165,7 @@ export function useUpdateProject() {
         },
         onSuccess: () => {
             console.log("Successfully updated project");
+            navigate("/profile");
         },
         onError: (error) => {
             console.error("Error updating project:", error.message);

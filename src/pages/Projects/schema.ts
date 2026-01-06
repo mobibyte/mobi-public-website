@@ -8,8 +8,6 @@ export const projectFormSchema = z.object({
     tech_stack: z.array(z.string()),
     display: z.boolean(),
     image: z.string(),
-    image_file: z.any().nullable().optional(),
-    bg_color: z.string(),
 });
 
 export type ProjectFormValues = z.infer<typeof projectFormSchema>;

@@ -67,7 +67,7 @@ export function todayAt(hour: number, minute = 0) {
     const offset = d.getTimezoneOffset();
     const local = new Date(d.getTime() - offset * 60_000);
 
-    return local.toISOString().slice(0, 16);
+    return local;
 }
 
 export function todayFolder(local = true) {
@@ -99,12 +99,11 @@ export const toLocalInputValue = (d?: Date | string) => {
 
 export function slugify(str: string): string {
     return str
-      .normalize("NFD")                 // split accented letters into base + accent
-      .replace(/[\u0300-\u036f]/g, "")  // remove accents
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9\s-]/g, "")     // remove invalid chars
-      .replace(/\s+/g, "-")             // spaces → dashes
-      .replace(/-+/g, "-");             // collapse multiple dashes
+        .normalize("NFD") // split accented letters into base + accent
+        .replace(/[\u0300-\u036f]/g, "") // remove accents
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, "") // remove invalid chars
+        .replace(/\s+/g, "-") // spaces → dashes
+        .replace(/-+/g, "-"); // collapse multiple dashes
 }
-  
