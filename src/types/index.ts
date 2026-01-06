@@ -47,7 +47,7 @@ export type Project = {
     created_at: Date;
     user_id: string;
     display: boolean;
-    description: string | null;
+    description: string;
     tech_stack: string[];
     bg_color: string | "FFF";
     user_profile?: Profile;

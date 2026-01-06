@@ -49,8 +49,19 @@ export function LikeButton({
                 onClick={handleClick}
                 disabled={!session}
                 variant={"ghost"}
+                rounded={"full"}
+                _hover={{
+                    bg: "blackAlpha.500",
+                }}
             >
-                {isLikedByMe ? <IconHeartFilled color="red" /> : <IconHeart />}
+                {isLikedByMe ? (
+                    <IconHeartFilled
+                        color="#ff2962"
+                        filter="drop-shadow(0 1px 2px rgba(0,0,0,0.5))"
+                    />
+                ) : (
+                    <IconHeart filter="drop-shadow(0 1px 2px rgba(0,0,0,0.5))" />
+                )}
             </IconButton>
             {displayCount && <Text>{likesCount}</Text>}
         </HStack>
