@@ -2,6 +2,7 @@ import { supabase } from "./supabaseClient";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import type { Profile } from "@/types";
 import { useSession } from "./useAuth";
+import { toaster } from "@/components/ui/toaster";
 
 export function useGetUserProfile() {
     const { data: session } = useSession();
@@ -35,7 +36,7 @@ export function useUpdateUserProfile() {
     const { data: session } = useSession();
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (profile: Profile) => {
+        mutationFn: async (profile: Partial<Profile>) => {
             if (!session) return;
 
             const { error } = await supabase
@@ -45,7 +46,7 @@ export function useUpdateUserProfile() {
                     last_name: profile.last_name,
                     username: profile.username,
                     bio: profile.bio,
-                    links: profile.links
+                    links: profile.links,
                 })
                 .eq("id", session?.user.id);
 
@@ -53,11 +54,20 @@ export function useUpdateUserProfile() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries();
+            toaster.create({
+                title: "Successfully Uploaded!",
+                type: "success",
+            });
         },
-        onError: (err) => {
-            console.error(err);
-        }
-    })
+        onError: (error) => {
+            console.error(error);
+            toaster.create({
+                title: error.name,
+                description: error.message,
+                type: "error",
+            });
+        },
+    });
 }
 
 export function useUploadAvatar() {
@@ -65,14 +75,12 @@ export function useUploadAvatar() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (file: File) => {
-            
             if (!session) return; // Don't upload anything if no user
             console.log(`Uploading: ${file.name}`);
 
             const path = `${session.user.id}/${file.name.trim()}`;
 
-            const { error: uploadErr } = await supabase
-                .storage
+            const { error: uploadErr } = await supabase.storage
                 .from("avatars")
                 .upload(path, file, {
                     upsert: true,
@@ -82,26 +90,33 @@ export function useUploadAvatar() {
 
             if (uploadErr) throw uploadErr;
 
-            const { data: {publicUrl} } = supabase
-                .storage
-                .from("avatars")
-                .getPublicUrl(path);
+            const {
+                data: { publicUrl },
+            } = supabase.storage.from("avatars").getPublicUrl(path);
 
             const { error: updateErr } = await supabase
                 .from("profiles")
-                .update({ avatar_url: publicUrl})
+                .update({ avatar_url: publicUrl })
                 .eq("id", session?.user.id);
 
             if (updateErr) throw updateErr;
 
             return publicUrl;
         },
-        onSuccess: (data) => {
+        onSuccess: () => {
             queryClient.invalidateQueries();
-            console.log(`Successfully uploaded profile image - ${data}`);
+            toaster.create({
+                title: "Successfully Uploaded!",
+                type: "success",
+            });
         },
-        onError: (err) => {
-            console.error("Error uploading image", err);
-        }
+        onError: (error) => {
+            console.error("Error uploading image", error);
+            toaster.create({
+                title: error.name,
+                description: error.message,
+                type: "error",
+            });
+        },
     });
 }

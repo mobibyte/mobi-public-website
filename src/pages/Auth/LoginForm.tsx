@@ -1,56 +1,58 @@
-import { isEmail, isNotEmpty } from "@mantine/form";
 import { useLogin } from "@/hooks/useAuth";
-import { Button, Fieldset, Text } from "@chakra-ui/react";
+import { Fieldset, Text } from "@chakra-ui/react";
 import { NavLink } from "react-router";
-import { EmailField, PasswordField } from "./FormFields";
-import { AuthFormProvider, useAuthForm } from "@/context/form-context";
+
+import {
+    TextInput,
+    PasswordInput,
+    SubmitButton,
+} from "@/components/FormFields";
+
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginFormSchema } from "@/schema/auth";
+import type { LoginFormValues } from "@/schema/auth";
 
 export function LoginForm() {
-  const { mutateAsync: login, isPending } = useLogin();
+    const { mutateAsync: login, isPending } = useLogin();
 
-  const form = useAuthForm({
-    mode: "uncontrolled",
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validate: {
-      email: isEmail("Invalid email"),
-      password: isNotEmpty("Password is required"),
-    },
-  });
+    const form = useForm<LoginFormValues>({
+        resolver: zodResolver(loginFormSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        },
+        mode: "onSubmit",
+    });
 
-  const handleSubmit = form.onSubmit((user) => {
-    login(user);
-  });
+    const onSubmit = async (user: LoginFormValues) => {
+        await login(user);
+    };
 
-  return (
-    <AuthFormProvider form={form}>
-      <form onSubmit={handleSubmit}>
-        <Fieldset.Root disabled={isPending}>
-          <Fieldset.Legend fontSize={"2xl"}>Login</Fieldset.Legend>
-          <Fieldset.Content>
-            <EmailField />
-            <PasswordField />
+    return (
+        <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+                <Fieldset.Root disabled={isPending}>
+                    <Fieldset.Legend fontSize={"2xl"}>Login</Fieldset.Legend>
+                    <Fieldset.Content>
+                        <TextInput<LoginFormValues> name="email" type="email" />
+                        <PasswordInput<LoginFormValues> name="password" />
 
-            <Text fontSize="xs" color="gray.500">
-              <NavLink to="/forgot-password">Forgot Password?</NavLink>
-            </Text>
-            <Button
-              type="submit"
-              loading={isPending}
-              loadingText="Logging in..."
-              my={2}
-            >
-              Login
-            </Button>
+                        <Text fontSize="xs" color="gray.500" asChild>
+                            <NavLink to="/forgot-password">
+                                Forgot Password?
+                            </NavLink>
+                        </Text>
+                        <SubmitButton label="Login" loading={isPending} />
 
-            <Text asChild>
-              <NavLink to="/signup">Don't have an account? Sign up!</NavLink>
-            </Text>
-          </Fieldset.Content>
-        </Fieldset.Root>
-      </form>
-    </AuthFormProvider>
-  );
+                        <Text asChild>
+                            <NavLink to="/signup">
+                                Don't have an account? Sign up!
+                            </NavLink>
+                        </Text>
+                    </Fieldset.Content>
+                </Fieldset.Root>
+            </form>
+        </FormProvider>
+    );
 }

@@ -11,21 +11,22 @@ type FormattedDate = {
 
 import type { Officer } from "@/types";
 
-export function FormatDate(date: Date): FormattedDate {
+export function FormatDate(date: string): FormattedDate {
+    const converted = new Date(date);
     const formatted = {
-        month: date.toLocaleString("default", { month: "long" }),
-        year: date.getFullYear(),
-        day: date.getDate(),
-        shortMonth: date.toLocaleString("default", { month: "short" }),
-        time: date.toLocaleTimeString("default", {
+        month: converted.toLocaleString("default", { month: "long" }),
+        year: converted.getFullYear(),
+        day: converted.getDate(),
+        shortMonth: converted.toLocaleString("default", { month: "short" }),
+        time: converted.toLocaleTimeString("default", {
             hour: "numeric",
             minute: "2-digit",
         }),
-        weekDay: date.toLocaleString("default", { weekday: "long" }),
-        shortWeekDay: date.toLocaleString("default", { weekday: "short" }),
+        weekDay: converted.toLocaleString("default", { weekday: "long" }),
+        shortWeekDay: converted.toLocaleString("default", { weekday: "short" }),
         fullDate: new Intl.DateTimeFormat("en-US", {
             dateStyle: "long",
-        }).format(date),
+        }).format(converted),
     };
     return formatted;
 }
@@ -106,4 +107,18 @@ export function slugify(str: string): string {
         .replace(/[^a-z0-9\s-]/g, "") // remove invalid chars
         .replace(/\s+/g, "-") // spaces → dashes
         .replace(/-+/g, "-"); // collapse multiple dashes
+}
+
+export function toDatetimeLocalValue(isoOrDate: string | undefined | Date) {
+    const d = typeof isoOrDate === "string" ? new Date(isoOrDate) : isoOrDate;
+
+    if (!d) return "";
+
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    const hh = String(d.getHours()).padStart(2, "0");
+    const min = String(d.getMinutes()).padStart(2, "0");
+
+    return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
 }

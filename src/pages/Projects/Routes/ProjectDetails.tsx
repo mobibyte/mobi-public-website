@@ -33,6 +33,7 @@ export function ProjectDetails() {
     if (!project) {
         return <Text>Nothing found</Text>;
     }
+
     const isUser = session?.user.id === project.user_id;
     return (
         <Stack

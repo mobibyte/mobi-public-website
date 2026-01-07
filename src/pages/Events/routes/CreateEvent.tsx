@@ -3,18 +3,12 @@ import { EventFormFields } from "../EventFormFields";
 import { useCreateEvent } from "@/hooks/useEvents";
 import { FileUploadInput } from "@/components/FileUploadInput";
 
-import { todayAt } from "@/helpers/format";
-
 import { ImagePreview } from "@/components/ImagePreview";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { eventFormSchema } from "@/schema/events";
-
+import { toDatetimeLocalValue } from "@/helpers/format";
 import type { EventFormValues } from "@/schema/events";
-import type { Event } from "@/types";
-
-const todayAt5PM = todayAt(17);
-const todayAt7PM = todayAt(19);
 
 const default_image =
     "https://fimmkvsywsxovvhdctfn.supabase.co/storage/v1/object/public/events/default-event-image.png";
@@ -27,8 +21,8 @@ export function CreateEvent() {
             title: "",
             description: "",
             location: "",
-            starts_at: todayAt5PM,
-            ends_at: todayAt7PM,
+            starts_at: toDatetimeLocalValue(new Date()),
+            ends_at: toDatetimeLocalValue(new Date()),
             momocoins: 1,
             mavengage_url: "",
             image: default_image,
@@ -37,9 +31,9 @@ export function CreateEvent() {
         mode: "onSubmit",
     });
 
-    const onSubmit = async (newEvent: Partial<Event>) => {
-        const imageFile = form.getValues("image_file");
-        await createEvent({ event: newEvent, image: imageFile });
+    const onSubmit = async (values: EventFormValues) => {
+        const { image_file, ...event } = values;
+        await createEvent({ event: event, image: image_file });
     };
 
     return (
@@ -55,7 +49,7 @@ export function CreateEvent() {
                 </FileUploadInput>
                 <Box flex={1} asChild>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
-                        <EventFormFields />
+                        <EventFormFields disabled={isPending} />
                         <Button
                             type="submit"
                             loading={isPending}
