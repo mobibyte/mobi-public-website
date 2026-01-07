@@ -45,12 +45,7 @@ export function useGetEvent(event_id: string | undefined) {
                 .single();
 
             if (error) throw error;
-            const event = {
-                ...data,
-                starts_at: new Date(data.starts_at),
-                ends_at: new Date(data.ends_at),
-            };
-            return event;
+            return data;
         },
         gcTime: 1000 * 60 * 60,
     });
@@ -77,7 +72,6 @@ export function useGetAllSemesterEvents() {
                     ends_at: new Date(event.ends_at),
                 };
             });
-            console.log("Fetched events:", events);
             return (events as Event[]) || [];
         },
         refetchOnWindowFocus: true,
@@ -97,6 +91,7 @@ export function useCreateEvent() {
             event: Partial<Event>;
             image: File | undefined;
         }) => {
+            console.log("event", event);
             if (!session) return;
             if (image) {
                 // Needs to upload image first and get an image url to insert into column
@@ -137,9 +132,11 @@ export function useUpdateEvent() {
         mutationFn: async ({
             event,
             image,
+            id,
         }: {
             event: Partial<Event>;
             image: File | undefined;
+            id: string;
         }) => {
             if (image) {
                 event.image = await getPublicImageUrl(image);
@@ -147,7 +144,7 @@ export function useUpdateEvent() {
             const { data, error } = await supabase
                 .from("events")
                 .update(event)
-                .eq("id", event.id)
+                .eq("id", id)
                 .select()
                 .single();
             if (error) {

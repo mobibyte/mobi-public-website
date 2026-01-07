@@ -2,7 +2,7 @@ import { Stack, Heading, Button } from "@chakra-ui/react";
 import { useGetAllSemesterEvents } from "@/hooks/useEvents";
 import { EventList } from "./EventList";
 import { EventListSkeleton } from "./EventListSkeleton";
-import { getSemester, FormatDate } from "@/helpers/format";
+import { getSemester } from "@/helpers/format";
 import { useGetUserRsvp } from "@/hooks/useRsvp";
 import { useGetUserOfficer } from "@/hooks/useOfficer";
 import { sortEventsByDate } from "@/helpers/sort";
@@ -34,7 +34,7 @@ export function Events() {
                 lineHeight={1}
                 zIndex={2}
             >
-                {`${getSemester()} ${FormatDate(new Date()).year} Events`}
+                {`${getSemester()} ${new Date().getFullYear} Events`}
             </Heading>
             {officer && (
                 <Button ml={"auto"} size={"sm"} asChild>

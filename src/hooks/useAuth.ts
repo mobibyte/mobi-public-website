@@ -29,7 +29,7 @@ export function useLogin() {
             console.error("Login error:", error);
             toaster.create({
                 title: error.name,
-                description: error.message,
+
                 type: "error",
             });
         },

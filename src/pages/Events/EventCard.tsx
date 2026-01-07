@@ -17,7 +17,7 @@ export function EventCard({ event }: { event: Event }) {
         time: startTime,
         shortWeekDay,
     } = FormatDate(event.starts_at);
-    const { time: endTime } = FormatDate(new Date(event.ends_at));
+    const { time: endTime } = FormatDate(event.ends_at);
     const hasNotEnded = new Date(event.ends_at) > new Date();
     const isMobile = useBreakpointValue({ base: true, md: false });
 

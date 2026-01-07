@@ -1,10 +1,12 @@
 import {
+    Button,
     Input,
     Field,
     Switch,
     Textarea,
     NumberInput as ChakraNumberInput,
 } from "@chakra-ui/react";
+import { PasswordInput as ChakraPasswordInput } from "@/components/ui/password-input";
 import { Controller } from "react-hook-form";
 import type { Control } from "react-hook-form";
 
@@ -75,6 +77,34 @@ export function TextArea<TFieldValues extends FieldValues>({
     );
 }
 
+type PasswordInputProps<TFieldValues extends FieldValues> = {
+    name: Path<TFieldValues>;
+    label?: string;
+} & React.ComponentProps<typeof ChakraPasswordInput>;
+
+export function PasswordInput<TFieldValues extends FieldValues>({
+    name,
+    label,
+    ...passwordInputProps
+}: PasswordInputProps<TFieldValues>) {
+    const {
+        register,
+        formState: { errors },
+    } = useFormContext<TFieldValues>();
+
+    const error = (errors as any)?.[name]?.message as string | undefined;
+
+    const resolvedLabel = label ?? inferLabel(String(name));
+
+    return (
+        <Field.Root invalid={!!error}>
+            <Field.Label>{resolvedLabel}</Field.Label>
+            <ChakraPasswordInput {...passwordInputProps} {...register(name)} />
+            {error && <Field.ErrorText>{error}</Field.ErrorText>}
+        </Field.Root>
+    );
+}
+
 type NumberInputProps<TFieldValues extends FieldValues> = {
     name: Path<TFieldValues>; // supports nested paths like "user.email"
     label?: string;
@@ -100,9 +130,8 @@ export function NumberInput<TFieldValues extends FieldValues>({
     return (
         <Field.Root invalid={!!error}>
             <Field.Label>{resolvedLabel}</Field.Label>
-            <ChakraNumberInput.Root>
+            <ChakraNumberInput.Root min={0} max={10}>
                 <ChakraNumberInput.Label />
-                <ChakraNumberInput.ValueText />
                 <ChakraNumberInput.Control>
                     <ChakraNumberInput.IncrementTrigger />
                     <ChakraNumberInput.DecrementTrigger />
@@ -111,6 +140,7 @@ export function NumberInput<TFieldValues extends FieldValues>({
                 <ChakraNumberInput.Input
                     {...inputProps}
                     {...register(name, {
+                        valueAsNumber: true,
                         onChange: (e) => onValueChange?.(e.target.value),
                     })}
                 />
@@ -162,4 +192,19 @@ export function inferLabel(name: string) {
     return last
         .replace(/[_-]+/g, " ")
         .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+type SubmitButtonProps = {
+    label?: string;
+} & React.ComponentProps<typeof Button>;
+
+export function SubmitButton({
+    label = "Submit",
+    ...buttonProps
+}: SubmitButtonProps) {
+    return (
+        <Button type="submit" {...buttonProps} my={4}>
+            {label}
+        </Button>
+    );
 }

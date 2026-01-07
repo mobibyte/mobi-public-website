@@ -34,12 +34,8 @@ export function EventDetails() {
     if (!event) {
         return <Heading>Event not found</Heading>;
     }
-    const {
-        fullDate,
-        weekDay,
-        time: startTime,
-    } = FormatDate(new Date(event.starts_at));
-    const endTime = FormatDate(new Date(event.ends_at)).time;
+    const { fullDate, weekDay, time: startTime } = FormatDate(event.starts_at);
+    const endTime = FormatDate(event.ends_at).time;
     const hasNotEnded = new Date(event.ends_at) > new Date();
     return (
         <Stack direction={{ base: "column", md: "row" }} gap={8}>
