@@ -10,7 +10,8 @@ import { ImagePreview } from "@/components/ImagePreview";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { eventFormSchema, type EventFormValues } from "@/schema/events";
-import type { Event } from "@/types";
+
+import { toDatetimeLocalValue } from "@/helpers/format";
 
 export function UpdateEvent() {
     const { event_id } = useParams();
@@ -23,8 +24,12 @@ export function UpdateEvent() {
             title: event?.title ?? "",
             description: event?.description ?? "",
             location: event?.location ?? "",
-            starts_at: event?.starts_at ?? new Date(),
-            ends_at: event?.ends_at ?? new Date(),
+            starts_at:
+                toDatetimeLocalValue(event?.starts_at) ??
+                toDatetimeLocalValue(new Date()),
+            ends_at:
+                toDatetimeLocalValue(event?.ends_at) ??
+                toDatetimeLocalValue(new Date()),
             momocoins: event?.momocoins ?? 1,
             mavengage_url: event?.mavengage_url ?? "",
             image: event?.image ?? "",
@@ -33,9 +38,13 @@ export function UpdateEvent() {
         mode: "onSubmit",
     });
 
-    const onSubmit = async (newEvent: Partial<Event>) => {
-        const imageFile = form.getValues("image_file");
-        await updateEvent({ event: newEvent, image: imageFile });
+    const onSubmit = async (values: EventFormValues) => {
+        const { image_file, ...update } = values;
+        await updateEvent({
+            event: update,
+            image: image_file ?? undefined,
+            id: event!.id,
+        });
     };
 
     return (
@@ -51,7 +60,7 @@ export function UpdateEvent() {
                 </FileUploadInput>
                 <Box flex={1} asChild>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
-                        <EventFormFields />
+                        <EventFormFields disabled={isPending} />
                         <Stack gap={4} my={4}>
                             <Button
                                 type="submit"

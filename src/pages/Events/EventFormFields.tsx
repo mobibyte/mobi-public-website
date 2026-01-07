@@ -2,9 +2,9 @@ import { Fieldset, Stack } from "@chakra-ui/react";
 import { TextInput, TextArea, NumberInput } from "@/components/FormFields";
 import type { EventFormValues } from "@/schema/events";
 
-export function EventFormFields() {
+export function EventFormFields({ disabled }: { disabled?: boolean }) {
     return (
-        <Fieldset.Root>
+        <Fieldset.Root disabled={disabled}>
             <Fieldset.Content>
                 <TextInput<EventFormValues> name="title" />
                 <TextInput<EventFormValues> name="location" />

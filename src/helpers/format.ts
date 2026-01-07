@@ -107,3 +107,17 @@ export function slugify(str: string): string {
         .replace(/\s+/g, "-") // spaces → dashes
         .replace(/-+/g, "-"); // collapse multiple dashes
 }
+
+export function toDatetimeLocalValue(isoOrDate: string | undefined | Date) {
+    const d = typeof isoOrDate === "string" ? new Date(isoOrDate) : isoOrDate;
+
+    if (!d) return "";
+
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    const hh = String(d.getHours()).padStart(2, "0");
+    const min = String(d.getMinutes()).padStart(2, "0");
+
+    return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+}
