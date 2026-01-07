@@ -10,7 +10,8 @@ import { ImagePreview } from "@components/ImagePreview";
 
 import { ProjectFormFields } from "../ProjectFormFields";
 
-import type { Project } from "@/types";
+const DEFAULT_PREVIEW =
+    "https://fimmkvsywsxovvhdctfn.supabase.co/storage/v1/object/public/projects/default-project-image.png";
 
 export function CreateProjectPage() {
     const { mutateAsync: createProject, isPending } = useCreateProject();
@@ -22,7 +23,7 @@ export function CreateProjectPage() {
             description: "",
             url: "",
             github: "",
-            image: "",
+            image: DEFAULT_PREVIEW,
             display: false,
             tech_stack: [],
             bg_color: "",
@@ -31,9 +32,10 @@ export function CreateProjectPage() {
         mode: "onSubmit",
     });
 
-    const onSubmit = async (formValues: Partial<Project>) => {
-        const imageFile = form.getValues("image_file");
-        await createProject({ project: formValues, image: imageFile });
+    const onSubmit = async (formValues: ProjectFormValues) => {
+        const { image_file, ...project } = formValues;
+        if (project.image === "") project.image = DEFAULT_PREVIEW;
+        await createProject({ project: project, imageFile: image_file });
     };
 
     return (
