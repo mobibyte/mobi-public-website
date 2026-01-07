@@ -11,21 +11,22 @@ type FormattedDate = {
 
 import type { Officer } from "@/types";
 
-export function FormatDate(date: Date): FormattedDate {
+export function FormatDate(date: string): FormattedDate {
+    const converted = new Date(date);
     const formatted = {
-        month: date.toLocaleString("default", { month: "long" }),
-        year: date.getFullYear(),
-        day: date.getDate(),
-        shortMonth: date.toLocaleString("default", { month: "short" }),
-        time: date.toLocaleTimeString("default", {
+        month: converted.toLocaleString("default", { month: "long" }),
+        year: converted.getFullYear(),
+        day: converted.getDate(),
+        shortMonth: converted.toLocaleString("default", { month: "short" }),
+        time: converted.toLocaleTimeString("default", {
             hour: "numeric",
             minute: "2-digit",
         }),
-        weekDay: date.toLocaleString("default", { weekday: "long" }),
-        shortWeekDay: date.toLocaleString("default", { weekday: "short" }),
+        weekDay: converted.toLocaleString("default", { weekday: "long" }),
+        shortWeekDay: converted.toLocaleString("default", { weekday: "short" }),
         fullDate: new Intl.DateTimeFormat("en-US", {
             dateStyle: "long",
-        }).format(date),
+        }).format(converted),
     };
     return formatted;
 }

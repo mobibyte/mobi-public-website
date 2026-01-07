@@ -44,7 +44,7 @@ export type Project = {
     url: string;
     github: string;
     image: string;
-    created_at: Date;
+    created_at: string;
     user_id: string;
     display: boolean;
     description: string;
