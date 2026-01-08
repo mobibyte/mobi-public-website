@@ -12,7 +12,9 @@ import { DeleteProjectButton } from "../Buttons/DeleteProjectButton";
 
 import { Stack } from "@chakra-ui/react";
 import { ImagePreview } from "../../../components/ImagePreview";
-import type { Project } from "@/types";
+
+const DEFAULT_PREVIEW =
+    "https://fimmkvsywsxovvhdctfn.supabase.co/storage/v1/object/public/projects/default-project-image.png";
 
 export function UpdateProjectPage() {
     const { project_id } = useParams();
@@ -36,9 +38,15 @@ export function UpdateProjectPage() {
         mode: "onSubmit",
     });
 
-    const onSubmit = async (formValues: Partial<Project>) => {
-        const imageFile = form.getValues("image_file");
-        await updateProject({ project: formValues, image: imageFile });
+    const onSubmit = async (formValues: ProjectFormValues) => {
+        const { image_file, ...update } = formValues;
+        if (!project) return;
+        if (update.image === "") update.image = DEFAULT_PREVIEW;
+        await updateProject({
+            project: update,
+            imageFile: image_file,
+            id: project.id,
+        });
     };
 
     if (isPending) {

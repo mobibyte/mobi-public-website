@@ -3,6 +3,7 @@ import { sanitizeFileName } from "./format";
 import { supabase } from "@/hooks/supabaseClient";
 import { useSession } from "@/hooks/useAuth";
 import { useGetUserLikes } from "@/hooks/useLikes";
+import type { Session } from "@supabase/supabase-js";
 
 export function useIsLikedByUser(project: Project): boolean {
     const { data: userLikes } = useGetUserLikes();
@@ -17,16 +18,21 @@ export function isMyProject(project: Project): boolean {
     return session?.user.id === project.user_id;
 }
 
-export async function getPublicProjectImageUrl(image: File): Promise<string> {
-    const { data: session } = useSession();
+export async function getPublicProjectImageUrl({
+    imageFile,
+    session,
+}: {
+    imageFile: File;
+    session: Session;
+}): Promise<string> {
     const path = `${session?.user.id}/${sanitizeFileName(
-        image.name
+        imageFile.name
     )}-${Date.now()}`;
     const { error: uploadErr } = await supabase.storage
         .from("projects")
-        .upload(path, image, {
+        .upload(path, imageFile, {
             upsert: true,
-            contentType: image.type,
+            contentType: imageFile.type,
             cacheControl: "3600",
         });
 

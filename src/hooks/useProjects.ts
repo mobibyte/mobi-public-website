@@ -2,10 +2,13 @@ import { supabase } from "./supabaseClient";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import type { Project } from "@/types";
 import { useSession } from "./useAuth";
-import { getPublicProjectImageUrl } from "@/helpers/projects";
+
 import { useParams } from "react-router";
 import { slugify } from "@/helpers/format";
 import { useNavigate } from "react-router";
+import { getPublicProjectImageUrl } from "@/helpers/projects";
+
+import { toaster } from "@/components/ui/toaster";
 
 export function useCreateProject() {
     const navigate = useNavigate();
@@ -13,10 +16,10 @@ export function useCreateProject() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async ({
-            image,
+            imageFile,
             project,
         }: {
-            image?: File | null;
+            imageFile?: File | null;
             project: Partial<Project>;
         }) => {
             if (!session) return;
@@ -24,8 +27,11 @@ export function useCreateProject() {
             console.log("Uploading project");
             // Uploads image if there is one
             // Otherwise, supabase already has default image url
-            if (image) {
-                project.image = await getPublicProjectImageUrl(image);
+            if (imageFile) {
+                project.image = await getPublicProjectImageUrl({
+                    imageFile,
+                    session,
+                });
             }
 
             const { error: createError } = await supabase
@@ -42,9 +48,18 @@ export function useCreateProject() {
             queryClient.invalidateQueries();
             navigate("/profile");
             console.log("Successfully uploaded project");
+            toaster.create({
+                title: "Successfully uploaded project!",
+                type: "success",
+            });
         },
-        onError: (err) => {
-            console.error("Error uploading project", err);
+        onError: (error) => {
+            console.error("Error uploading project", error);
+            toaster.create({
+                title: error.name,
+                description: error.message,
+                type: "error",
+            });
         },
     });
 }
@@ -144,31 +159,47 @@ export function useGetRecentProjects() {
 
 export function useUpdateProject() {
     const navigate = useNavigate();
+    const { data: session } = useSession();
     return useMutation({
         mutationFn: async ({
-            image,
+            imageFile,
             project,
+            id,
         }: {
-            image?: File | null;
+            imageFile?: File | null;
             project: Partial<Project>;
+            id: string;
         }) => {
             console.log("Updating project", project.title);
-            if (image) {
-                project.image = await getPublicProjectImageUrl(image);
+            if (!session) return;
+            if (imageFile) {
+                project.image = await getPublicProjectImageUrl({
+                    imageFile,
+                    session,
+                });
             }
             const { error } = await supabase
                 .from("projects")
                 .update(project)
-                .eq("id", project.id);
+                .eq("id", id);
 
             if (error) throw error;
         },
         onSuccess: () => {
             console.log("Successfully updated project");
             navigate("/profile");
+            toaster.create({
+                title: "Successfully updated project!",
+                type: "success",
+            });
         },
         onError: (error) => {
             console.error("Error updating project:", error.message);
+            toaster.create({
+                title: error.name,
+                description: error.message,
+                type: "error",
+            });
         },
     });
 }
@@ -186,9 +217,18 @@ export function useDeleteProject() {
         },
         onSuccess: () => {
             console.log("Successfully deleted project");
+            toaster.create({
+                title: "Verification email resent",
+                type: "info",
+            });
         },
         onError: (error) => {
             console.error("Error deleting project:", error.message);
+            toaster.create({
+                title: error.name,
+                description: error.message,
+                type: "error",
+            });
         },
     });
 }
