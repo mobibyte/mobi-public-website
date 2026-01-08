@@ -13,11 +13,13 @@ import { useParams, useNavigate } from "react-router";
 import { useGetAllProjects } from "@/hooks/useProjects";
 import { ProjectSkeleton } from "./ProjectSkeleton";
 
+const DEFAULT_PAGE = 1;
+
 export function Projects() {
     const { data: projects, isPending, isError, error } = useGetAllProjects();
 
     const pageSize = 9; // 9 Projects per page
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(DEFAULT_PAGE);
 
     const { pageNumber } = useParams();
     const navigate = useNavigate();
