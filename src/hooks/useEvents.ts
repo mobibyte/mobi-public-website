@@ -191,8 +191,8 @@ export function useDeleteEvent() {
             console.log("Successfully deleted", event.title);
             navigate("/events");
             toaster.create({
-                title: "Event deleted successfully!",
-                type: "success",
+                title: "Event deleted",
+                type: "info",
             });
         },
         onError: (err) => {

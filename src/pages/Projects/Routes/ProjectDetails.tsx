@@ -57,7 +57,7 @@ export function ProjectDetails() {
                     <Stack gap={0}>
                         <Text>{project.user_profile?.username}</Text>
                         <Text color={"fg.subtle"}>
-                            {FormatDate(new Date(project.created_at)).fullDate}
+                            {FormatDate(project.created_at).fullDate}
                         </Text>
                     </Stack>
                 </Group>

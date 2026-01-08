@@ -8,6 +8,8 @@ import { slugify } from "@/helpers/format";
 import { useNavigate } from "react-router";
 import { getPublicProjectImageUrl } from "@/helpers/projects";
 
+import { toaster } from "@/components/ui/toaster";
+
 export function useCreateProject() {
     const navigate = useNavigate();
     const { data: session } = useSession();
@@ -46,9 +48,18 @@ export function useCreateProject() {
             queryClient.invalidateQueries();
             navigate("/profile");
             console.log("Successfully uploaded project");
+            toaster.create({
+                title: "Successfully uploaded project!",
+                type: "success",
+            });
         },
-        onError: (err) => {
-            console.error("Error uploading project", err);
+        onError: (error) => {
+            console.error("Error uploading project", error);
+            toaster.create({
+                title: error.name,
+                description: error.message,
+                type: "error",
+            });
         },
     });
 }
@@ -177,9 +188,18 @@ export function useUpdateProject() {
         onSuccess: () => {
             console.log("Successfully updated project");
             navigate("/profile");
+            toaster.create({
+                title: "Successfully updated project!",
+                type: "success",
+            });
         },
         onError: (error) => {
             console.error("Error updating project:", error.message);
+            toaster.create({
+                title: error.name,
+                description: error.message,
+                type: "error",
+            });
         },
     });
 }
@@ -197,9 +217,18 @@ export function useDeleteProject() {
         },
         onSuccess: () => {
             console.log("Successfully deleted project");
+            toaster.create({
+                title: "Verification email resent",
+                type: "info",
+            });
         },
         onError: (error) => {
             console.error("Error deleting project:", error.message);
+            toaster.create({
+                title: error.name,
+                description: error.message,
+                type: "error",
+            });
         },
     });
 }
