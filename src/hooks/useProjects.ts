@@ -139,6 +139,22 @@ export function useGetProjectByName({ username, slug }: Props) {
     });
 }
 
+export function useGetProjectsByUserId(userId: string | undefined) {
+    return useQuery({
+        queryKey: ["project", userId],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from("projects")
+                .select("*, user_profile:profiles (*), likes: likes(user_id)")
+                .eq("user_id", userId);
+
+            if (error) throw error;
+            return (data as Project[]) ?? [];
+        },
+        enabled: !!userId,
+    });
+}
+
 export function useGetRecentProjects() {
     return useQuery<Project[]>({
         queryKey: ["projects"],
@@ -205,6 +221,7 @@ export function useUpdateProject() {
 }
 
 export function useDeleteProject() {
+    const navigate = useNavigate();
     return useMutation({
         mutationFn: async (project_id: string) => {
             const { count, error } = await supabase
@@ -217,8 +234,9 @@ export function useDeleteProject() {
         },
         onSuccess: () => {
             console.log("Successfully deleted project");
+            navigate("/profile");
             toaster.create({
-                title: "Verification email resent",
+                title: "Successfully deleted project",
                 type: "info",
             });
         },

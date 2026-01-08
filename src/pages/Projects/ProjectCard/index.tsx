@@ -35,9 +35,13 @@ export function ProjectCard({ project, displayUser = true }: Props) {
             <ProjectImage project={project} />
             <HStack py={2} gap={3} alignItems={"start"}>
                 {displayUser && (
-                    <Avatar.Root size={{ base: "sm", sm: "md" }}>
-                        <Avatar.Fallback name={project.user_id} />
-                        <Avatar.Image src={project.user_profile?.avatar_url} />
+                    <Avatar.Root asChild size={{ base: "sm", sm: "md" }}>
+                        <RouterLink to={`/${project.user_profile?.username}`}>
+                            <Avatar.Fallback name={project.user_id} />
+                            <Avatar.Image
+                                src={project.user_profile?.avatar_url}
+                            />
+                        </RouterLink>
                     </Avatar.Root>
                 )}
 
@@ -67,6 +71,7 @@ export function ProjectCard({ project, displayUser = true }: Props) {
                             color={"whiteAlpha.600"}
                             transition={"color 0.2s ease"}
                             _groupHover={{ color: color.medium }}
+                            _hover={{ color: "whiteAlpha.950" }}
                         >
                             <RouterLink
                                 to={`/${project.user_profile?.username}`}

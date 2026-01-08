@@ -32,6 +32,29 @@ export function useGetUserProfile() {
     return getProfileQuery;
 }
 
+export function useGetPublicUserProfile(username: string | undefined) {
+    return useQuery<Profile | null>({
+        queryKey: ["profile", username],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from("profiles")
+                .select("*")
+                .eq("username", username)
+                .single();
+            if (error) {
+                throw new Error(error.message);
+            }
+            const parsedData = {
+                ...data,
+                created_at: new Date(data.created_at),
+            };
+            return parsedData as Profile;
+        },
+        enabled: !!username,
+        refetchOnWindowFocus: false,
+    });
+}
+
 export function useUpdateUserProfile() {
     const { data: session } = useSession();
     const queryClient = useQueryClient();

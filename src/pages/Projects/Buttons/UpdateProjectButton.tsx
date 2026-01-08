@@ -4,12 +4,7 @@ import type { Project } from "@/types";
 import { IconDotsVertical } from "@tabler/icons-react";
 import { Tooltip } from "@/components/ui/tooltip";
 
-type Props = {
-    project: Project;
-    // userId: string;
-};
-
-export function UpdateProjectButton({ project }: Props) {
+export function UpdateProjectButton({ project }: { project: Project }) {
     return (
         <Tooltip content="Edit" openDelay={100} closeDelay={100}>
             <IconButton
