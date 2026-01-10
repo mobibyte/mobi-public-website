@@ -19,7 +19,7 @@ import { useLoaderData } from "react-router";
 import { useGetProjectByUsername } from "../hooks";
 
 export function ProjectDetailsPage() {
-    const isMobile = useBreakpointValue({ base: true, md: false });
+    const isMobile = useBreakpointValue({ base: true, lg: false });
     const { slug, username } = useLoaderData() as {
         username: string;
         slug: string;
@@ -38,12 +38,16 @@ export function ProjectDetailsPage() {
 
     return (
         <Stack
-            direction={{ base: "column", md: "row" }}
+            direction={{ base: "column", lg: "row" }}
             gap={{ base: 4, md: 12 }}
         >
             <Stack flex={1}>
                 {isMobile && <Heading>{project.title}</Heading>}
-                <Image src={project.image} aspectRatio={15 / 10} />
+                <Image
+                    src={project.image}
+                    aspectRatio={15 / 10}
+                    rounded={{ base: "lg", md: "2xl" }}
+                />
             </Stack>
             <Stack flex={1} gap={4}>
                 {!isMobile && <Heading>{project.title}</Heading>}
@@ -78,7 +82,7 @@ export function ProjectDetailsPage() {
                 </Group>
                 <Text>{project.description}</Text>
                 {isUser && (
-                    <Button asChild>
+                    <Button asChild variant={"outline"}>
                         <RouterLink to={`/project/edit/${project.id}`}>
                             Edit
                         </RouterLink>

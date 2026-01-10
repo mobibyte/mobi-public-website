@@ -10,6 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signupFormSchema } from "../schema";
 import type { SignupFormValues } from "../schema";
 
+import { pink } from "@/styles/colors";
+
 import {
     TextInput,
     PasswordInput,
@@ -43,7 +45,7 @@ export function RegisterForm() {
         <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <Fieldset.Root disabled={isPending} mt={12}>
-                    <Fieldset.Legend fontSize={"2xl"}>
+                    <Fieldset.Legend fontSize={"2xl"} color={pink}>
                         Create an account
                     </Fieldset.Legend>
                     <Fieldset.Content>

@@ -2,6 +2,9 @@ import { Stack, Heading, Text, Group } from "@chakra-ui/react";
 import { NavLink } from "react-router";
 import RotatingText from "@/assets/animations/RotatingText";
 import { GalaxyBg } from "@/assets/background/GalaxyBg";
+import { blue, pink } from "@/styles/colors";
+import { DiscordButton } from "./buttons/DiscordButton";
+import { InstagramButton } from "./buttons/InstagramButton";
 
 export function JoinToday() {
     return (
@@ -23,13 +26,13 @@ export function JoinToday() {
                     className="space-grotesk-500"
                     lineHeight={1}
                     textAlign="center"
-                    textShadow="-4px -4px 0 #ff00aa"
+                    textShadow={`-4px -4px 0 ${pink}`}
                     zIndex={10}
                 >
                     Join{" "}
                     <span
                         style={{
-                            color: "#0084FF",
+                            color: blue,
                         }}
                     >
                         MOBI
@@ -70,7 +73,7 @@ export function JoinToday() {
                     <NavLink
                         to="/signup"
                         style={{
-                            color: "#ff00aa",
+                            color: pink,
                             textDecoration: "underline",
                         }}
                     >
@@ -78,11 +81,15 @@ export function JoinToday() {
                     </NavLink>
                 </Heading>
                 <Stack
-                    direction={{ base: "column", md: "row" }}
+                    mt={8}
+                    direction={"row"}
                     gap={4}
                     align={"center"}
                     justifyContent={"space-evenly"}
-                ></Stack>
+                >
+                    <DiscordButton />
+                    <InstagramButton />
+                </Stack>
             </Stack>
         </Stack>
     );

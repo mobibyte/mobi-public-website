@@ -1,16 +1,10 @@
-import {
-    IconButton,
-    ButtonGroup,
-    Heading,
-    Pagination,
-    Grid,
-} from "@chakra-ui/react";
+import { Heading, SimpleGrid } from "@chakra-ui/react";
 import { Reveal } from "@/components/ui/Reveal";
 import { ProjectCard } from "../components/ProjectCard";
-import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams } from "react-router";
 import { useGetAllProjects } from "../hooks";
+import { PaginationControls } from "../components/PaginationControls";
 
 const DEFAULT_PAGE = 1;
 
@@ -21,7 +15,6 @@ export function ProjectsPage() {
     const [page, setPage] = useState(DEFAULT_PAGE);
 
     const { pageNumber } = useParams();
-    const navigate = useNavigate();
 
     useEffect(() => {
         setPage(Number(pageNumber) || 1);
@@ -29,10 +22,6 @@ export function ProjectsPage() {
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
     }, [pageNumber]);
-
-    const handlePageChange = (e: { page: number }) => {
-        navigate(`/projects/page/${e.page}`);
-    };
 
     const startRange = (page - 1) * pageSize;
     const endRange = startRange + pageSize;
@@ -52,58 +41,19 @@ export function ProjectsPage() {
             </Heading>
             {isError && <h1>Error loading projects: {error.message}</h1>}
             <Reveal delay={150}>
-                <Grid
-                    templateColumns={{
-                        base: "1fr",
-                        sm: "repeat(2, 1fr)",
-                        md: "repeat(2, 1fr)",
-                        lg: "repeat(3, 1fr)",
-                    }}
-                    gap="6"
-                    flex={"grow"}
+                <SimpleGrid
+                    columns={{ base: 1, sm: 2, lg: 3 }}
+                    gap={6}
+                    mt={{ base: 4, lg: 12 }}
                 >
                     {visibleProjects?.map((project) => (
                         <ProjectCard project={project} key={project.id} />
                     ))}
-                </Grid>
+                </SimpleGrid>
             </Reveal>
 
             {projects && projects.length > pageSize && (
-                <Pagination.Root
-                    count={projects?.length}
-                    pageSize={pageSize}
-                    page={page}
-                    onPageChange={handlePageChange}
-                    mx={"auto"}
-                    alignSelf={"end"}
-                >
-                    <ButtonGroup variant="ghost" size="sm">
-                        <Pagination.PrevTrigger asChild>
-                            <IconButton>
-                                <IconChevronLeft />
-                            </IconButton>
-                        </Pagination.PrevTrigger>
-
-                        <Pagination.Items
-                            render={(page) => (
-                                <IconButton
-                                    variant={{
-                                        base: "ghost",
-                                        _selected: "outline",
-                                    }}
-                                >
-                                    {page.value}
-                                </IconButton>
-                            )}
-                        />
-
-                        <Pagination.NextTrigger asChild>
-                            <IconButton>
-                                <IconChevronRight />
-                            </IconButton>
-                        </Pagination.NextTrigger>
-                    </ButtonGroup>
-                </Pagination.Root>
+                <PaginationControls projects={projects} />
             )}
         </>
     );

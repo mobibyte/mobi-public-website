@@ -1,18 +1,10 @@
 import { MobileNavLinks } from "./NavLinks";
-import {
-    Box,
-    Text,
-    Portal,
-    HStack,
-    Image,
-    useBreakpointValue,
-} from "@chakra-ui/react";
-import { NavLink } from "react-router";
+import { Box, Portal, HStack, useBreakpointValue } from "@chakra-ui/react";
+import { NavLink } from "./NavLink";
 import { AuthButtons } from "../../../features/auth/components/buttons/LogoutButton";
-import mobiLogo from "@/assets/mobi-logo-white.svg";
 import { useScrollHide } from "@/helpers/scroll";
-
-import { RouteProgress } from "../../RouteProgress";
+import { RouteProgress } from "@/components/RouteProgress";
+import { NavLogo } from "./NavLogo";
 
 // TODO:
 // turn logo into link to go home
@@ -30,9 +22,8 @@ export function Navbar() {
                 p="4"
                 px={isMobile ? 4 : 8}
                 pos="fixed"
-                top="2px"
+                top="0"
                 insetX="0"
-                zIndex="modal"
                 maxWidth="container.xl"
                 style={{
                     backdropFilter: "blur(12px)",
@@ -45,41 +36,21 @@ export function Navbar() {
                         ? "0 2px 10px rgba(0,0,0,0.15)"
                         : "none",
                     maskImage: `
-          linear-gradient(
-            to bottom,
-            rgba(0,0,0,1) 75%,     /* fully visible until 75% */
-            rgba(0,0,0,0) 100%     /* fade out again at bottom */
-          )`,
+                        linear-gradient(
+                            to bottom,
+                            rgba(0,0,0,1) 75%,     /* fully visible until 75% */
+                            rgba(0,0,0,0) 100%     /* fade out again at bottom */
+                        )`,
                     WebkitMaskImage: `
-          linear-gradient(
-            to bottom,
-            rgba(0,0,0,1) 75%,
-            rgba(0,0,0,0) 100%
-          )`,
+                        linear-gradient(
+                            to bottom,
+                            rgba(0,0,0,1) 75%,
+                            rgba(0,0,0,0) 100%
+                        )`,
                 }}
             >
                 <RouteProgress />
-                <HStack gap={4}>
-                    <NavLink to={"/"}>
-                        <Image
-                            src={mobiLogo}
-                            alt="MOBI Logo"
-                            h="24px"
-                            ml={{ base: 2, md: 0 }}
-                        />
-                    </NavLink>
-                    {!isMobile && (
-                        <Text
-                            className="space-grotesk-500"
-                            fontWeight="bold"
-                            fontSize="2xl"
-                            alignSelf={"center"}
-                            asChild
-                        >
-                            <NavLink to="/">MOBI</NavLink>
-                        </Text>
-                    )}
-                </HStack>
+                <NavLogo />
                 {isMobile ? <MobileNavLinks /> : <DesktopNavLinks />}
             </Box>
         </Portal>
@@ -89,10 +60,10 @@ export function Navbar() {
 function DesktopNavLinks() {
     return (
         <HStack fontWeight={600} gap={12}>
-            <NavLink to="/">About</NavLink>
-            <NavLink to="/events">Events</NavLink>
-            <NavLink to="/officers">Officers</NavLink>
-            <NavLink to="/projects">Projects</NavLink>
+            <NavLink to="/" label="About" />
+            <NavLink to="/events" label="Events" />
+            <NavLink to="/officers" label="Officers" />
+            <NavLink to="/projects" label="Projects" />
 
             <AuthButtons />
         </HStack>

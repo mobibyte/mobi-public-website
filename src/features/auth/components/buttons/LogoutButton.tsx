@@ -1,7 +1,7 @@
 import { useLogout, useSession } from "@/features/auth/hooks";
 import { useGetUserProfile } from "@/features/profile/hooks";
 import { Text } from "@chakra-ui/react";
-import { NavLink } from "react-router";
+import { NavLink } from "@components/layout/navbar/NavLink";
 
 export function AuthButtons() {
     const { mutate: logout, isPending } = useLogout();
@@ -11,15 +11,15 @@ export function AuthButtons() {
         <>
             {session ? (
                 <>
-                    <NavLink to={`/${profile?.username}`}>Profile</NavLink>
+                    <NavLink to={`/${profile?.username}`} label="Profile" />
                     <Text onClick={() => logout()} cursor="pointer">
                         {isPending ? "Logging out..." : "Logout"}
                     </Text>
                 </>
             ) : (
                 <>
-                    <NavLink to="/login">Login</NavLink>
-                    <NavLink to="/signup">Sign Up</NavLink>
+                    <NavLink to="/login" label="Login" />
+                    <NavLink to="/signup" label="Sign Up" />
                 </>
             )}
         </>

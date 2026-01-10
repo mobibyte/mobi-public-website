@@ -1,5 +1,5 @@
 import { Stack } from "@chakra-ui/react";
-import { HeroSection } from "@/components/HeroSection";
+import { HeroSection } from "../components/HeroSection";
 import { WhoAreWe } from "../components/WhoAreWe";
 import { VibesAndValues } from "../components/VibesAndValues";
 import { WhatWeOffer } from "../components/WhatWeOffer";

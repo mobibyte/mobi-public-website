@@ -43,7 +43,7 @@ export function MainLayout() {
             gap={12}
             display={"flex"}
             flexDirection={"column"}
-            px={{ base: 4, lg: 32 }}
+            px={{ base: 4 }}
             pt={{ base: 24, md: 32 }}
         >
             <Outlet />

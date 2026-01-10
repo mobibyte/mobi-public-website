@@ -2,11 +2,12 @@ import { Center, Box } from "@chakra-ui/react";
 import type { Project } from "../types";
 import { Link as RouterLink } from "react-router";
 import { LikeButton } from "./buttons/LikeButton";
-// import { makePalette } from "@/helpers/colors";
 import { FadeInImage } from "@/components/FadeInImage";
+import { useSession } from "@/features/auth/hooks";
 
 export function ProjectImage({ project }: { project: Project }) {
-    // const color = makePalette(project.bg_color);
+    const { data: session } = useSession();
+    const isSignedIn = !!session;
     return (
         <Center
             position={"relative"}
@@ -32,9 +33,11 @@ export function ProjectImage({ project }: { project: Project }) {
                 />
             </RouterLink>
 
-            <Box position="absolute" top="2" right="2" zIndex="1">
-                <LikeButton project={project} />
-            </Box>
+            {isSignedIn && (
+                <Box position="absolute" top="2" right="2" zIndex="1">
+                    <LikeButton project={project} />
+                </Box>
+            )}
         </Center>
     );
 }
