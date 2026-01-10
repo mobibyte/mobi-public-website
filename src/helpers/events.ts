@@ -1,6 +1,6 @@
-import type { Event, RSVP } from "@/types";
+import type { Event, RSVP } from "@/features/events/types";
 import { todayFolder, sanitizeFileName } from "./format";
-import { supabase } from "@/hooks/supabaseClient";
+import { supabase } from "@/supabase/supabaseClient";
 
 // Find a single event from a list by ID
 export function findEventById(
@@ -22,7 +22,9 @@ export function filterRsvpsByEvent(
 }
 
 export async function getPublicImageUrl(image: File): Promise<string> {
-    const path = `${todayFolder()}/${sanitizeFileName(image.name)}-${Date.now()}`;
+    const path = `${todayFolder()}/${sanitizeFileName(
+        image.name
+    )}-${Date.now()}`;
     const { error: uploadErr } = await supabase.storage
         .from("events")
         .upload(path, image, {
@@ -31,7 +33,9 @@ export async function getPublicImageUrl(image: File): Promise<string> {
         });
 
     if (uploadErr) throw uploadErr;
-    const {data: { publicUrl }} = supabase.storage.from("events").getPublicUrl(path);
+    const {
+        data: { publicUrl },
+    } = supabase.storage.from("events").getPublicUrl(path);
     return publicUrl;
 }
 
@@ -41,8 +45,8 @@ export function getSemesterDate() {
     const month = now.getMonth(); // 0 = Jan
     const date = {
         start: "",
-        end: ""
-    }
+        end: "",
+    };
     // Spring: Jan–May
     if (month >= 0 && month <= 4) {
         date.start = `${year}-01-01`;

@@ -1,0 +1,10 @@
+#nprogress {
+    pointer-events: none;
+}
+
+#nprogress .bar {
+    top: 0;
+    height: 3px;
+    z-index: 9000; /* higher than Chakra modal */
+    background: linear-gradient(90deg, #0066ff 0%, #5011bf 100%);
+}

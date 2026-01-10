@@ -7,12 +7,6 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 // Caches and manages session + client states
 const queryClient = new QueryClient();
 
-// Subscribes to session/authentication state
-import { AuthSessionListener } from "@/providers/AuthSessionListener.tsx";
-
-// React Router
-import { BrowserRouter } from "react-router";
-
 // Chakra UI
 import { Provider } from "@/components/ui/provider.tsx";
 
@@ -23,13 +17,7 @@ createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <Provider>
             <QueryClientProvider client={queryClient}>
-                <BrowserRouter>
-                    <AuthSessionListener>
-                        <Provider>
-                            <App />
-                        </Provider>
-                    </AuthSessionListener>
-                </BrowserRouter>
+                <App queryClient={queryClient} />
 
                 <ReactQueryDevtools
                     initialIsOpen={false}

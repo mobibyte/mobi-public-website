@@ -1,12 +1,12 @@
-import type { Project, Like } from "@/types";
+import type { Project, Like } from "@/features/projects/types";
 import { sanitizeFileName } from "./format";
-import { supabase } from "@/hooks/supabaseClient";
-import { useSession } from "@/hooks/useAuth";
-import { useGetUserLikes } from "@/hooks/useLikes";
+import { supabase } from "@/supabase/supabaseClient";
+import { useSession } from "@/features/auth/hooks";
+import { useGetUserLikes } from "@/features/profile/hooks";
 import type { Session } from "@supabase/supabase-js";
 
 export function useIsLikedByUser(project: Project): boolean {
-    const { data: userLikes } = useGetUserLikes();
+    const { data: userLikes } = useGetUserLikes(project.user_id);
     if (userLikes?.length === 0) return false;
     return (userLikes ?? []).some(
         (like: Like) => like.project_id === project.id
@@ -15,7 +15,8 @@ export function useIsLikedByUser(project: Project): boolean {
 
 export function isMyProject(project: Project): boolean {
     const { data: session } = useSession();
-    return session?.user.id === project.user_id;
+    if (!session) return false;
+    return session.user.id === project.user_id;
 }
 
 export async function getPublicProjectImageUrl({

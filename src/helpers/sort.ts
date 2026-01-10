@@ -1,4 +1,4 @@
-import type { RSVP, Event } from "@/types";
+import type { RSVP, Event } from "@/features/events/types";
 
 export function userIsAttending(rsvps: RSVP[] | undefined, event_id: string) {
     if (!rsvps) return false;
