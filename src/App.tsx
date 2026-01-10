@@ -1,21 +1,12 @@
-import { ProtectedRoutes } from "@/routes/Protected";
-import { AuthRoutes } from "@/routes/Auth";
-import { PublicRoutes } from "@/routes/Public";
-import { Layout } from "./components/Layout";
-import { Routes } from "react-router";
+import * as React from "react";
+import { RouterProvider } from "react-router";
+import type { QueryClient } from "@tanstack/react-query";
+import { makeRouter } from "@/router";
 
-function App() {
-    return (
-        <>
-            <Layout>
-                <Routes>
-                    {PublicRoutes}
-                    {AuthRoutes}
-                    {ProtectedRoutes}
-                </Routes>
-            </Layout>
-        </>
-    );
+import "nprogress/nprogress.css";
+
+export default function App({ queryClient }: { queryClient: QueryClient }) {
+    const router = React.useMemo(() => makeRouter(queryClient), []);
+
+    return <RouterProvider router={router} />;
 }
-
-export default App;

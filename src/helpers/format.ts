@@ -9,7 +9,7 @@ type FormattedDate = {
     fullDate: string;
 };
 
-import type { Officer } from "@/types";
+import type { Officer } from "@/features/officers/types";
 
 export function FormatDate(date: string): FormattedDate {
     const converted = new Date(date);
