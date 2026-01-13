@@ -7,7 +7,7 @@ import { useCreateProject } from "../hooks";
 import { FileUploadInput } from "@/components/FileUploadInput";
 import { Stack, Box } from "@chakra-ui/react";
 import { ImagePreview } from "@components/ImagePreview";
-
+import { getAverageColor } from "@/helpers/colors";
 import { ProjectFormFields } from "../components/ProjectFormFields";
 
 const DEFAULT_PREVIEW =
@@ -24,18 +24,20 @@ export function CreateProjectPage() {
             url: "",
             github: "",
             image: DEFAULT_PREVIEW,
-            display: false,
+            display: true,
             tech_stack: [],
-            bg_color: "",
+            bg_color: "hsla(263, 85%, 13%, 1)",
             image_file: null,
         },
         mode: "onSubmit",
     });
 
     const onSubmit = async (formValues: ProjectFormValues) => {
-        const { image_file, ...project } = formValues;
-        if (project.image === "") project.image = DEFAULT_PREVIEW;
-        await createProject({ project: project, imageFile: image_file });
+        const { image_file, image, ...project } = formValues;
+        const bgColor = await getAverageColor(image_file || image);
+        project.bg_color = bgColor;
+        const newProject = { ...project, image };
+        await createProject({ project: newProject, imageFile: image_file });
     };
 
     return (

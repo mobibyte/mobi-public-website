@@ -3,7 +3,6 @@ import { IconButton, HStack, Text } from "@chakra-ui/react";
 import { useLikeProject, useUnlikeProject } from "@/features/projects/hooks";
 import type { Project } from "@/features/projects/types";
 import { useSession } from "@/features/auth/hooks";
-import { useIsLikedByUser } from "@/helpers/projects";
 import { useState, useEffect } from "react";
 
 // TODO:
@@ -12,12 +11,12 @@ import { useState, useEffect } from "react";
 export function LikeButton({
     project,
     displayCount,
+    isLikedByUser = false,
 }: {
     project: Project;
     displayCount?: boolean;
+    isLikedByUser: boolean;
 }) {
-    const isLikedByUser = useIsLikedByUser(project);
-
     const [likesCount, setLikesCount] = useState(project.likes?.length ?? 0);
     const [isLikedByMe, setIsLikedByMe] = useState(isLikedByUser);
 

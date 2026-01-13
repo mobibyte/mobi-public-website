@@ -1,20 +1,21 @@
-import { Image, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { Stack } from "@chakra-ui/react";
 import { SocialLinks } from "../components/SocialLinks";
+import { UserAvatar } from "./UserAvatar";
 import type { Profile } from "../types";
+import type { Session } from "@supabase/supabase-js";
 
-export function ProfilePageHeader({ profile }: { profile: Profile }) {
+export function ProfilePageHeader({
+    profile,
+    session,
+}: {
+    profile: Profile;
+    session: Session | null;
+}) {
+    const isNotUser = profile.id === session?.user.id;
     return (
         <Stack gap={8} direction={{ base: "column", md: "row" }}>
-            <Image
-                rounded={"full"}
-                src={profile.avatar_url}
-                alt={profile.username}
-                fit={"cover"}
-                aspectRatio={1}
-                maxWidth={200}
-                mx={{ base: "auto", md: "0" }}
-            />
+            <UserAvatar profile={profile} isNotUser={isNotUser} />
             <Stack width={"full"}>
                 <Stack gap={0}>
                     <Text fontSize={"4xl"} fontWeight={700}>

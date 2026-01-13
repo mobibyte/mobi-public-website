@@ -19,13 +19,13 @@ export const profileQueries = {
             refetchOnWindowFocus: true,
             gcTime: 1000 * 60 * 60, // Data is considered fresh for 1 hour
         }),
-    likes: (userId: string) =>
+    likes: (userId: string | null) =>
         queryOptions({
             queryKey: ["profile", "likes", userId],
-            queryFn: () => getAllUserLikes(userId),
+            queryFn: () => getAllUserLikes(userId!),
             staleTime: 60_000,
             refetchOnWindowFocus: true,
             gcTime: 1000 * 60 * 60,
-            enabled: !!userId, // optional guard
+            enabled: !!userId,
         }),
 };

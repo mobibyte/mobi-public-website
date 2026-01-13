@@ -25,7 +25,7 @@ export function SocialLinks({ profile }: { profile: Profile | undefined }) {
                         </Link>
                     </IconButton>
                 ) : (
-                    <Button asChild rounded={"full"} variant={"subtle"}>
+                    <Button asChild rounded={"full"}>
                         <Link href={profile?.github_url} target="_blank">
                             <IconBrandGithub />
                             GitHub
@@ -40,7 +40,7 @@ export function SocialLinks({ profile }: { profile: Profile | undefined }) {
                         </Link>
                     </IconButton>
                 ) : (
-                    <Button asChild rounded={"full"} variant={"subtle"}>
+                    <Button asChild rounded={"full"}>
                         <Link href={profile?.linkedin_url} target="_blank">
                             <IconBrandLinkedin />
                             LinkedIn
@@ -55,7 +55,7 @@ export function SocialLinks({ profile }: { profile: Profile | undefined }) {
                         </Link>
                     </IconButton>
                 ) : (
-                    <Button asChild rounded={"full"} variant={"subtle"}>
+                    <Button asChild rounded={"full"}>
                         <Link href={profile?.website_url} target="_blank">
                             <IconWorld />
                             Website

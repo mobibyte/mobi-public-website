@@ -1,9 +1,4 @@
-import type { RSVP, Event } from "@/features/events/types";
-
-export function userIsAttending(rsvps: RSVP[] | undefined, event_id: string) {
-    if (!rsvps) return false;
-    return rsvps?.some((rsvp) => rsvp.event_id === event_id);
-}
+import type { Event } from "@/features/events/types";
 
 export function sortEventsByDate(events: Event[] | undefined) {
     return {

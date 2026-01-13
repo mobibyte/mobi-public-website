@@ -4,7 +4,7 @@ import {
     useQueryClient,
     useMutation,
 } from "@tanstack/react-query";
-import { useSession, useSessionRequired } from "@/features/auth/hooks";
+import { useSessionRequired } from "@/features/auth/hooks";
 
 import { useNavigate } from "react-router";
 import { successToast, errorToast } from "@/components/Toasts";
@@ -109,11 +109,6 @@ export function useDeleteProject() {
     });
 }
 
-export function useGetUserLikes() {
-    const { data: session } = useSession();
-    return useQuery(projectQueries.likes(session?.user.id));
-}
-
 export function useLikeProject() {
     const queryClient = useQueryClient();
     return useMutation({
@@ -121,6 +116,7 @@ export function useLikeProject() {
             likeProject({ ...args }),
         onSuccess: () => {
             // invalidate queries for events
+            queryClient.invalidateQueries({ queryKey: ["profile"] });
             queryClient.invalidateQueries({ queryKey: ["projects"] });
             queryClient.invalidateQueries({ queryKey: ["likes"] });
         },
@@ -137,6 +133,7 @@ export function useUnlikeProject() {
             unlikeProject({ ...args }),
         onSuccess: () => {
             // invalidate queries for events
+            queryClient.invalidateQueries({ queryKey: ["profile"] });
             queryClient.invalidateQueries({ queryKey: ["projects"] });
             queryClient.invalidateQueries({ queryKey: ["likes"] });
         },

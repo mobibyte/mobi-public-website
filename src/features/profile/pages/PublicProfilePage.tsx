@@ -19,7 +19,7 @@ export function PublicProfilePage() {
 
     return (
         <Stack gap={4}>
-            <ProfilePageHeader profile={profile} />
+            <ProfilePageHeader profile={profile} session={session} />
             {!isUser && <Separator mt={4} />}
             <Tabs.Root defaultValue="projects" flex={1}>
                 {isUser && (

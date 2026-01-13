@@ -6,12 +6,14 @@ import type { QueryClient } from "@tanstack/react-query";
 import { Layout } from "@/components/layout/Layout";
 import { RouteErrorElement } from "./RouteError";
 import { rootLoader } from "./loaders/root";
+import { GalaxyBg } from "@/assets/background/GalaxyBg";
 
 export function makeRouter(queryClient: QueryClient) {
     return createBrowserRouter([
         {
             element: <Layout />,
             loader: rootLoader(queryClient),
+            hydrateFallbackElement: <GalaxyBg />,
             errorElement: <RouteErrorElement />,
             children: [
                 ...publicRoutes(queryClient),

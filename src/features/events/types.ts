@@ -16,11 +16,3 @@ export interface Event {
     description: string;
     image: string;
 }
-
-export type RSVP = {
-    id: string;
-    created_at: Date;
-    event_id: string;
-    user_id: string;
-    user_profile?: Profile;
-};
