@@ -9,6 +9,7 @@ import { useSession } from "@/features/auth/hooks";
 import { profileQueries } from "./queries";
 import { updateUserProfile, uploadAvatar } from "./api";
 import { successToast, errorToast } from "@/components/Toasts";
+// import { useNavigate } from "react-router";
 
 export function useGetUserProfile() {
     const { data: session } = useSession();
@@ -20,11 +21,13 @@ export function useGetPublicUserProfile(username: string) {
     return useSuspenseQuery(profileQueries.byUsername(username));
 }
 
-export function useGetUserLikes(userId: string) {
-    return useQuery(profileQueries.likes(userId));
+export function useGetUserLikes() {
+    const { data: session } = useSession();
+    return useQuery(profileQueries.likes(session?.user.id ?? null));
 }
 
 export function useUpdateUserProfile() {
+    // const navigate = useNavigate();
     const { data: session } = useSession();
     const queryClient = useQueryClient();
     return useMutation({
@@ -35,6 +38,7 @@ export function useUpdateUserProfile() {
         onSuccess: () => {
             queryClient.invalidateQueries();
             successToast("Successfully uploaded!");
+            // navigate(`/${data.}`)
         },
         onError: (error) => {
             console.error(error);

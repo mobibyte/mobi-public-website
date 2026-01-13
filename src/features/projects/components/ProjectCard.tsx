@@ -1,5 +1,5 @@
-import { HStack, Stack, Text, Avatar } from "@chakra-ui/react";
-import type { Project } from "../types";
+import { Center, Box, HStack, Stack, Text, Avatar } from "@chakra-ui/react";
+import type { Like, Project } from "../types";
 import { UpdateProjectButton } from "./buttons/UpdateProjectButton";
 import { Link as RouterLink } from "react-router";
 import { isMyProject } from "@/helpers/projects";
@@ -7,6 +7,8 @@ import { ProjectImage } from "./ProjectImage";
 import { makePalette } from "@/helpers/colors";
 import { useQueryClient } from "@tanstack/react-query";
 import { projectQueries } from "../queries";
+import { LikeButton } from "./buttons/LikeButton";
+import { useIsLikedByUser } from "@/helpers/projects";
 
 // TODO:
 // enable link functionality
@@ -16,9 +18,17 @@ import { projectQueries } from "../queries";
 type Props = {
     project: Project;
     displayUser?: boolean;
+    isSignedIn?: boolean;
+    userLikes?: Like[];
 };
 
-export function ProjectCard({ project, displayUser = true }: Props) {
+export function ProjectCard({
+    project,
+    displayUser = true,
+    isSignedIn = false,
+    userLikes,
+}: Props) {
+    const isLikedByUser = useIsLikedByUser({ project, userLikes });
     const color = makePalette(project.bg_color);
     const queryClient = useQueryClient();
     function prefetchProject() {
@@ -41,7 +51,23 @@ export function ProjectCard({ project, displayUser = true }: Props) {
             onFocus={prefetchProject}
             onTouchStart={prefetchProject}
         >
-            <ProjectImage project={project} />
+            <Center
+                position={"relative"}
+                aspectRatio={15 / 10}
+                overflow={"hidden"}
+                maxW={500}
+            >
+                {isSignedIn && (
+                    <Box position="absolute" top="2" right="2" zIndex="1">
+                        <LikeButton
+                            project={project}
+                            isLikedByUser={isLikedByUser}
+                        />
+                    </Box>
+                )}
+                <ProjectImage project={project} />
+            </Center>
+
             <HStack py={2} gap={3} alignItems={"start"}>
                 {displayUser && (
                     <Avatar.Root asChild size={{ base: "sm", sm: "md" }}>

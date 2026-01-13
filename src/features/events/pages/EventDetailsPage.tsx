@@ -5,15 +5,9 @@ import {
     Group,
     Heading,
     Text,
-    Separator,
     AspectRatio,
 } from "@chakra-ui/react";
-import {
-    IconCalendar,
-    IconPin,
-    IconClock,
-    IconCoin,
-} from "@tabler/icons-react";
+import { IconCalendar, IconPin, IconClock } from "@tabler/icons-react";
 import { FormatDate } from "@/helpers/format";
 import { Link } from "react-router";
 import { useGetUserOfficer } from "@/features/officers/hooks";
@@ -54,11 +48,6 @@ export function EventDetailsPage() {
                     <IconPin />
                     <Text>{event.location}</Text>
                 </Group>
-                <Group>
-                    <IconCoin />
-                    <Text>{event.momocoins}</Text>
-                </Group>
-                <Separator />
                 <Group mt={4}>
                     {officer && (
                         <Button size={"sm"} asChild>
@@ -66,7 +55,7 @@ export function EventDetailsPage() {
                         </Button>
                     )}
                     {event.mavengage_url && (
-                        <Button asChild variant={"outline"} size={"sm"}>
+                        <Button asChild size={"sm"}>
                             <Link to={event.mavengage_url} target="_blank">
                                 MavEngage
                             </Link>

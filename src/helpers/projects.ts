@@ -2,12 +2,16 @@ import type { Project, Like } from "@/features/projects/types";
 import { sanitizeFileName } from "./format";
 import { supabase } from "@/supabase/supabaseClient";
 import { useSession } from "@/features/auth/hooks";
-import { useGetUserLikes } from "@/features/profile/hooks";
 import type { Session } from "@supabase/supabase-js";
 
-export function useIsLikedByUser(project: Project): boolean {
-    const { data: userLikes } = useGetUserLikes(project.user_id);
-    if (userLikes?.length === 0) return false;
+export function useIsLikedByUser({
+    project,
+    userLikes,
+}: {
+    project: Project;
+    userLikes?: Like[];
+}): boolean {
+    if (!userLikes) return false;
     return (userLikes ?? []).some(
         (like: Like) => like.project_id === project.id
     );

@@ -13,19 +13,34 @@ import type { Officer } from "@/features/officers/types";
 
 export function FormatDate(date: string): FormattedDate {
     const converted = new Date(date);
+
     const formatted = {
-        month: converted.toLocaleString("default", { month: "long" }),
-        year: converted.getFullYear(),
-        day: converted.getDate(),
-        shortMonth: converted.toLocaleString("default", { month: "short" }),
+        month: converted.toLocaleString("default", {
+            month: "long",
+            timeZone: "UTC",
+        }),
+        year: converted.getUTCFullYear(),
+        day: converted.getUTCDate(),
+        shortMonth: converted.toLocaleString("default", {
+            month: "short",
+            timeZone: "UTC",
+        }),
         time: converted.toLocaleTimeString("default", {
             hour: "numeric",
             minute: "2-digit",
+            timeZone: "UTC",
         }),
-        weekDay: converted.toLocaleString("default", { weekday: "long" }),
-        shortWeekDay: converted.toLocaleString("default", { weekday: "short" }),
+        weekDay: converted.toLocaleString("default", {
+            weekday: "long",
+            timeZone: "UTC",
+        }),
+        shortWeekDay: converted.toLocaleString("default", {
+            weekday: "short",
+            timeZone: "UTC",
+        }),
         fullDate: new Intl.DateTimeFormat("en-US", {
             dateStyle: "long",
+            timeZone: "UTC",
         }).format(converted),
     };
     return formatted;

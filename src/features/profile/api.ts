@@ -36,12 +36,15 @@ export async function updateUserProfile({
     session: Session;
     profile: Partial<Profile>;
 }) {
-    const { error } = await supabase
+    const { data, error } = await supabase
         .from("profiles")
         .update(profile)
-        .eq("id", session.user.id);
+        .eq("id", session.user.id)
+        .select()
+        .single();
 
     if (error) throw error;
+    return data as Profile;
 }
 
 export async function uploadAvatar({

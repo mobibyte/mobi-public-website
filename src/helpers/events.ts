@@ -1,4 +1,4 @@
-import type { Event, RSVP } from "@/features/events/types";
+import type { Event } from "@/features/events/types";
 import { todayFolder, sanitizeFileName } from "./format";
 import { supabase } from "@/supabase/supabaseClient";
 
@@ -10,15 +10,6 @@ export function findEventById(
     console.log(events, eventId);
     // if (!events || !eventId) return undefined;
     return events.find((event) => event.id === eventId);
-}
-
-// Filter RSVPs for a single event
-export function filterRsvpsByEvent(
-    rsvps: RSVP[] | undefined,
-    eventId: string | undefined
-): RSVP[] {
-    if (!rsvps || !eventId) return [];
-    return rsvps.filter((r) => r.event_id === eventId);
 }
 
 export async function getPublicImageUrl(image: File): Promise<string> {

@@ -81,7 +81,8 @@ function parseHsl(input: string): { h: number; s: number; l: number } {
     );
 
     if (!match) {
-        throw new Error("Invalid HSL/HSLA string " + input);
+        console.error("Invalid HSL/HSLA string " + input);
+        return { h: 0, s: 0, l: 0 };
     }
 
     return {

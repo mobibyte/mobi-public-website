@@ -5,11 +5,16 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { useGetAllProjects } from "../hooks";
 import { PaginationControls } from "../components/PaginationControls";
+import { useGetUserLikes } from "@/features/profile/hooks";
+import { useSession } from "@/features/auth/hooks";
 
 const DEFAULT_PAGE = 1;
 
 export function ProjectsPage() {
+    const { data: userLikes } = useGetUserLikes();
     const { data: projects, isError, error } = useGetAllProjects();
+    const { data: session } = useSession();
+    const isSignedIn = !!session;
 
     const pageSize = 9; // 9 Projects per page
     const [page, setPage] = useState(DEFAULT_PAGE);
@@ -47,7 +52,12 @@ export function ProjectsPage() {
                     mt={{ base: 4, lg: 12 }}
                 >
                     {visibleProjects?.map((project) => (
-                        <ProjectCard project={project} key={project.id} />
+                        <ProjectCard
+                            project={project}
+                            key={project.id}
+                            isSignedIn={isSignedIn}
+                            userLikes={userLikes}
+                        />
                     ))}
                 </SimpleGrid>
             </Reveal>
