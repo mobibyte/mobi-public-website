@@ -1,5 +1,5 @@
 import { supabase } from "@/supabase/supabaseClient";
-import type { Project } from "./types";
+import type { Like, Project } from "./types";
 import { slugify } from "@/helpers/format";
 import type { Session } from "@supabase/supabase-js";
 import { getPublicProjectImageUrl } from "@/helpers/projects";
@@ -159,6 +159,16 @@ export async function deleteProject(projectId: string) {
 
     if (error) throw error;
     return data;
+}
+
+export async function getProjectLikes(projectId: string) {
+    const {data, error} = await supabase   
+        .from("likes")
+        .select("*, user_profile:user_id (*)")
+        .eq("project_id", projectId);
+
+        if (error) throw error;
+        return data as Like[];
 }
 
 export async function getUserLikes(userId: string | undefined) {

@@ -6,6 +6,7 @@ import {
     getProjectByUsername,
     getProjectsByUsername,
     getRecentProjects,
+    getProjectLikes,
     getUserLikes,
 } from "./api";
 
@@ -22,7 +23,7 @@ export const projectQueries = {
         }),
     byId: (projectId: string) =>
         queryOptions({
-            queryKey: ["projects", "byId", projectId],
+            queryKey: ["project", "byId", projectId],
             queryFn: async () => getProjectById(projectId),
         }),
     byUsername: ({ username, slug }: { username: string; slug: string }) =>
@@ -40,9 +41,16 @@ export const projectQueries = {
             queryKey: ["projects", "recent"],
             queryFn: async () => getRecentProjects(),
         }),
+    likesByProject: (projectId: string) => 
+        queryOptions({
+            queryKey: ["project", "likes", projectId],
+            queryFn: async () => getProjectLikes(projectId),
+            gcTime: 1000 * 60 * 60,
+            enabled: !!projectId
+        }),
     likes: (userId: string | undefined) =>
         queryOptions({
-            queryKey: ["project", "likes", userId],
+            queryKey: ["profile", "likes", userId],
             queryFn: async () => getUserLikes(userId),
             gcTime: 1000 * 60 * 60,
             refetchOnWindowFocus: true,

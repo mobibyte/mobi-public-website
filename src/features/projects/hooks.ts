@@ -109,6 +109,10 @@ export function useDeleteProject() {
     });
 }
 
+export function useGetProjectLikes(projectId: string) {
+    return useQuery(projectQueries.likesByProject(projectId));
+}
+
 export function useLikeProject() {
     const queryClient = useQueryClient();
     return useMutation({
@@ -118,6 +122,7 @@ export function useLikeProject() {
             // invalidate queries for events
             queryClient.invalidateQueries({ queryKey: ["profile"] });
             queryClient.invalidateQueries({ queryKey: ["projects"] });
+            queryClient.invalidateQueries({ queryKey: ["project"] });
             queryClient.invalidateQueries({ queryKey: ["likes"] });
         },
         onError: (err) => {
@@ -135,6 +140,7 @@ export function useUnlikeProject() {
             // invalidate queries for events
             queryClient.invalidateQueries({ queryKey: ["profile"] });
             queryClient.invalidateQueries({ queryKey: ["projects"] });
+            queryClient.invalidateQueries({ queryKey: ["project"] });
             queryClient.invalidateQueries({ queryKey: ["likes"] });
         },
         onError: (err) => {

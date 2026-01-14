@@ -63,6 +63,7 @@ export function useUpdateEvent() {
         }) => updateEvent({ event, image, id }),
         onSuccess: (event) => {
             queryClient.invalidateQueries({ queryKey: ["events"] });
+            queryClient.invalidateQueries({ queryKey: ["event"] });
             successToast("Event updated successfully!");
             navigate("/events");
             console.log("Successfully updated", event.title);

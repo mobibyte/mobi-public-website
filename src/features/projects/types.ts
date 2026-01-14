@@ -22,4 +22,5 @@ export type Like = {
     created_at: Date;
     user_id: string;
     project_id: string;
+    user_profile: Profile
 };
