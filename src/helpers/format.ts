@@ -46,6 +46,31 @@ export function FormatDate(date: string): FormattedDate {
     return formatted;
 }
 
+export function timeSince(date: string) {
+    const past = new Date(date).getTime();
+    const now = Date.now();
+
+    const seconds = Math.floor((now - past) / 1000);
+
+    const intervals = [
+        { label: "y", seconds: 60 * 60 * 24 * 365 },
+        { label: "mo", seconds: 60 * 60 * 24 * 30 },
+        { label: "d", seconds: 60 * 60 * 24 },
+        { label: "h", seconds: 60 * 60 },
+        { label: "m", seconds: 60 },
+        { label: "s", seconds: 1 },
+    ];
+
+    for (const interval of intervals) {
+        const value = Math.floor(seconds / interval.seconds);
+        if (value >= 1) {
+            return `${value}${interval.label} ago`;
+        }
+    }
+
+    return "just now";
+}
+
 export function getSemester(): "Spring" | "Fall" {
     const today = new Date();
     const month = today.getMonth(); // 0 = January, 11 = December
@@ -73,7 +98,8 @@ export const sortOfficers = (officers: Officer[]) =>
     // Sorts by officer's level and then their seniority
     [...officers].sort(
         (a, b) =>
-            b.level - a.level || a.created_at.getTime() - b.created_at.getTime()
+            b.level - a.level ||
+            a.created_at.getTime() - b.created_at.getTime(),
     );
 
 export function todayAt(hour: number, minute = 0) {

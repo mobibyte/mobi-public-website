@@ -1,11 +1,11 @@
 import type { Project } from "../types";
 import { Link as RouterLink } from "react-router";
-import { FadeInImage } from "@/components/FadeInImage";
+import { Image } from "@chakra-ui/react";
 
 export function ProjectImage({ project }: { project: Project }) {
     return (
         <RouterLink to={`/${project.user_profile?.username}/${project.slug}`}>
-            <FadeInImage
+            <Image
                 src={project.image}
                 objectFit="cover"
                 rounded={"2xl"}
