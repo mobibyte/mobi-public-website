@@ -52,11 +52,13 @@ export function TextInput<TFieldValues extends FieldValues>({
 type TextAreaProps<TFieldValues extends FieldValues> = {
     name: Path<TFieldValues>;
     label?: string;
+    displayLabel?: boolean;
 } & React.ComponentProps<typeof Textarea>;
 
 export function TextArea<TFieldValues extends FieldValues>({
     name,
     label,
+    displayLabel = true,
     ...textareaProps
 }: TextAreaProps<TFieldValues>) {
     const {
@@ -70,7 +72,7 @@ export function TextArea<TFieldValues extends FieldValues>({
 
     return (
         <Field.Root invalid={!!error}>
-            <Field.Label>{resolvedLabel}</Field.Label>
+            {displayLabel && <Field.Label>{resolvedLabel}</Field.Label>}
             <Textarea {...textareaProps} {...register(name)} />
             {error && <Field.ErrorText>{error}</Field.ErrorText>}
         </Field.Root>

@@ -24,7 +24,7 @@ export function Projects() {
             <SimpleGrid
                 columns={{ base: 1, sm: 2, lg: 4 }} // responsive
                 gap={12}
-                px={4}
+                px={{ base: 4, md: 32 }}
                 w="full"
             >
                 {data.map((project, index) => {
