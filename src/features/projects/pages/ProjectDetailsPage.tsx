@@ -11,7 +11,7 @@ import {
     Avatar,
     Separator,
     useBreakpointValue,
-    Input,
+    // Input,
 } from "@chakra-ui/react";
 import { IconBrandGithub, IconLink } from "@tabler/icons-react";
 import { FormatDate } from "@/helpers/format";
@@ -21,15 +21,18 @@ import { useLoaderData } from "react-router";
 import { useGetProjectByUsername, useGetProjectLikes } from "../hooks";
 import { LikeAvatars } from "../components/LikeAvatars";
 import { LikeButton } from "../components/buttons/LikeButton";
-import { CommentForm } from "@/features/comments/components/CommentForm";
-import { useState } from "react";
-import { useGetAllProjectComments } from "@/features/comments/hooks";
-import { Comment } from "@/features/comments/components/Comment";
+// import { CommentForm } from "@/features/comments/components/CommentForm";
+// import { useState } from "react";
+// import { useGetAllProjectComments } from "@/features/comments/hooks";
+// import { Comment } from "@/features/comments/components/Comment";
+
+// NOTE:
+// Comments disabled until bug is resolved
 
 export function ProjectDetailsPage() {
     const isMobile = useBreakpointValue({ base: true, lg: false });
 
-    const [commenting, setCommenting] = useState(false);
+    // const [commenting, setCommenting] = useState(false);
     const { slug, username } = useLoaderData() as {
         username: string;
         slug: string;
@@ -40,8 +43,8 @@ export function ProjectDetailsPage() {
     });
     const { data: likes } = useGetProjectLikes(project.id);
     const { data: session } = useSession();
-    const { data: comments } = useGetAllProjectComments(project.id);
-    const commentsExist = comments.length > 0;
+    // const { data: comments } = useGetAllProjectComments(project.id);
+    // const commentsExist = comments.length > 0;
 
     const isLikedByUser =
         likes?.some((like) => like.user_id === session?.user.id) ?? false;
@@ -166,7 +169,7 @@ export function ProjectDetailsPage() {
                 </Stack>
             </Stack>
             {/* Comment Section */}
-            <Stack gap={8}>
+            {/* <Stack gap={8}>
                 {!commenting && (
                     <Input
                         onFocus={() => setCommenting(true)}
@@ -197,7 +200,7 @@ export function ProjectDetailsPage() {
                             projectId={project.id}
                         />
                     ))}
-            </Stack>
+            </Stack> */}
         </>
     );
 }
