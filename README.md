@@ -32,4 +32,4 @@ npm run dev
 
 4. Start in browser
 
-Type: http://localhost:5173/ to run locally
+Type: http://localhost:5173/ to run locally.
